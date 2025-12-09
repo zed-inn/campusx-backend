@@ -1,10 +1,10 @@
 import db from "@config/database";
 import { DataTypes, Model, ModelStatic } from "sequelize";
 import { UserAttributes, UserCreationAttributes } from "./user.interface";
-import { PRIMARY_ID } from "@shared/utils/primary-id";
+import { PRIMARY_ID } from "@shared/utils/db-types";
 
 const UserModel = db.define("User", {
-  id: { ...PRIMARY_ID },
+  id: { ...PRIMAgit adRY_ID },
   email: {
     type: DataTypes.STRING,
     allowNull: false,

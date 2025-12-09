@@ -1,24 +1,12 @@
 import db from "@config/database";
-import { PRIMARY_ID } from "@shared/utils/primary-id";
-import {
-  DataTypes,
-  Model,
-  ModelAttributeColumnOptions,
-  ModelStatic,
-} from "sequelize";
+import { DataTypes, Model, ModelStatic } from "sequelize";
 import {
   ProfileAttributes,
   ProfileCreationAttributes,
 } from "./profile.interface";
 import { User } from "@modules/core/user";
 import { PROFILE } from "./profile.config";
-
-const STATS: ModelAttributeColumnOptions = {
-  type: DataTypes.INTEGER,
-  allowNull: true,
-  validate: { min: 0 },
-  defaultValue: 0,
-};
+import { STATS } from "@shared/utils/db-types";
 
 const ProfileModel = db.define("Profile", {
   id: {
