@@ -1,0 +1,7 @@
+export const PROFILE = {
+  USERNAME_MIN_LENGTH: 3,
+  FULLNAME_MIN_LENGTH: 3,
+  GENDER_OPTIONS: ["Male", "Female", "Other"],
+  DOB_MIN_VALUE: 0,
+  REFERRAL_CODE_LENGTH: 8
+};
