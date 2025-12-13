@@ -1,7 +1,7 @@
 import { BaseSchema } from "@shared/dtos/base.dto";
 import { z } from "zod";
 
-const UserDbFields = z.object({
+export const UserDbFields = z.object({
   id: z.uuidv4(),
   email: z.email(),
   passwordHash: z.string().nullable(),
@@ -9,7 +9,7 @@ const UserDbFields = z.object({
   profiled: z.boolean().default(false),
 });
 
-const UserDbSchema = BaseSchema.extend(UserDbFields.shape);
+export const UserDbSchema = BaseSchema.extend(UserDbFields.shape);
 
 export type UserAttributes = z.infer<typeof UserDbSchema>;
 

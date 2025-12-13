@@ -17,7 +17,7 @@ const ProfileDbFields = z.object({
   reviews: z.number().positive().default(0),
 });
 
-const ProfileDbSchema = BaseSchema.extend(ProfileDbFields.shape);
+export const ProfileDbSchema = BaseSchema.extend(ProfileDbFields.shape);
 
 export type ProfileAttributes = z.infer<typeof ProfileDbSchema>;
 
