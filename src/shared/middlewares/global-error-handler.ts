@@ -23,7 +23,7 @@ export const globalErrorHandler = (
   } else if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
-  } else if ((err as any).name === "SequelizeUniqueConstraintError") {
+  } else if ((err as any)?.name === "SequelizeUniqueConstraintError") {
     statusCode = 409; // Conflict
     message = "Resource already exists";
     errors = (err as any).errors.map((e: any) => ({
