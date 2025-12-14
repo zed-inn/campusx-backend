@@ -1,30 +1,31 @@
-import { ProfileService } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile";
+import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { AppError } from "@shared/errors/app-error";
 import { catchAsync } from "@shared/utils/catch-async";
 import { NextFunction, Request, Response } from "express";
 
-export const isLoggedIn = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    if (typeof req.user?.id === "string" && typeof req.authToken === "string")
-      next();
-    throw new AppError("Invalid Request.", 401);
-  }
-);
-
-export const isUserProfiled = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    await ProfileService.getProfileByID(req.user?.id ?? "");
+export const isLoggedIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    AuthPayloadSchema.parse(req.user);
     next();
+  } catch {
+    throw new AppError("Unauthorized.", 401);
   }
-);
+};
 
-export const isUserNotProfiled = catchAsync(
+export const isProfiledUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await ProfileService.getProfileByID(req.user?.id ?? "");
-    } catch (error) {
-      next();
-    }
-    throw new AppError("Profile already created.", 406);
+    const reqUser = AuthPayloadSchema.parse(req.user);
+    const profile = await Profile.findByPk(reqUser.id);
+    if (!profile)
+      throw new AppError(
+        "Please complete your profile before you can access these services.",
+        403
+      );
+    next();
   }
 );
