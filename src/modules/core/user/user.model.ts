@@ -13,7 +13,6 @@ const UserModel = db.define("User", {
   },
   passwordHash: { type: DataTypes.STRING, allowNull: true },
   fcmToken: { type: DataTypes.STRING, allowNull: true },
-  profiled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 });
 
 export const User = UserModel as ModelStatic<

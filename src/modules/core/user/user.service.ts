@@ -1,70 +1,51 @@
 import bcrypt from "bcryptjs";
-import { Profile } from "@modules/core/profile";
 import { env } from "@config/env";
-import { AppError } from "@shared/errors/app-error";
 import db from "@config/database";
-import { UserAttributes } from "./user.interface";
+import { AppError } from "@shared/errors/app-error";
 import { User } from "./user.model";
 import { UserCreateDto } from "./dtos/user-create";
 import { UpdatePasswordDto } from "./dtos/update-password";
 
+class UserUtils {
+  static hashPassword = async (password: string) =>
+    await bcrypt.hash(password, env.BCRYPT_PASSWORD_HASH_SALT);
+}
+
 export class UserService {
-  static getUserByEmail = async (email: string): Promise<UserAttributes> => {
-    const user = await User.findOne({ where: { email } });
-    if (!user) throw new AppError("Invalid email, No user found.", 404);
-
-    return user.get({ plain: true });
-  };
-
-  static getUserByID = async (id: string): Promise<UserAttributes> => {
+  static getById = async (id: string) => {
     const user = await User.findByPk(id);
     if (!user) throw new AppError("No user found.", 404);
 
     return user.get({ plain: true });
   };
 
-  static getUserByProfileUsername = async (
-    username: string
-  ): Promise<UserAttributes> => {
-    return await db.transaction(async (t) => {
-      const profile = await Profile.findOne({ where: { username } });
-      if (!profile) throw new AppError("Invalid username, No user found", 404);
+  static getByEmail = async (email: string) => {
+    const user = await User.findOne({ where: { email } });
+    if (!user) throw new AppError("No user found.", 404);
 
-      const user = await User.findByPk(profile.dataValues.id);
-      if (!user) throw new AppError("Invalid username, No user found.", 404);
-
-      return user.get({ plain: true });
-    });
+    return user.get({ plain: true });
   };
 
-  static createUser = async (data: UserCreateDto): Promise<UserAttributes> => {
-    return await db.transaction(async (t) => {
+  static create = async (data: UserCreateDto) => {
+    return await db.transaction(async () => {
       const existingUser = await User.findOne({ where: { email: data.email } });
-      if (existingUser) throw new AppError("Email is already in use.", 409);
+      if (existingUser) throw new AppError("User already exists.", 409);
 
-      const passwordHash = data.password
-        ? await bcrypt.hash(data.password, env.BCRYPT_PASSWORD_HASH_SALT)
-        : null;
-
+      const passwordHash = await UserUtils.hashPassword(data.password);
       const user = await User.create({ email: data.email, passwordHash });
+
       return user.get({ plain: true });
     });
   };
 
-  static updatePasswordByEmail = async (
-    data: UpdatePasswordDto
-  ): Promise<UserAttributes> => {
-    return await db.transaction(async (t) => {
+  static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
+    return await db.transaction(async () => {
       const user = await User.findOne({ where: { email: data.email } });
-      if (!user)
-        throw new AppError("No account found with that email address.", 404);
+      if (!user) throw new AppError("No user found.", 404);
 
-      const passwordHash = await bcrypt.hash(
-        data.password,
-        env.BCRYPT_PASSWORD_HASH_SALT
-      );
-
+      const passwordHash = await UserUtils.hashPassword(data.password);
       await user.update({ passwordHash });
+
       return user.get({ plain: true });
     });
   };
