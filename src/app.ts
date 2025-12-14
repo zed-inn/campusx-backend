@@ -10,7 +10,7 @@ import { authenticate } from "@shared/middlewares/authenticate";
 declare global {
   namespace Express {
     interface Request {
-      authToken?: string;
+      authToken?: string | null;
       user?: {
         id: string;
         role?: string | undefined;

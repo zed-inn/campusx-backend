@@ -1,5 +1,4 @@
 import { TokenService } from "@shared/services/token.service";
-import { catchAsync } from "@shared/utils/catch-async";
 import { NextFunction, Request, Response } from "express";
 
 export const authenticate = async (
@@ -12,11 +11,11 @@ export const authenticate = async (
     req.headers["authtoken"] ??
     req.cookies["authtoken"] ??
     null;
+  req.authToken = authToken;
 
   try {
     const decoded = await TokenService.verifyToken(authToken);
     req.user = decoded;
-    req.authToken = authToken;
   } catch {}
 
   next();
