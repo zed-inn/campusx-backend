@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 import { env } from "@config/env";
 import { AppError } from "@shared/errors/app-error";
+import { UniqueConstraintError } from "sequelize";
 
 export const globalErrorHandler = (
   err: Error | AppError,
@@ -23,10 +24,10 @@ export const globalErrorHandler = (
   } else if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
-  } else if ((err as any)?.name === "SequelizeUniqueConstraintError") {
+  } else if (err instanceof UniqueConstraintError) {
     statusCode = 409; // Conflict
-    message = "Resource already exists";
-    errors = (err as any).errors.map((e: any) => ({
+    message = "Not available.";
+    errors = err.errors.map((e: any) => ({
       field: e.path,
       message: e.message,
     }));
