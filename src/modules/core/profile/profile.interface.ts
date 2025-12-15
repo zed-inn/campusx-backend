@@ -1,27 +1,33 @@
-import { BaseSchema } from "@shared/dtos/base.dto";
 import { z } from "zod";
-import { PROFILE } from "./profile.config";
+import { modelSchema } from "@shared/utils/model-schema";
+import { PROFILE_CONFIG } from "./profile.config";
 
-const ProfileDbFields = z.object({
+export const ProfileInterface = modelSchema({
   id: z.uuidv4(),
-  username: z.string().min(PROFILE.USERNAME_MIN_LENGTH).nullable(),
-  fullName: z.string().min(PROFILE.FULLNAME_MIN_LENGTH),
+  username: z
+    .string()
+    .min(PROFILE_CONFIG.USERNAME.MIN)
+    .max(PROFILE_CONFIG.USERNAME.MAX)
+    .nullable(),
+  fullName: z
+    .string()
+    .min(PROFILE_CONFIG.FULLNAME.MIN)
+    .max(PROFILE_CONFIG.FULLNAME.MAX),
   about: z.string().nullable(),
   profileImageUrl: z.url().nullable(),
-  gender: z.enum(PROFILE.GENDER_OPTIONS).nullable(),
-  dob: z.number().positive().min(PROFILE.DOB_MIN_VALUE).nullable(),
-  referralCode: z.string().length(PROFILE.REFERRAL_CODE_LENGTH),
-  followers: z.number().positive().default(0),
-  followings: z.number().positive().default(0),
-  forums: z.number().positive().default(0),
-  reviews: z.number().positive().default(0),
+  gender: z.enum(PROFILE_CONFIG.GENDER).nullable(),
+  dob: z
+    .number()
+    .positive()
+    .min(PROFILE_CONFIG.DOB.MIN)
+    .max(PROFILE_CONFIG.DOB.MAX)
+    .nullable(),
+  referralCode: z.string().length(PROFILE_CONFIG.REFERRAL_CODE_LENGTH),
 });
 
-export const ProfileDbSchema = BaseSchema.extend(ProfileDbFields.shape);
-
-export type ProfileAttributes = z.infer<typeof ProfileDbSchema>;
+export type ProfileAttributes = z.infer<typeof ProfileInterface.dbSchema>;
 
 export type ProfileCreationAttributes = Omit<
-  z.infer<typeof ProfileDbFields>,
-  "followers" | "followings" | "forums" | "reviews"
+  z.infer<typeof ProfileInterface.dbFields>,
+  "referralCode"
 >;

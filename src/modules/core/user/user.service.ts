@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import { env } from "@config/env";
-import db from "@config/database";
 import { AppError } from "@shared/errors/app-error";
 import { User } from "./user.model";
 import { UserCreateDto } from "./dtos/user-create";
@@ -27,26 +26,19 @@ export class UserService {
   };
 
   static create = async (data: UserCreateDto) => {
-    return await db.transaction(async () => {
-      const existingUser = await User.findOne({ where: { email: data.email } });
-      if (existingUser) throw new AppError("User already exists.", 409);
+    const passwordHash = await UserUtils.hashPassword(data.password);
+    const user = await User.create({ email: data.email, passwordHash });
 
-      const passwordHash = await UserUtils.hashPassword(data.password);
-      const user = await User.create({ email: data.email, passwordHash });
-
-      return user.get({ plain: true });
-    });
+    return user.get({ plain: true });
   };
 
   static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
-    return await db.transaction(async () => {
-      const user = await User.findOne({ where: { email: data.email } });
-      if (!user) throw new AppError("No user found.", 404);
+    const user = await User.findOne({ where: { email: data.email } });
+    if (!user) throw new AppError("No user found.", 404);
 
-      const passwordHash = await UserUtils.hashPassword(data.password);
-      await user.update({ passwordHash });
+    const passwordHash = await UserUtils.hashPassword(data.password);
+    await user.update({ passwordHash });
 
-      return user.get({ plain: true });
-    });
+    return user.get({ plain: true });
   };
 }

@@ -6,9 +6,6 @@ import { EmailService } from "@shared/services/email.service";
 import { AuthPayloadType } from "@shared/dtos/auth.dto";
 import { TokenService } from "@shared/services/token.service";
 import { UserService } from "@modules/core/user";
-import { SignupVerifyDto } from "../dtos/signup-verify.dto";
-import { AuthResponseDto } from "../dtos/auth-response.dto";
-import { SignupFinalDto } from "../dtos/signup-final.dto";
 
 export class SignupService {
   static OTP_LENGTH = 4;
@@ -27,9 +24,7 @@ export class SignupService {
     const otp = this.generateOtp();
     const subject = `${otp} is your OTP to verify your email address`;
     const html = `<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
-      <h2 style="color: #4CAF50; text-align: center;">${
-        BUSINESS.NAME
-      } Verification</h2>
+      <h2 style="color: #4CAF50; text-align: center;">${BUSINESS.NAME} Verification</h2>
       <p style="font-size: 16px;">Hello,</p>
       <p style="font-size: 16px;">Your One-Time Password (OTP) for email verification is:</p>
       <div style="background: #f4f4f4; padding: 10px; text-align: center; border-radius: 5px; margin: 20px 0;">
@@ -38,9 +33,7 @@ export class SignupService {
       <p style="font-size: 16px;">Please use this OTP to complete your verification process. Do not share this OTP with anyone.</p>
       <p style="font-size: 16px;">If you did not request this OTP, please ignore this email.</p>
       <hr style="border: 1px solid #ddd;">
-      <p style="font-size: 14px; color: #777; text-align: center;">&copy; ${new Date().getFullYear()} ${
-      BUSINESS.NAME
-    }. All rights reserved.</p>
+      <p style="font-size: 14px; color: #777; text-align: center;">&copy; 2025 ${BUSINESS.NAME}. All rights reserved.</p>
     </div>`;
 
     if (this.OTP_REPLACEMENT)
@@ -64,37 +57,29 @@ export class SignupService {
     await EmailService.sendEmail({ recipient: email, subject, html });
   };
 
-  static verifyOtp = async (data: SignupVerifyDto): Promise<string> => {
-    const key = `otp:${data.email}`;
+  static verifyOtp = async (email: string, otp: string) => {
+    const key = `otp:${email}`;
+
     const otpStored = await client.get(key);
     if (!otpStored) throw new AppError("Invalid Otp", 400);
 
-    if (this.OTP_REPLACEMENT && data.otp !== otpStored)
+    if (this.OTP_REPLACEMENT && otp !== otpStored)
       throw new AppError("Invalid Otp", 400);
-    if (!this.OTP_REPLACEMENT && !JSON.parse(otpStored).includes(data.otp))
+    if (!this.OTP_REPLACEMENT && !JSON.parse(otpStored).includes(otp))
       throw new AppError("Invalid Otp", 400);
 
-    const otpToken = `${uuidv4()}:${data.otp}`;
-    await client.setEx(
-      otpToken,
-      this.OTP_TOKEN_VALIDITY_MINUTES * 60,
-      data.email
-    );
+    const otpToken = `${uuidv4()}:${otp}`;
+    await client.setEx(otpToken, this.OTP_TOKEN_VALIDITY_MINUTES * 60, email);
     await client.del(key);
 
     return otpToken;
   };
 
-  static createPassword = async (
-    data: SignupFinalDto
-  ): Promise<AuthResponseDto> => {
-    const email = await client.get(data.otpToken);
-    if (!email) throw new AppError("Unverified.", 404);
+  static createPassword = async (otpToken: string, password: string) => {
+    const email = await client.get(otpToken);
+    if (!email) throw new AppError("Unverified.", 406);
 
-    const user = await UserService.createUser({
-      email,
-      password: data.password,
-    });
+    const user = await UserService.create({ email, password });
 
     const authPayload: AuthPayloadType = { id: user.id };
     const authToken = await TokenService.issueToken(authPayload);

@@ -2,37 +2,40 @@ import bcrypt from "bcryptjs";
 import { AppError } from "@shared/errors/app-error";
 import { AuthPayloadType } from "@shared/dtos/auth.dto";
 import { TokenService } from "@shared/services/token.service";
-import { UserService } from "@modules/core/user";
-import {
-  ProfileResponseDto,
-  ProfileResponseSchema,
-  ProfileService,
-} from "@modules/core/profile";
-import { LoginPasswordDto } from "../dtos/login-password.dto";
-import { AuthResponseDto } from "../dtos/auth-response.dto";
+import { UserAttributes, UserService } from "@modules/core/user";
+import { ProfileService } from "@modules/core/profile";
+import { LoginBasicDto } from "../dtos/login-basic.dto";
 
 export class LoginService {
-  static loginWithPassword = async (
-    data: LoginPasswordDto
-  ): Promise<AuthResponseDto> => {
-    const user = data.email
-      ? await UserService.getUserByEmail(data.email)
-      : await UserService.getUserByProfileUsername(data.username ?? "");
+  static loginBasic = async (data: LoginBasicDto) => {
+    if (!data.email && !data.username)
+      throw new AppError("Email or username is required.", 400);
 
-    if (!user.passwordHash) throw new AppError("Invalid Request.", 403);
+    let user: UserAttributes | null = null;
+    if (data.email) user = await UserService.getByEmail(data.email);
+    else if (data.username) {
+      const profile = await ProfileService.getByUsername(data.username);
+      user = await UserService.getById(profile.id);
+    }
 
-    const passMatched = await bcrypt.compare(data.password, user.passwordHash);
-    if (!passMatched) throw new AppError("Access denied.", 401);
+    if (!user) throw new AppError("Invalid Request.", 401);
+
+    if (!user.passwordHash) throw new AppError("Invalid Request.", 406);
+
+    const passwordMatch = await bcrypt.compare(
+      data.password,
+      user.passwordHash
+    );
+    if (!passwordMatch) throw new AppError("Unauthorized.", 401);
 
     const authPayload: AuthPayloadType = { id: user.id };
     const authToken = await TokenService.issueToken(authPayload);
 
-    let profile: ProfileResponseDto | null = null;
-    if (user.profiled)
-      profile = ProfileResponseSchema.parse(
-        await ProfileService.getProfileByID(user.id)
-      );
+    try {
+      const profile = await ProfileService.getById(user.id);
+      return { authToken, user: profile };
+    } catch {}
 
-    return { authToken, user: profile };
+    return { authToken, user: null };
   };
 }

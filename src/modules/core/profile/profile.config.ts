@@ -1,7 +1,7 @@
-export const PROFILE = {
-  USERNAME_MIN_LENGTH: 3,
-  FULLNAME_MIN_LENGTH: 3,
-  GENDER_OPTIONS: ["Male", "Female", "Other"],
-  DOB_MIN_VALUE: 0,
-  REFERRAL_CODE_LENGTH: 8
+export const PROFILE_CONFIG = {
+  USERNAME: { MIN: 3, MAX: 20 },
+  FULLNAME: { MIN: 3, MAX: 50 },
+  GENDER: ["Male", "Female", "Other"],
+  DOB: { MIN: 0, MAX: Infinity },
+  REFERRAL_CODE_LENGTH: 8,
 };

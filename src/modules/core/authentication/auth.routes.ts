@@ -1,7 +1,7 @@
-import { validateRequest } from "@shared/middlewares/validate-request";
 import { Router } from "express";
-import { LoginPasswordSchema } from "./dtos/login-password.dto";
+import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { AuthController } from "./auth.controller";
+import { LoginBasicSchema } from "./dtos/login-basic.dto";
 import { SignupInitSchema } from "./dtos/signup-init.dto";
 import { SignupVerifySchema } from "./dtos/signup-verify.dto";
 import { SignupFinalSchema } from "./dtos/signup-final.dto";
@@ -9,24 +9,26 @@ import { SignupFinalSchema } from "./dtos/signup-final.dto";
 const router = Router();
 
 router.post(
-  "/login",
-  validateRequest(LoginPasswordSchema),
+  "/login/basic",
+  validateRequestBody(LoginBasicSchema),
   AuthController.loginWithPassword
 );
 
 router.post(
   "/signup/send-otp",
-  validateRequest(SignupInitSchema),
+  validateRequestBody(SignupInitSchema),
   AuthController.getOtp
 );
+
 router.post(
   "/signup/verify-otp",
-  validateRequest(SignupVerifySchema),
+  validateRequestBody(SignupVerifySchema),
   AuthController.verifyOtp
 );
+
 router.post(
   "/signup/create-password",
-  validateRequest(SignupFinalSchema),
+  validateRequestBody(SignupFinalSchema),
   AuthController.createPassword
 );
 

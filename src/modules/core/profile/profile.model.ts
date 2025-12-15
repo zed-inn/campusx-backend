@@ -1,14 +1,19 @@
 import db from "@config/database";
-import { DataTypes, Model, ModelStatic } from "sequelize";
+import { DataTypes } from "sequelize";
 import {
   ProfileAttributes,
   ProfileCreationAttributes,
 } from "./profile.interface";
 import { User } from "@modules/core/user";
-import { PROFILE } from "./profile.config";
+import { PROFILE_CONFIG } from "./profile.config";
 import { STATS } from "@shared/utils/db-types";
+import { generateReferralCode } from "@shared/utils/generate-code";
+import { defineModel } from "@shared/utils/define-model";
 
-const ProfileModel = db.define("Profile", {
+export const Profile = defineModel<
+  ProfileAttributes,
+  ProfileCreationAttributes
+>(db, "Profile", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
@@ -17,15 +22,25 @@ const ProfileModel = db.define("Profile", {
     references: { model: User, key: "id" },
   },
   username: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(PROFILE_CONFIG.USERNAME.MAX),
     allowNull: true,
     unique: true,
-    validate: { len: [PROFILE.USERNAME_MIN_LENGTH, 20] },
+    validate: {
+      len: {
+        args: [PROFILE_CONFIG.USERNAME.MIN, PROFILE_CONFIG.USERNAME.MAX],
+        msg: `Username should be within length of ${PROFILE_CONFIG.USERNAME.MIN}-${PROFILE_CONFIG.USERNAME.MAX} characters.`,
+      },
+    },
   },
   fullName: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(PROFILE_CONFIG.FULLNAME.MAX),
     allowNull: false,
-    validate: { len: [PROFILE.FULLNAME_MIN_LENGTH, 100] },
+    validate: {
+      len: {
+        args: [PROFILE_CONFIG.FULLNAME.MIN, PROFILE_CONFIG.FULLNAME.MAX],
+        msg: `Full Name should be within length of ${PROFILE_CONFIG.FULLNAME.MIN}-${PROFILE_CONFIG.FULLNAME.MAX} characters.`,
+      },
+    },
   },
   about: { type: DataTypes.STRING, allowNull: true },
   profileImageUrl: {
@@ -35,27 +50,42 @@ const ProfileModel = db.define("Profile", {
   },
   gender: {
     type: DataTypes.STRING,
-    values: PROFILE.GENDER_OPTIONS,
+    values: PROFILE_CONFIG.GENDER,
     allowNull: true,
   },
-  dob: { type: DataTypes.INTEGER, allowNull: true },
+  dob: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    validate: { min: PROFILE_CONFIG.DOB.MIN, max: PROFILE_CONFIG.DOB.MAX },
+  },
   referralCode: {
-    type: DataTypes.STRING,
+    type: DataTypes.CHAR(PROFILE_CONFIG.REFERRAL_CODE_LENGTH),
     allowNull: false,
     unique: true,
     validate: {
-      len: [PROFILE.REFERRAL_CODE_LENGTH, PROFILE.REFERRAL_CODE_LENGTH],
+      len: {
+        args: [
+          PROFILE_CONFIG.REFERRAL_CODE_LENGTH,
+          PROFILE_CONFIG.REFERRAL_CODE_LENGTH,
+        ],
+        msg: `Referral code has to be of ${PROFILE_CONFIG.REFERRAL_CODE_LENGTH} length.`,
+      },
     },
   },
   followers: { ...STATS },
   followings: { ...STATS },
-  forums: { ...STATS },
-  reviews: { ...STATS },
 });
 
-export const Profile = ProfileModel as ModelStatic<
-  Model<ProfileAttributes, ProfileCreationAttributes>
->;
+// Hooks
+Profile.beforeValidate(async (profile: any) => {
+  if (profile.referralCode) return;
+
+  let referralCode = generateReferralCode(PROFILE_CONFIG.REFERRAL_CODE_LENGTH);
+  while (await Profile.count({ where: { referralCode } }))
+    referralCode = generateReferralCode(PROFILE_CONFIG.REFERRAL_CODE_LENGTH);
+
+  profile.referralCode = referralCode;
+});
 
 // Association
 User.hasOne(Profile, { foreignKey: "id", onDelete: "CASCADE", as: "profile" });

@@ -1,33 +1,35 @@
 import { Router } from "express";
 import { ProfileController } from "./profile.controller";
-import { validateRequest } from "@shared/middlewares/validate-request";
+import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { ProfileCreateSchema } from "./dtos/profile-create.dto";
 import { ProfileUpdateSchema } from "./dtos/profile-update.dto";
-import {
-  isLoggedIn,
-  isUserNotProfiled,
-  isUserProfiled,
-} from "@shared/middlewares/auth-restrict";
+import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 
 const router = Router();
 
 router.get("/", ProfileController.getProfile);
 
-router.get("/me", isLoggedIn, isUserProfiled, ProfileController.getMyProfile);
+router.get("/me", isLoggedIn, isProfiledUser, ProfileController.getMyProfile);
+
+router.get(
+  "/referral-code",
+  isLoggedIn,
+  isProfiledUser,
+  ProfileController.getMyReferralCode
+);
 
 router.post(
   "/",
   isLoggedIn,
-  isUserNotProfiled,
-  validateRequest(ProfileCreateSchema),
+  validateRequestBody(ProfileCreateSchema),
   ProfileController.createProfile
 );
 
 router.put(
   "/",
   isLoggedIn,
-  isUserProfiled,
-  validateRequest(ProfileUpdateSchema),
+  isProfiledUser,
+  validateRequestBody(ProfileUpdateSchema),
   ProfileController.updateProfile
 );
 
