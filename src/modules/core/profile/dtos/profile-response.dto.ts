@@ -1,15 +1,15 @@
-import { BaseSchema } from "@shared/dtos/base.dto";
 import { z } from "zod";
-import { PROFILE_CONFIG } from "../profile.config";
+import { BaseSchema } from "@shared/dtos/base.dto";
+import { ProfileInterface } from "../profile.interface";
 
 export const ProfileResponseSchema = BaseSchema.extend({
-  id: z.uuidv4(),
-  username: z.string().nullable(),
-  fullName: z.string(),
-  about: z.string().nullable(),
-  profileImageUrl: z.url().nullable(),
-  gender: z.enum(PROFILE_CONFIG.GENDER).nullable(),
-  dob: z.number().nullable(),
+  id: ProfileInterface.fields.id,
+  username: ProfileInterface.fields.username,
+  fullName: ProfileInterface.fields.fullName,
+  about: ProfileInterface.fields.about,
+  profileImageUrl: ProfileInterface.fields.profileImageUrl,
+  gender: ProfileInterface.fields.gender,
+  dob: ProfileInterface.fields.dob,
 });
 
 export type ProfileResponseDto = z.infer<typeof ProfileResponseSchema>;

@@ -3,26 +3,30 @@ import { modelSchema } from "@shared/utils/model-schema";
 import { PROFILE_CONFIG } from "./profile.config";
 
 export const ProfileInterface = modelSchema({
-  id: z.uuidv4(),
+  id: z.uuidv4("Invalid Profile Id"),
   username: z
-    .string()
-    .min(PROFILE_CONFIG.USERNAME.MIN)
-    .max(PROFILE_CONFIG.USERNAME.MAX)
+    .string("Invalid Username")
+    .min(PROFILE_CONFIG.USERNAME.MIN, { error: "Username is too short" })
+    .max(PROFILE_CONFIG.USERNAME.MAX, { error: "Username is too long" })
     .nullable(),
   fullName: z
-    .string()
-    .min(PROFILE_CONFIG.FULLNAME.MIN)
-    .max(PROFILE_CONFIG.FULLNAME.MAX),
-  about: z.string().nullable(),
-  profileImageUrl: z.url().nullable(),
-  gender: z.enum(PROFILE_CONFIG.GENDER).nullable(),
+    .string("Invalid Fullname")
+    .min(PROFILE_CONFIG.FULLNAME.MIN, { error: "Fullname is too short" })
+    .max(PROFILE_CONFIG.FULLNAME.MAX, { error: "Fullname is too long" }),
+  about: z.string("Invalid About").nullable(),
+  profileImageUrl: z.url("Invalid Profile Image Url").nullable(),
+  gender: z.enum(PROFILE_CONFIG.GENDER, { error: "Invalid Gender" }).nullable(),
   dob: z
-    .number()
-    .positive()
-    .min(PROFILE_CONFIG.DOB.MIN)
-    .max(PROFILE_CONFIG.DOB.MAX)
+    .number("Invalid Dob")
+    .positive("Dob cannot be negative")
+    .min(PROFILE_CONFIG.DOB.MIN, { error: "You haven't lived that long!!" })
+    .max(PROFILE_CONFIG.DOB.MAX, { error: "You are from future!!" })
     .nullable(),
-  referralCode: z.string().length(PROFILE_CONFIG.REFERRAL_CODE_LENGTH),
+  referralCode: z
+    .string("Invalid Referral Code")
+    .length(PROFILE_CONFIG.REFERRAL_CODE_LENGTH, {
+      error: "Invalid Referral Code",
+    }),
 });
 
 export type ProfileAttributes = z.infer<typeof ProfileInterface.dbSchema>;

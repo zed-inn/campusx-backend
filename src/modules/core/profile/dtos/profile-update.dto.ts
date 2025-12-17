@@ -1,12 +1,13 @@
 import { z } from "zod";
+import { ProfileInterface } from "../profile.interface";
 
 export const ProfileUpdateSchema = z.object({
-  username: z.string().nullable().optional(),
-  fullName: z.string().optional(),
-  about: z.string().nullable().optional(),
-  profileImageUrl: z.url().nullable().optional(),
-  gender: z.enum(["Male", "Female", "Other"]).nullable().optional(),
-  dob: z.number().positive().nullable().optional(),
+  username: ProfileInterface.fields.username.optional(),
+  fullName: ProfileInterface.fields.fullName.optional(),
+  about: ProfileInterface.fields.about.optional(),
+  profileImageUrl: ProfileInterface.fields.profileImageUrl.optional(),
+  gender: ProfileInterface.fields.gender.optional(),
+  dob: ProfileInterface.fields.dob.optional(),
 });
 
 export type ProfileUpdateDto = z.infer<typeof ProfileUpdateSchema>;
