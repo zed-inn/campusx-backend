@@ -43,7 +43,7 @@ export const Profile = defineModel<
     },
   },
   about: { type: DataTypes.STRING, allowNull: true },
-  profileImageUrl: {
+  avatarUrl: {
     type: DataTypes.STRING,
     allowNull: true,
     validate: { isUrl: true },

@@ -14,7 +14,7 @@ export const ProfileInterface = modelSchema({
     .min(PROFILE_CONFIG.FULLNAME.MIN, { error: "Fullname is too short" })
     .max(PROFILE_CONFIG.FULLNAME.MAX, { error: "Fullname is too long" }),
   about: z.string("Invalid About").nullable(),
-  profileImageUrl: z.url("Invalid Profile Image Url").nullable(),
+  avatarUrl: z.url("Invalid Avatar Url").nullable(),
   gender: z.enum(PROFILE_CONFIG.GENDER, { error: "Invalid Gender" }).nullable(),
   dob: z
     .number("Invalid Dob")
