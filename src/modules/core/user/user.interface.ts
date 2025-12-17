@@ -25,5 +25,5 @@ export type UserAttributes = z.infer<typeof UserInterface.dbSchema>;
 
 export type UserCreationAttributes = Omit<
   z.infer<typeof UserInterface.dbFields>,
-  "id" | "fcmToken" | "profiled"
+  "id" | "fcmToken" | "referralCode"
 >;
