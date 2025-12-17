@@ -1,8 +1,6 @@
 import { ProfileInterface } from "@modules/core/profile";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
-import { ForumInterface } from "./forum.interface";
-import { BaseSchema } from "@shared/dtos/base.dto";
 
 export const CommentInterface = modelSchema(
   {
