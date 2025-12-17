@@ -5,7 +5,7 @@ export const ProfileUpdateSchema = z.object({
   username: ProfileInterface.fields.username.optional(),
   fullName: ProfileInterface.fields.fullName.optional(),
   about: ProfileInterface.fields.about.optional(),
-  profileImageUrl: ProfileInterface.fields.profileImageUrl.optional(),
+  avatarUrl: ProfileInterface.fields.avatarUrl.optional(),
   gender: ProfileInterface.fields.gender.optional(),
   dob: ProfileInterface.fields.dob.optional(),
 });

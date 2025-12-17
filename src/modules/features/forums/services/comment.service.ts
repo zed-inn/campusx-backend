@@ -1,120 +1,90 @@
 import { Includeable } from "sequelize";
-import {
-  CommentFullAttributesDto,
-  CommentFullAttributesSchema,
-} from "../dtos/comment-full-attribute.dto";
-import { Comment } from "../models/comment.model";
-import { Profile } from "@modules/core/profile";
-import { Forum } from "../models/forum.model";
-import { CommentCreateDto } from "../dtos/comment-create.dto";
 import db from "@config/database";
-import { AppError } from "@shared/errors/app-error";
-import { CommentUpdateDto } from "../dtos/comment-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
+import { AppError } from "@shared/errors/app-error";
+import { Profile } from "@modules/core/profile";
+import { Comment } from "../models/comment.model";
+import { Forum } from "../models/forum.model";
 import { CommentAttributes } from "../interfaces/comment.interface";
+import { CommentCreateDto } from "../dtos/comment-create.dto";
+import { CommentUpdateDto } from "../dtos/comment-update.dto";
+import { CommentFullSchema as CommentFS } from "../dtos/comment-full.dto";
 
 export class CommentService {
-  static COMMENTS_PER_PAGE = 45;
+  static COMMENTS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.COMMENTS_PER_PAGE;
 
-  static getCommentsByForumId = async (
-    id: string,
-    page: number
-  ): Promise<CommentFullAttributesDto[]> => {
+  static getByForumId = async (id: string, page: number) => {
     const forum = await Forum.findByPk(id);
     if (!forum) throw new AppError("Invalid Request.", 404);
 
-    const comments = await Comment.findAll({
+    const commentsCount = await Comment.findAll({
       where: { forumId: id },
       limit: this.COMMENTS_PER_PAGE,
       offset: this.OFFSET(page),
       order: [["createDate", "desc"]],
-      include: [CommentUtils.includeForumObj, CommentUtils.includeWriterObj],
+      include: [CommentInclude.writer],
     });
 
-    return comments.map((c) =>
-      CommentFullAttributesSchema.parse(c.get({ plain: true }))
-    );
+    return commentsCount.map((c) => CommentFS.parse(c.get({ plain: true })));
   };
 
-  static createComment = async (
-    data: CommentCreateDto,
-    profileId: string
-  ): Promise<CommentFullAttributesDto> => {
-    return await db.transaction(async (t) => {
+  static create = async (data: CommentCreateDto, userId: string) => {
+    return await db.transaction(async () => {
       const forum = await Forum.findByPk(data.forumId);
-      if (!forum) throw new AppError("Invalid Request.", 404);
+      if (!forum) throw new AppError("Forum not found.", 404);
 
       const comment = await Comment.create(
-        { ...data, profileId },
-        {
-          include: [
-            CommentUtils.includeForumObj,
-            CommentUtils.includeWriterObj,
-          ],
-        }
+        { ...data, userId },
+        { include: [CommentInclude.writer] }
       );
 
-      if (data.replyingTo) await forum.increment({ comments: 1 });
+      if (data.replyingTo) await forum.increment({ commentsCount: 1 });
 
-      return CommentFullAttributesSchema.parse(comment.get({ plain: true }));
+      return CommentFS.parse(comment.get({ plain: true }));
     });
   };
 
-  static updateComment = async (
-    data: CommentUpdateDto,
-    profileId: string
-  ): Promise<CommentFullAttributesDto> => {
-    return await db.transaction(async (t) => {
+  static update = async (data: CommentUpdateDto, userId: string) => {
+    return await db.transaction(async () => {
       const { id, ...updateData } = data;
 
       const comment = await Comment.findOne({
-        where: { id, profileId },
-        include: [CommentUtils.includeForumObj, CommentUtils.includeWriterObj],
+        where: { id, userId },
+        include: [CommentInclude.writer],
       });
-      if (!comment) throw new AppError("Invalid Request.", 406);
+      if (!comment) throw new AppError("Comment not found.", 404);
 
       const cleanData = removeUndefined(updateData);
-
       await comment.update(cleanData as Partial<CommentAttributes>);
-      return CommentFullAttributesSchema.parse(comment.get({ plain: true }));
+
+      return CommentFS.parse(comment.get({ plain: true }));
     });
   };
 
-  static deleteComment = async (
-    id: string,
-    profileId: string
-  ): Promise<CommentFullAttributesDto> => {
-    return await db.transaction(async (t) => {
+  static delete = async (id: string, userId: string) => {
+    return await db.transaction(async () => {
       const comment = await Comment.findOne({
-        where: { id, profileId },
-        include: [CommentUtils.includeForumObj, CommentUtils.includeWriterObj],
+        where: { id, userId },
+        include: [CommentInclude.writer],
       });
-      if (!comment) throw new AppError("Invalid Request.", 406);
-      const commentData = comment.get({
-        plain: true,
-      });
+      if (!comment) throw new AppError("Comment not found.", 404);
+
+      const commentData = comment.get({ plain: true });
 
       if (!comment.dataValues.replyingTo)
         await Forum.decrement(
-          { comments: 1 },
+          { commentsCount: 1 },
           { where: { id: comment.dataValues.forumId } }
         );
 
       await comment.destroy();
-      return CommentFullAttributesSchema.parse(commentData);
+
+      return CommentFS.parse(commentData);
     });
   };
 }
 
-class CommentUtils {
-  static includeWriterObj: Includeable = {
-    model: Profile,
-    as: "writer",
-  };
-
-  static includeForumObj: Includeable = {
-    model: Forum,
-    as: "forum",
-  };
+class CommentInclude {
+  static writer: Includeable = { model: Profile, as: "writer" };
 }

@@ -1,13 +1,14 @@
-import { BaseSchema } from "@shared/dtos/base.dto";
+import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
 
-export const LikeFields = z.object({
-  forumId: z.uuidv4(),
-  profileId: z.uuidv4(),
+export const LikeInterface = modelSchema({
+  forumId: z.uuidv4("Invalid Forum Id"),
+  userId: z.uuidv4("Invalid User Id"),
 });
 
-export const LikeDbSchema = BaseSchema.extend(LikeFields.shape);
+export type LikeAttributes = z.infer<typeof LikeInterface.dbSchema>;
 
-export type LikeAttributes = z.infer<typeof LikeDbSchema>;
-
-export type LikeCreationAttributes = z.infer<typeof LikeFields>;
+export type LikeCreationAttributes = Omit<
+  z.infer<typeof LikeInterface.dbFields>,
+  never
+>;

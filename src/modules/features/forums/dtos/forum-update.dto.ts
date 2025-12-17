@@ -1,11 +1,12 @@
 import { z } from "zod";
+import { ForumInterface } from "../interfaces/forum.interface";
 
 export const ForumUpdateSchema = z.object({
-  id: z.uuidv4({ error: "Invalid Id" }),
-  localId: z.string().nullable().optional(),
-  title: z.string().nullable().optional(),
-  body: z.string().nullable().optional(),
-  imageUrl: z.string().nullable().optional(),
+  id: ForumInterface.fields.id,
+  localId: ForumInterface.fields.localId.optional(),
+  title: ForumInterface.fields.title.optional(),
+  body: ForumInterface.fields.body.optional(),
+  imageUrl: ForumInterface.fields.imageUrl.optional(),
 });
 
 export type ForumUpdateDto = z.infer<typeof ForumUpdateSchema>;

@@ -1,15 +1,15 @@
 import { Router } from "express";
 import { CommentController } from "../controllers/comment.controller";
-import { isLoggedIn, isUserProfiled } from "@shared/middlewares/auth-restrict";
+import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 
 const router = Router();
 
-router.get("/", CommentController.getComments);
+router.get("/", CommentController.getForumComments);
 
-router.post("/", isLoggedIn, isUserProfiled, CommentController.createComment);
+router.post("/", isLoggedIn, isProfiledUser, CommentController.createComment);
 
-router.put("/", isLoggedIn, isUserProfiled, CommentController.updateComment);
+router.put("/", isLoggedIn, isProfiledUser, CommentController.updateComment);
 
-router.delete("/", isLoggedIn, isUserProfiled, CommentController.deleteComment);
+router.delete("/", isLoggedIn, isProfiledUser, CommentController.deleteComment);
 
 export const CommentRouter = router;

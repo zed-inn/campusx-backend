@@ -1,20 +1,25 @@
+import { DataTypes } from "sequelize";
 import db from "@config/database";
-import { Profile } from "@modules/core/profile";
 import { PRIMARY_ID, STATS } from "@shared/utils/db-types";
-import { DataTypes, Model, ModelStatic } from "sequelize";
+import { defineModel } from "@shared/utils/define-model";
+import { User } from "@modules/core/user";
+import { Profile } from "@modules/core/profile";
 import { Forum } from "./forum.model";
 import {
   CommentAttributes,
   CommentCreationAttributes,
 } from "../interfaces/comment.interface";
 
-const CommentModel = db.define("ForumComment", {
+export const Comment = defineModel<
+  CommentAttributes,
+  CommentCreationAttributes
+>(db, "ForumComment", {
   id: { ...PRIMARY_ID },
   localId: { type: DataTypes.STRING, allowNull: true },
-  profileId: {
+  userId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: { model: Profile, key: "id" },
+    references: { model: User, key: "id" },
   },
   forumId: {
     type: DataTypes.UUID,
@@ -27,13 +32,10 @@ const CommentModel = db.define("ForumComment", {
     references: { model: "ForumComments", key: "id" },
   },
   body: { type: DataTypes.STRING, allowNull: false },
-  replies: { ...STATS },
+  repliesCount: { ...STATS },
 });
 
-export const Comment = CommentModel as ModelStatic<
-  Model<CommentAttributes, CommentCreationAttributes>
->;
-
+// Associations
 Forum.hasMany(Comment, {
   foreignKey: "forumId",
   onDelete: "CASCADE",
@@ -42,11 +44,10 @@ Forum.hasMany(Comment, {
 Comment.belongsTo(Forum, { foreignKey: "forumId", as: "forum" });
 
 Profile.hasMany(Comment, {
-  foreignKey: "profileId",
+  foreignKey: "userId",
   onDelete: "CASCADE",
-  as: "comments",
 });
-Comment.belongsTo(Profile, { foreignKey: "profileId", as: "profile" });
+Comment.belongsTo(Profile, { foreignKey: "userId", as: "writer" });
 
 Comment.hasMany(Comment, {
   foreignKey: "replyingTo",

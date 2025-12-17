@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { CommentInterface } from "../interfaces/comment.interface";
 
 export const CommentCreateSchema = z.object({
-  forumId: z.uuidv4("Invalid Forum Id"),
-  localId: z.string("Invalid localId").nullable(),
-  body: z.string("Invalid comment"),
-  replyingTo: z.uuidv4("Invalid commentId for replying").nullable(),
+  forumId: CommentInterface.fields.forumId,
+  localId: CommentInterface.fields.localId.default(null),
+  body: CommentInterface.fields.body,
+  replyingTo: CommentInterface.fields.replyingTo.default(null),
 });
 
 export type CommentCreateDto = z.infer<typeof CommentCreateSchema>;

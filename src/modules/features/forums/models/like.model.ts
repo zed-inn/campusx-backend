@@ -1,41 +1,43 @@
+import { DataTypes } from "sequelize";
 import db from "@config/database";
-import { DataTypes, Model, ModelStatic } from "sequelize";
-import { Forum } from "./forum.model";
+import { defineModel } from "@shared/utils/define-model";
+import { User } from "@modules/core/user";
 import { Profile } from "@modules/core/profile";
+import { Forum } from "./forum.model";
 import {
   LikeAttributes,
   LikeCreationAttributes,
 } from "../interfaces/like.interface";
 
-const LikeModel = db.define("ForumLike", {
-  forumId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    unique: "one person one like",
-    references: { model: Forum, key: "id" },
-  },
-  profileId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    unique: "one person one like",
-    references: { model: Profile, key: "id" },
-  },
-});
+export const Like = defineModel<LikeAttributes, LikeCreationAttributes>(
+  db,
+  "ForumLike",
+  {
+    forumId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: "one person one like",
+      references: { model: Forum, key: "id" },
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: "one person one like",
+      references: { model: User, key: "id" },
+    },
+  }
+);
 
-export const Like = LikeModel as ModelStatic<
-  Model<LikeAttributes, LikeCreationAttributes>
->;
-
+// Associations
 Profile.hasMany(Like, {
-  foreignKey: "profileId",
-  as: "likes",
+  foreignKey: "userId",
   onDelete: "CASCADE",
 });
-Like.belongsTo(Profile, { foreignKey: "profileId", as: "writer" });
+Like.belongsTo(Profile, { foreignKey: "userId" });
 
 Forum.hasMany(Like, {
   foreignKey: "forumId",
-  as: "likes",
   onDelete: "CASCADE",
+  as: "likes",
 });
 Like.belongsTo(Forum, { foreignKey: "forumId" });

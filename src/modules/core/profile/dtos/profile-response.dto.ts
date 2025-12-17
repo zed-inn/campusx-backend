@@ -7,7 +7,7 @@ export const ProfileResponseSchema = BaseSchema.extend({
   username: ProfileInterface.fields.username,
   fullName: ProfileInterface.fields.fullName,
   about: ProfileInterface.fields.about,
-  profileImageUrl: ProfileInterface.fields.profileImageUrl,
+  avatarUrl: ProfileInterface.fields.avatarUrl,
   gender: ProfileInterface.fields.gender,
   dob: ProfileInterface.fields.dob,
 });

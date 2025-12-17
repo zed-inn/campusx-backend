@@ -1,20 +1,19 @@
-import { AppError } from "@shared/errors/app-error";
-import { catchAsync } from "@shared/utils/catch-async";
-import { Transform } from "@shared/utils/transform";
 import { Request, Response } from "express";
+import { catchAsync } from "@shared/utils/catch-async";
+import { Parse } from "@shared/utils/parse-fields";
+import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
+import { ApiResponse } from "@shared/utils/api-response";
 import { CommentService } from "../services/comment.service";
 import { CommentResponseSchema } from "../dtos/comment-response.dto";
-import { ApiResponse } from "@shared/utils/response";
 import { CommentCreateDto } from "../dtos/comment-create.dto";
 import { CommentUpdateDto } from "../dtos/comment-update.dto";
 
 export class CommentController {
-  static getComments = catchAsync(async (req: Request, res: Response) => {
-    const page = Transform.to.number(req.query.page, 1);
-    const forumId = req.query.forumId?.toString();
-    if (!forumId) throw new AppError("No Forum found.", 404);
+  static getForumComments = catchAsync(async (req: Request, res: Response) => {
+    const page = Parse.pageNum(req.query.page);
+    const forumId = Parse.id(req.query.forumId);
 
-    const comments = await CommentService.getCommentsByForumId(forumId, page);
+    const comments = await CommentService.getByForumId(forumId, page);
     const parsedComments = comments.map((c) => CommentResponseSchema.parse(c));
 
     return ApiResponse.success(res, "Comments fetched.", {
@@ -24,10 +23,9 @@ export class CommentController {
 
   static createComment = catchAsync(
     async (req: Request<{}, {}, CommentCreateDto>, res: Response) => {
-      const profileId = req.user?.id;
-      if (!profileId) throw new AppError("Invalid Request.", 401);
+      const user = AuthPayloadSchema.parse(req.user);
 
-      const comment = await CommentService.createComment(req.body, profileId);
+      const comment = await CommentService.create(req.body, user.id);
       const parsedComment = CommentResponseSchema.parse(comment);
 
       return ApiResponse.success(res, "Comment created.", {
@@ -38,10 +36,9 @@ export class CommentController {
 
   static updateComment = catchAsync(
     async (req: Request<{}, {}, CommentUpdateDto>, res: Response) => {
-      const profileId = req.user?.id;
-      if (!profileId) throw new AppError("Invalid Request.", 401);
+      const user = AuthPayloadSchema.parse(req.user);
 
-      const comment = await CommentService.updateComment(req.body, profileId);
+      const comment = await CommentService.update(req.body, user.id);
       const parsedComment = CommentResponseSchema.parse(comment);
 
       return ApiResponse.success(res, "Comment updated.", {
@@ -51,13 +48,11 @@ export class CommentController {
   );
 
   static deleteComment = catchAsync(async (req: Request, res: Response) => {
-    const commentId = req.query.commentId?.toString();
-    if (!commentId) throw new AppError("Invalid Request.", 400);
+    const user = AuthPayloadSchema.parse(req.user);
 
-    const profileId = req.user?.id;
-    if (!profileId) throw new AppError("Invalid Request.", 401);
+    const commentId = Parse.id(req.query.id);
 
-    const comment = await CommentService.deleteComment(commentId, profileId);
+    const comment = await CommentService.delete(commentId, user.id);
     const parsedComment = CommentResponseSchema.parse(comment);
 
     return ApiResponse.success(res, "Comment deleted.", {

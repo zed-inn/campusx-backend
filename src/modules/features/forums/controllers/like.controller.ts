@@ -1,28 +1,27 @@
-import { AppError } from "@shared/errors/app-error";
-import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
+import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
+import { catchAsync } from "@shared/utils/catch-async";
+import { ApiResponse } from "@shared/utils/api-response";
+import { Parse } from "@shared/utils/parse-fields";
 import { LikeService } from "../services/like.service";
-import { ApiResponse } from "@shared/utils/response";
 
 export class LikeController {
   static likeForum = catchAsync(async (req: Request, res: Response) => {
-    const profileId = req.user?.id ?? null;
-    if (!profileId) throw new AppError("Invalid Request", 401);
-    const forumId = req.query.forumId?.toString();
-    if (!forumId) throw new AppError("Invalid Request", 406);
+    const user = AuthPayloadSchema.parse(req.user);
 
-    await LikeService.likeForum(forumId, profileId);
+    const forumId = Parse.id(req.query.forumId);
+
+    await LikeService.likeForum(forumId, user.id);
 
     return ApiResponse.success(res, "Liked");
   });
 
   static unlikeForum = catchAsync(async (req: Request, res: Response) => {
-    const profileId = req.user?.id ?? null;
-    if (!profileId) throw new AppError("Invalid Request", 401);
-    const forumId = req.query.forumId?.toString();
-    if (!forumId) throw new AppError("Invalid Request", 406);
+    const user = AuthPayloadSchema.parse(req.user);
 
-    await LikeService.unlikeForum(forumId, profileId);
+    const forumId = Parse.id(req.query.forumId);
+
+    await LikeService.unlikeForum(forumId, user.id);
 
     return ApiResponse.success(res, "Unliked");
   });
