@@ -22,11 +22,6 @@ export const ProfileInterface = modelSchema({
     .min(PROFILE_CONFIG.DOB.MIN, { error: "You haven't lived that long!!" })
     .max(PROFILE_CONFIG.DOB.MAX, { error: "You are from future!!" })
     .nullable(),
-  referralCode: z
-    .string("Invalid Referral Code")
-    .length(PROFILE_CONFIG.REFERRAL_CODE_LENGTH, {
-      error: "Invalid Referral Code",
-    }),
 });
 
 export type ProfileAttributes = z.infer<typeof ProfileInterface.dbSchema>;

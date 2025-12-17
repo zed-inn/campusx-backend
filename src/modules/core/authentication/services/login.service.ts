@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { AppError } from "@shared/errors/app-error";
 import { AuthPayloadType } from "@shared/dtos/auth.dto";
 import { TokenService } from "@shared/services/token.service";
-import { UserAttributes, UserService } from "@modules/core/user";
+import { UserService } from "@modules/core/user";
 import { ProfileService } from "@modules/core/profile";
 import { LoginBasicDto } from "../dtos/login-basic.dto";
 
@@ -11,12 +11,15 @@ export class LoginService {
     if (!data.email && !data.username)
       throw new AppError("Email or username is required.", 400);
 
-    let user: UserAttributes | null = null;
-    if (data.email) user = await UserService.getByEmail(data.email);
-    else if (data.username) {
-      const profile = await ProfileService.getByUsername(data.username);
-      user = await UserService.getById(profile.id);
-    }
+    const user = data.email
+      ? await UserService.getByEmail(data.email)
+      : data.username
+      ? await UserService.getById(
+          (
+            await ProfileService.getByUsername(data.username)
+          ).id
+        )
+      : null;
 
     if (!user) throw new AppError("Invalid Request.", 401);
 

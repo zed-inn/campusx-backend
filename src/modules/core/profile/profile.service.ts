@@ -32,11 +32,4 @@ export class ProfileService {
     await profile.update(data as Partial<ProfileAttributes>);
     return profile.get({ plain: true });
   };
-
-  static getReferralCodeById = async (id: string) => {
-    const profile = await Profile.findByPk(id);
-    if (!profile) throw new AppError("User not found.", 404);
-
-    return profile.dataValues.referralCode;
-  };
 }

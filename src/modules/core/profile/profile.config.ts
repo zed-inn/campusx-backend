@@ -3,5 +3,4 @@ export const PROFILE_CONFIG = {
   FULLNAME: { MIN: 3, MAX: 50 },
   GENDER: ["Male", "Female", "Other"],
   DOB: { MIN: 0, MAX: Infinity },
-  REFERRAL_CODE_LENGTH: 8,
 };

@@ -9,14 +9,6 @@ import { z } from "zod";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 
 export class ProfileController {
-  static getMyReferralCode = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-
-    const referralCode = await ProfileService.getReferralCodeById(user.id);
-
-    return ApiResponse.success(res, "Your referral code.", { referralCode });
-  });
-
   static getProfile = catchAsync(async (req: Request, res: Response) => {
     const id = z.uuidv4().parse(req.query.id);
 

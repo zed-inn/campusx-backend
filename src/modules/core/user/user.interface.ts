@@ -1,3 +1,4 @@
+import { env } from "@config/env";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
 
@@ -7,6 +8,11 @@ export const UserInterface = modelSchema(
     email: z.email("Invalid Email"),
     passwordHash: z.string("Invalid Password").nullable(),
     fcmToken: z.string("Invalid Fcm Token").nullable(),
+    referralCode: z
+      .string("Invalid Referral Code")
+      .length(env.REFERRAL_CODE_LENGTH, {
+        error: "Invalid Referral Code",
+      }),
   },
   {
     password: z

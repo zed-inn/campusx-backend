@@ -18,6 +18,7 @@ const envSchema = z.object({
   GOOGLE_APP_PASSWORD: z.string().length(16),
   JWT_SECRET: z.string(),
   BCRYPT_PASSWORD_HASH_SALT: z.coerce.number().default(10),
+  REFERRAL_CODE_LENGTH: z.coerce.number().default(8),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -7,7 +7,6 @@ import {
 import { User } from "@modules/core/user";
 import { PROFILE_CONFIG } from "./profile.config";
 import { STATS } from "@shared/utils/db-types";
-import { generateReferralCode } from "@shared/utils/generate-code";
 import { defineModel } from "@shared/utils/define-model";
 
 export const Profile = defineModel<
@@ -58,33 +57,8 @@ export const Profile = defineModel<
     allowNull: true,
     validate: { min: PROFILE_CONFIG.DOB.MIN, max: PROFILE_CONFIG.DOB.MAX },
   },
-  referralCode: {
-    type: DataTypes.CHAR(PROFILE_CONFIG.REFERRAL_CODE_LENGTH),
-    allowNull: false,
-    unique: true,
-    validate: {
-      len: {
-        args: [
-          PROFILE_CONFIG.REFERRAL_CODE_LENGTH,
-          PROFILE_CONFIG.REFERRAL_CODE_LENGTH,
-        ],
-        msg: `Referral code has to be of ${PROFILE_CONFIG.REFERRAL_CODE_LENGTH} length.`,
-      },
-    },
-  },
   followers: { ...STATS },
   followings: { ...STATS },
-});
-
-// Hooks
-Profile.beforeValidate(async (profile: any) => {
-  if (profile.referralCode) return;
-
-  let referralCode = generateReferralCode(PROFILE_CONFIG.REFERRAL_CODE_LENGTH);
-  while (await Profile.count({ where: { referralCode } }))
-    referralCode = generateReferralCode(PROFILE_CONFIG.REFERRAL_CODE_LENGTH);
-
-  profile.referralCode = referralCode;
 });
 
 // Association

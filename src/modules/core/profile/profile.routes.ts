@@ -11,13 +11,6 @@ router.get("/", ProfileController.getProfile);
 
 router.get("/me", isLoggedIn, isProfiledUser, ProfileController.getMyProfile);
 
-router.get(
-  "/referral-code",
-  isLoggedIn,
-  isProfiledUser,
-  ProfileController.getMyReferralCode
-);
-
 router.post(
   "/",
   isLoggedIn,
