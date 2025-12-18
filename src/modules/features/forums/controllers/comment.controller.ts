@@ -12,8 +12,13 @@ export class CommentController {
   static getForumComments = catchAsync(async (req: Request, res: Response) => {
     const page = Parse.pageNum(req.query.page);
     const forumId = Parse.id(req.query.forumId);
+    const commentId = Parse.idNullable(req.query.replyingTo);
 
-    const comments = await CommentService.getByForumId(forumId, page);
+    const comments = await CommentService.getByForumId(
+      forumId,
+      commentId,
+      page
+    );
     const parsedComments = comments.map((c) => CommentResponseSchema.parse(c));
 
     return ApiResponse.success(res, "Comments fetched.", {

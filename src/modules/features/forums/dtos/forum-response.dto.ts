@@ -8,8 +8,8 @@ export const ForumResponseSchema = BaseSchema.extend({
   title: ForumInterface.fields.title,
   body: ForumInterface.fields.body,
   imageUrl: ForumInterface.fields.imageUrl,
-  comments: ForumInterface.fields.commentsCount,
-  likes: ForumInterface.fields.likesCount,
+  commentsCount: ForumInterface.fields.commentsCount,
+  likesCount: ForumInterface.fields.likesCount,
   writer: ForumInterface.extra.fields.writer,
   isLiked: ForumInterface.extra.fields.isLiked,
 });

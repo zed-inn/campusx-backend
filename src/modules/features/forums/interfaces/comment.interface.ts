@@ -10,7 +10,7 @@ export const CommentInterface = modelSchema(
     forumId: z.uuidv4("Invalid Forum Id"),
     replyingTo: z.uuidv4("Invalid Parent Comment Id").nullable(),
     body: z.string("Invalid Body"),
-    repliesCount: z.number().positive().default(0),
+    repliesCount: z.number().nonnegative().default(0),
   },
   {
     writer: z.object({

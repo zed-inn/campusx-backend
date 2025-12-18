@@ -15,7 +15,7 @@ export class ProfileController {
     const profileData = await ProfileService.getById(id);
     const profile = ProfileResponseSchema.parse(profileData);
 
-    return ApiResponse.success(res, "User found.", profile);
+    return ApiResponse.success(res, "User found.", { profile });
   });
 
   static getMyProfile = catchAsync(async (req: Request, res: Response) => {
@@ -24,7 +24,7 @@ export class ProfileController {
     const profileData = await ProfileService.getById(user.id);
     const profile = ProfileResponseSchema.parse(profileData);
 
-    return ApiResponse.success(res, "User found.", profile);
+    return ApiResponse.success(res, "User found.", { profile });
   });
 
   static createProfile = catchAsync(
@@ -34,7 +34,7 @@ export class ProfileController {
       const profileData = await ProfileService.create(req.body, user.id);
       const profile = ProfileResponseSchema.parse(profileData);
 
-      return ApiResponse.success(res, "User created.", profile);
+      return ApiResponse.success(res, "User created.", { profile });
     }
   );
 
@@ -45,7 +45,7 @@ export class ProfileController {
       const profileData = await ProfileService.update(req.body, user.id);
       const profile = ProfileResponseSchema.parse(profileData);
 
-      return ApiResponse.success(res, "User updated.", profile);
+      return ApiResponse.success(res, "User updated.", { profile });
     }
   );
 }

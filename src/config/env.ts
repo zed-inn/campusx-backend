@@ -7,6 +7,7 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  DB_RESET: z.enum(["true", "false"]).default("false"),
   HOST: z.string().default("0.0.0.0"),
   PORT: z.coerce.number().default(3000),
   REDIS_URI: z.url(),

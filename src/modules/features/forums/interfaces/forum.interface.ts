@@ -10,8 +10,8 @@ export const ForumInterface = modelSchema(
     title: z.string("Invalid Title").min(1, { error: "Title is too short" }),
     body: z.string("Invalid Body").nullable(),
     imageUrl: z.url("Invalid Image Url").nullable(),
-    commentsCount: z.number().positive().default(0),
-    likesCount: z.number().positive().default(0),
+    commentsCount: z.number().nonnegative().default(0),
+    likesCount: z.number().nonnegative().default(0),
   },
   {
     writer: z.object({

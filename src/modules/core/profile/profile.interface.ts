@@ -18,7 +18,7 @@ export const ProfileInterface = modelSchema({
   gender: z.enum(PROFILE_CONFIG.GENDER, { error: "Invalid Gender" }).nullable(),
   dob: z
     .number("Invalid Dob")
-    .positive("Dob cannot be negative")
+    .nonnegative("Dob cannot be negative")
     .min(PROFILE_CONFIG.DOB.MIN, { error: "You haven't lived that long!!" })
     .max(PROFILE_CONFIG.DOB.MAX, { error: "You are from future!!" })
     .nullable(),

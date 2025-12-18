@@ -2,7 +2,7 @@ import { Includeable } from "sequelize";
 import db from "@config/database";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { AppError } from "@shared/errors/app-error";
-import { Profile } from "@modules/core/profile";
+import { Profile, ProfileService } from "@modules/core/profile";
 import { Comment } from "../models/comment.model";
 import { Forum } from "../models/forum.model";
 import { CommentAttributes } from "../interfaces/comment.interface";
@@ -14,16 +14,20 @@ export class CommentService {
   static COMMENTS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.COMMENTS_PER_PAGE;
 
-  static getByForumId = async (id: string, page: number) => {
-    const forum = await Forum.findByPk(id);
-    if (!forum) throw new AppError("Invalid Request.", 404);
+  static getByForumId = async (
+    forumId: string,
+    commentId: string | null = null,
+    page: number
+  ) => {
+    const forum = await Forum.findByPk(forumId);
+    if (!forum) throw new AppError("No Forum Found.", 404);
 
     const commentsCount = await Comment.findAll({
-      where: { forumId: id },
+      where: { forumId, replyingTo: commentId },
       limit: this.COMMENTS_PER_PAGE,
       offset: this.OFFSET(page),
       order: [["createDate", "desc"]],
-      include: [CommentInclude.writer],
+      include: [CommentInclude.writer, CommentInclude.forum],
     });
 
     return commentsCount.map((c) => CommentFS.parse(c.get({ plain: true })));
@@ -32,16 +36,25 @@ export class CommentService {
   static create = async (data: CommentCreateDto, userId: string) => {
     return await db.transaction(async () => {
       const forum = await Forum.findByPk(data.forumId);
-      if (!forum) throw new AppError("Forum not found.", 404);
+      if (!forum) throw new AppError("No Forum Found.", 404);
 
-      const comment = await Comment.create(
-        { ...data, userId },
-        { include: [CommentInclude.writer] }
-      );
+      const comment = await Comment.create({ ...data, userId });
 
-      if (data.replyingTo) await forum.increment({ commentsCount: 1 });
+      if (data.replyingTo) {
+        await forum.increment({ commentsCount: 1 });
+        await Comment.increment(
+          { repliesCount: 1 },
+          { where: { id: data.replyingTo } }
+        );
+      }
 
-      return CommentFS.parse(comment.get({ plain: true }));
+      const writer = await ProfileService.getById(userId);
+
+      return CommentFS.parse({
+        writer,
+        forum: forum.get({ plain: true }),
+        ...comment.get({ plain: true }),
+      });
     });
   };
 
@@ -51,12 +64,13 @@ export class CommentService {
 
       const comment = await Comment.findOne({
         where: { id, userId },
-        include: [CommentInclude.writer],
+        include: [CommentInclude.writer, CommentInclude.forum],
       });
-      if (!comment) throw new AppError("Comment not found.", 404);
+      if (!comment) throw new AppError("No Comment Found.", 404);
 
       const cleanData = removeUndefined(updateData);
-      await comment.update(cleanData as Partial<CommentAttributes>);
+      if (Object.keys(cleanData).length)
+        await comment.update(cleanData as Partial<CommentAttributes>);
 
       return CommentFS.parse(comment.get({ plain: true }));
     });
@@ -66,9 +80,9 @@ export class CommentService {
     return await db.transaction(async () => {
       const comment = await Comment.findOne({
         where: { id, userId },
-        include: [CommentInclude.writer],
+        include: [CommentInclude.writer, CommentInclude.forum],
       });
-      if (!comment) throw new AppError("Comment not found.", 404);
+      if (!comment) throw new AppError("No Comment Found.", 404);
 
       const commentData = comment.get({ plain: true });
 
@@ -76,6 +90,12 @@ export class CommentService {
         await Forum.decrement(
           { commentsCount: 1 },
           { where: { id: comment.dataValues.forumId } }
+        );
+
+      if (comment.dataValues.replyingTo)
+        await Comment.decrement(
+          { repliesCount: 1 },
+          { where: { id: comment.dataValues.replyingTo } }
         );
 
       await comment.destroy();
@@ -87,4 +107,6 @@ export class CommentService {
 
 class CommentInclude {
   static writer: Includeable = { model: Profile, as: "writer" };
+
+  static forum: Includeable = { model: Forum, as: "forum" };
 }

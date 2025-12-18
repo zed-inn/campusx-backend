@@ -33,10 +33,14 @@ export const globalErrorHandler = (
     }));
   }
 
-  res.status(statusCode).json({
+  const errJson = {
     status: statusCode.toString().startsWith("4") ? "fail" : "error",
     message: message,
     errors: errors,
     stack: env.NODE_ENV === "development" ? err.stack : undefined,
-  });
+  };
+
+  if (env.NODE_ENV === "development") console.log(err);
+
+  res.status(statusCode).json(errJson);
 };

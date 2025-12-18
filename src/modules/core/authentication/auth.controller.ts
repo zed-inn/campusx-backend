@@ -17,7 +17,7 @@ export class AuthController {
       const authData = await LoginService.loginBasic(req.body);
       const authPayload = AuthResponseSchema.parse(authData);
 
-      return ApiResponse.success(res, "Logged in.", { ...authPayload });
+      return ApiResponse.success(res, "Logged in.", authPayload);
     }
   );
 

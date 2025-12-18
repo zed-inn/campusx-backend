@@ -51,7 +51,17 @@ Comment.belongsTo(Profile, { foreignKey: "userId", as: "writer" });
 
 Comment.hasMany(Comment, {
   foreignKey: "replyingTo",
-  onDelete: "SET NULL",
   as: "replies",
 });
 Comment.belongsTo(Comment, { foreignKey: "replyingTo" });
+
+// Hooks
+Comment.beforeDestroy(async (comment) => {
+  const repliedComments = await Comment.findAll({
+    where: { replyingTo: comment.dataValues.id },
+  });
+
+  for (const c of repliedComments) {
+    await c.destroy();
+  }
+});

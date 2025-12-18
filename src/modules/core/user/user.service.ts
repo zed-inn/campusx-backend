@@ -13,14 +13,14 @@ class UserUtils {
 export class UserService {
   static getById = async (id: string) => {
     const user = await User.findByPk(id);
-    if (!user) throw new AppError("No user found.", 404);
+    if (!user) throw new AppError("No User Found.", 404);
 
     return user.get({ plain: true });
   };
 
   static getByEmail = async (email: string) => {
     const user = await User.findOne({ where: { email } });
-    if (!user) throw new AppError("No user found.", 404);
+    if (!user) throw new AppError("No User Found.", 404);
 
     return user.get({ plain: true });
   };
@@ -34,7 +34,7 @@ export class UserService {
 
   static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
     const user = await User.findOne({ where: { email: data.email } });
-    if (!user) throw new AppError("No user found.", 404);
+    if (!user) throw new AppError("No User Found.", 404);
 
     const passwordHash = await UserUtils.hashPassword(data.password);
     await user.update({ passwordHash });

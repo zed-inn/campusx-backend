@@ -3,6 +3,9 @@ import { ForumController } from "../controllers/forum.controller";
 import { LikeController } from "../controllers/like.controller";
 import { CommentRouter } from "./comment.route";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
+import { validateRequestBody } from "@shared/middlewares/validate-request";
+import { ForumCreateSchema } from "../dtos/forum-create.dto";
+import { ForumUpdateSchema } from "../dtos/forum-update.dto";
 
 const router = Router();
 
@@ -12,9 +15,21 @@ router.get("/latest", ForumController.getForums);
 
 router.get("/me", isLoggedIn, isProfiledUser, ForumController.getMyForums);
 
-router.post("/", isLoggedIn, isProfiledUser, ForumController.createForum);
+router.post(
+  "/",
+  isLoggedIn,
+  isProfiledUser,
+  validateRequestBody(ForumCreateSchema),
+  ForumController.createForum
+);
 
-router.put("/", isLoggedIn, isProfiledUser, ForumController.updateForum);
+router.put(
+  "/",
+  isLoggedIn,
+  isProfiledUser,
+  validateRequestBody(ForumUpdateSchema),
+  ForumController.updateForum
+);
 
 router.delete("/", isLoggedIn, isProfiledUser, ForumController.deleteForum);
 
