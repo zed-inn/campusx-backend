@@ -3,6 +3,8 @@ import { catchAsync } from "@shared/utils/catch-async";
 import { Parse } from "@shared/utils/parse-fields";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { ApiResponse } from "@shared/utils/api-response";
+import { NotificationService } from "@modules/core/notifications";
+import { NOTIFICATION_CONFIG } from "@modules/core/notifications/notification.config";
 import { CommentService } from "../services/comment.service";
 import { CommentResponseSchema } from "../dtos/comment-response.dto";
 import { CommentCreateDto } from "../dtos/comment-create.dto";
@@ -32,6 +34,12 @@ export class CommentController {
 
       const comment = await CommentService.create(req.body, user.id);
       const parsedComment = CommentResponseSchema.parse(comment);
+
+      NotificationService.notify(comment.forum.writer.id, {
+        title: `${comment.forum.title}`,
+        body: `${comment.writer.fullName}: ${comment.body}`,
+        type: NOTIFICATION_CONFIG.TYPES.COMMENTED,
+      });
 
       return ApiResponse.success(res, "Comment created.", {
         comment: parsedComment,

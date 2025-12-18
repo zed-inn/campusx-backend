@@ -9,6 +9,7 @@ import { CommentAttributes } from "../interfaces/comment.interface";
 import { CommentCreateDto } from "../dtos/comment-create.dto";
 import { CommentUpdateDto } from "../dtos/comment-update.dto";
 import { CommentFullSchema as CommentFS } from "../dtos/comment-full.dto";
+import { ForumInclude } from "./forum.service";
 
 export class CommentService {
   static COMMENTS_PER_PAGE = 200;
@@ -35,7 +36,9 @@ export class CommentService {
 
   static create = async (data: CommentCreateDto, userId: string) => {
     return await db.transaction(async () => {
-      const forum = await Forum.findByPk(data.forumId);
+      const forum = await Forum.findByPk(data.forumId, {
+        include: [ForumInclude.writer],
+      });
       if (!forum) throw new AppError("No Forum Found.", 404);
 
       const comment = await Comment.create({ ...data, userId });
@@ -105,8 +108,12 @@ export class CommentService {
   };
 }
 
-class CommentInclude {
+export class CommentInclude {
   static writer: Includeable = { model: Profile, as: "writer" };
 
-  static forum: Includeable = { model: Forum, as: "forum" };
+  static forum: Includeable = {
+    model: Forum,
+    as: "forum",
+    include: [ForumInclude.writer],
+  };
 }

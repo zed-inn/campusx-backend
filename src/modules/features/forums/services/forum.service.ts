@@ -91,7 +91,7 @@ export class ForumService {
   };
 }
 
-class ForumInclude {
+export class ForumInclude {
   static writer: Includeable = { model: Profile, as: "writer" };
 
   static liked = (userId: string | null): Includeable => {
@@ -104,7 +104,7 @@ class ForumInclude {
   };
 }
 
-class ForumUtils {
+export class ForumUtils {
   static parseFull = (forum: Record<string, unknown>) => {
     if (Array.isArray(forum.likes) && forum.likes.length) forum.isLiked = true;
 
