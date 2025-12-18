@@ -7,7 +7,7 @@ export const NotificationInterface = modelSchema({
   userId: z.uuidv4("Invalid User Id"),
   title: z.string("Invalid Notification Title"),
   body: z.string("Invalid Notification Body").nullable(),
-  type: z.enum(NOTIFICATION_CONFIG.TYPES, {
+  type: z.enum(Object.values(NOTIFICATION_CONFIG.TYPES), {
     error: "Invalid Notification Type",
   }),
 });
