@@ -3,6 +3,8 @@ import { ZodError } from "zod";
 import { env } from "@config/env";
 import { AppError } from "@shared/errors/app-error";
 import { UniqueConstraintError } from "sequelize";
+import { LogService } from "@modules/core/log";
+import { Sanitize } from "@shared/utils/sanitize";
 
 export const globalErrorHandler = (
   err: Error | AppError,
@@ -39,6 +41,12 @@ export const globalErrorHandler = (
     errors: errors,
     stack: env.NODE_ENV === "development" ? err.stack : undefined,
   };
+
+  LogService.logError(`Error: ${errJson.message}`, {
+    req,
+    err,
+    meta: errJson.errors,
+  });
 
   if (env.NODE_ENV === "development") console.log(err);
 
