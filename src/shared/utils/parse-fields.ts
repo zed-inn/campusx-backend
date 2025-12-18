@@ -6,4 +6,7 @@ export class Parse {
   static id = (x: any) => z.uuidv4().parse(x);
 
   static idNullable = (x: any) => z.uuidv4().nullable().default(null).parse(x);
+
+  static stringNullable = (x: any) =>
+    z.string().nullable().default(null).parse(x);
 }
