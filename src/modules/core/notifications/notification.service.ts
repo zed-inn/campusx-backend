@@ -35,8 +35,10 @@ export class NotificationService {
   };
 
   static notify = async (userId: string, data: NotificationSendDto) => {
-    const fcmToken = await this.getFcmTokenByUserId(userId);
-    await this.save(userId, data);
-    if (fcmToken) await this.sendByFcmToken(fcmToken, data);
+    try {
+      const fcmToken = await this.getFcmTokenByUserId(userId);
+      await this.save(userId, data);
+      if (fcmToken) await this.sendByFcmToken(fcmToken, data);
+    } catch {}
   };
 }
