@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Firebase config files
 firebase.config.json
+
+# Institute Raw Data (Sheets)
+src/modules/core/institutes/preprocessing/data/sheets

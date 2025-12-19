@@ -3,8 +3,7 @@ import { ZodError } from "zod";
 import { env } from "@config/env";
 import { AppError } from "@shared/errors/app-error";
 import { UniqueConstraintError } from "sequelize";
-import { LogService } from "@modules/core/log";
-import { Sanitize } from "@shared/utils/sanitize";
+import { LogService } from "@shared/modules/log";
 
 export const globalErrorHandler = (
   err: Error | AppError,

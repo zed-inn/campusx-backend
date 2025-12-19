@@ -91,4 +91,10 @@ export class Sanitize {
       timestamp: new Date().toISOString(),
     };
   }
+
+  static normalizeString = (x: string) => {
+    if (typeof x !== "string") return "";
+
+    return x.toLowerCase().replace(/[^\p{L}]+/gu, "");
+  };
 }
