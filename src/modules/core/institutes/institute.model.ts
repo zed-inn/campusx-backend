@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from "@config/database";
 import { defineModel } from "@shared/utils/define-model";
-import { PRIMARY_ID } from "@shared/utils/db-types";
+import { PRIMARY_ID, STATS } from "@shared/utils/db-types";
 import {
   InstituteAttributes,
   InstituteCreationAttributes,
@@ -37,9 +37,8 @@ export const Institute = defineModel<
   landline: { type: DataTypes.STRING, allowNull: true },
   imageUrl: { type: DataTypes.STRING, allowNull: true },
   rating: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 0 },
-  ratingsCount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-  reviewsCount: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-  instituteType: { type: DataTypes.STRING, allowNull: true },
+  ratingsCount: { ...STATS },
+  reviewsCount: { ...STATS },
 });
 
 // Hooks
