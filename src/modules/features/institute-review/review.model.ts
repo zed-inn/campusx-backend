@@ -22,7 +22,20 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
       references: { model: Institute, key: "id" },
     },
     body: { type: DataTypes.STRING, allowNull: false },
-    rating: { type: DataTypes.INTEGER, allowNull: false },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: { min: 0, max: 5 },
+    },
+  },
+  {
+    indexes: [
+      {
+        unique: true,
+        fields: ["userId", "instituteId"],
+        name: "one_user_one_institute_review",
+      },
+    ],
   }
 );
 

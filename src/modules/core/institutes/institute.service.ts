@@ -1,5 +1,6 @@
 import { AppError } from "@shared/errors/app-error";
 import { Institute } from "./institute.model";
+import { literal } from "sequelize";
 
 export class InstituteService {
   static INSTITUTES_PER_PAGE = 30;
@@ -17,6 +18,15 @@ export class InstituteService {
       offset: this.OFFSET(page),
       limit: this.INSTITUTES_PER_PAGE,
       order: [["updateDate", "desc"]],
+    });
+
+    return institutes.map((i) => i.get({ plain: true }));
+  };
+
+  static getRandom = async () => {
+    const institutes = await Institute.findAll({
+      limit: this.INSTITUTES_PER_PAGE,
+      order: literal("RANDOM()"),
     });
 
     return institutes.map((i) => i.get({ plain: true }));

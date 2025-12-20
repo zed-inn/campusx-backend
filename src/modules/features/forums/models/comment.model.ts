@@ -2,7 +2,6 @@ import { DataTypes } from "sequelize";
 import db from "@config/database";
 import { PRIMARY_ID, STATS } from "@shared/utils/db-types";
 import { defineModel } from "@shared/utils/define-model";
-import { User } from "@modules/core/user";
 import { Profile } from "@modules/core/profile";
 import { Forum } from "./forum.model";
 import {
@@ -19,7 +18,7 @@ export const Comment = defineModel<
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: { model: User, key: "id" },
+    references: { model: Profile, key: "id" },
   },
   forumId: {
     type: DataTypes.UUID,

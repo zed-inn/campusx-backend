@@ -27,7 +27,6 @@ export const InstituteResponseSchema = BaseSchema.extend({
   landline: InstituteInterface.fields.landline,
   imageUrl: InstituteInterface.fields.imageUrl,
   rating: InstituteInterface.fields.rating,
-  ratingsCount: InstituteInterface.fields.ratingsCount,
   reviewsCount: InstituteInterface.fields.reviewsCount,
 });
 

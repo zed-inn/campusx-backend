@@ -30,7 +30,6 @@ export const InstituteInterface = modelSchema({
     .number("Invalid Rating")
     .nonnegative("Rating cannot be negative")
     .default(0),
-  ratingsCount: z.number().nonnegative().default(0),
   reviewsCount: z.number().nonnegative().default(0),
 });
 

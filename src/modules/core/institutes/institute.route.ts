@@ -7,4 +7,6 @@ router.get("/", InstituteController.getInstitute);
 
 router.get("/all", InstituteController.getAllInstitutes);
 
+router.get("/all/random", InstituteController.getAllInstitutesRandom);
+
 export const InstituteRouter = router;

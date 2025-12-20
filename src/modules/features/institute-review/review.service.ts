@@ -54,20 +54,16 @@ export class ReviewService {
 
       const profile = await ProfileService.getById(userId);
 
-      const updateData: {
-        reviewsCount?: number;
-        rating?: number;
-        ratingsCount?: number;
-      } = {
-        reviewsCount: institute.reviewsCount + 1,
-        ratingsCount: institute.ratingsCount + 1,
-      };
       const newRating =
-        (institute.rating * institute.ratingsCount + review.dataValues.rating) /
-        (institute.ratingsCount + 1);
-      updateData.rating = newRating;
-
-      await Institute.update(updateData, { where: { id: institute.id } });
+        (institute.rating * institute.reviewsCount + review.dataValues.rating) /
+        (institute.reviewsCount + 1);
+      await Institute.update(
+        {
+          rating: isNaN(newRating) ? 0 : newRating,
+          reviewsCount: institute.reviewsCount + 1,
+        },
+        { where: { id: institute.id } }
+      );
 
       return ReviewFS.parse({
         ...review.get({ plain: true }),
@@ -99,12 +95,12 @@ export class ReviewService {
       if (data.rating) {
         const currRating = reviewData.rating;
         const newRating =
-          (reviewData.institute.ratingsCount * reviewData.institute.rating -
+          (reviewData.institute.reviewsCount * reviewData.institute.rating -
             prevRating +
             currRating) /
-          reviewData.institute.ratingsCount;
+          reviewData.institute.reviewsCount;
         await Institute.update(
-          { rating: newRating },
+          { rating: isNaN(newRating) ? 0 : newRating },
           { where: { id: reviewData.instituteId } }
         );
       }
@@ -124,22 +120,17 @@ export class ReviewService {
       const reviewData = ReviewFS.parse(review.get({ plain: true }));
       await review.destroy();
 
-      const updateData: {
-        reviewsCount?: number;
-        rating?: number;
-        ratingsCount?: number;
-      } = {
-        reviewsCount: reviewData.institute.reviewsCount - 1,
-        ratingsCount: reviewData.institute.ratingsCount,
-      };
       const newRating =
-        (reviewData.institute.rating * reviewData.institute.ratingsCount -
+        (reviewData.institute.rating * reviewData.institute.reviewsCount -
           reviewData.rating) /
-        (reviewData.institute.ratingsCount - 1);
-
-      await Institute.update(updateData, {
-        where: { id: reviewData.instituteId },
-      });
+        (reviewData.institute.reviewsCount - 1);
+      await Institute.update(
+        {
+          rating: isNaN(newRating) ? 0 : newRating,
+          reviewsCount: reviewData.institute.reviewsCount - 1,
+        },
+        { where: { id: reviewData.instituteId } }
+      );
 
       return reviewData;
     });

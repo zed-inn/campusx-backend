@@ -29,4 +29,17 @@ export class InstituteController {
       institutes: parsedInstitutes,
     });
   });
+
+  static getAllInstitutesRandom = catchAsync(
+    async (req: Request, res: Response) => {
+      const institutes = await InstituteService.getRandom();
+      const parsedInstitutes = institutes.map((i) =>
+        InstituteResponseSchema.parse(i)
+      );
+
+      return ApiResponse.success(res, "Institute fetched.", {
+        institutes: parsedInstitutes,
+      });
+    }
+  );
 }

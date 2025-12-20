@@ -11,7 +11,7 @@ export const ReviewInterface = modelSchema(
     body: z.string("Invalid Body"),
     rating: z
       .int("Invalid Rating")
-      .min(1, { error: "Rating cannot be lower than 1" })
+      .min(0, { error: "Rating cannot be lower than 1" })
       .max(5, { error: "Rating cannot be higher than 5" }),
   },
   {

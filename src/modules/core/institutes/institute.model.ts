@@ -36,8 +36,15 @@ export const Institute = defineModel<
   phone: { type: DataTypes.STRING, allowNull: true },
   landline: { type: DataTypes.STRING, allowNull: true },
   imageUrl: { type: DataTypes.STRING, allowNull: true },
-  rating: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 0 },
-  ratingsCount: { ...STATS },
+  rating: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+    defaultValue: 0,
+    get() {
+      const rawValue = this.getDataValue("rating");
+      return rawValue ? parseFloat(rawValue as string) : null;
+    },
+  },
   reviewsCount: { ...STATS },
 });
 

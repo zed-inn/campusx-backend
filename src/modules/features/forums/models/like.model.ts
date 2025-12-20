@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "@config/database";
 import { defineModel } from "@shared/utils/define-model";
-import { User } from "@modules/core/user";
 import { Profile } from "@modules/core/profile";
 import { Forum } from "./forum.model";
 import {
@@ -16,15 +15,22 @@ export const Like = defineModel<LikeAttributes, LikeCreationAttributes>(
     forumId: {
       type: DataTypes.UUID,
       allowNull: false,
-      unique: "one person one like",
       references: { model: Forum, key: "id" },
     },
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      unique: "one person one like",
-      references: { model: User, key: "id" },
+      references: { model: Profile, key: "id" },
     },
+  },
+  {
+    indexes: [
+      {
+        unique: true,
+        fields: ["forumId", "userId"],
+        name: "one_user_one_forum_like",
+      },
+    ],
   }
 );
 

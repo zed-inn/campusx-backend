@@ -44,8 +44,8 @@ const db = new Sequelize(
       },
 
       beforeBulkUpdate: (options: any) => {
-        options.attributes = options.attributes || {};
-        options.attributes.updateDate = Date.now();
+        options.fields.push("updateDate");
+        options.attributes = { ...options.attributes, updateDate: Date.now() };
       },
     },
   }
