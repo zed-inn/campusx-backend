@@ -63,6 +63,15 @@ export class CommentService {
       let parentComment = null;
       if (!data.replyingTo) await forum.increment({ commentsCount: 1 });
       else {
+        const pc = await Comment.findByPk(data.replyingTo);
+        if (!pc) throw new AppError("No Comment Found.", 404);
+
+        if (pc.dataValues.forumId !== data.forumId)
+          throw new AppError(
+            "Replying on Comment of different Forum is not allowed.",
+            406
+          );
+
         parentComment = await this.getById(data.replyingTo);
         await Comment.increment(
           { repliesCount: 1 },
