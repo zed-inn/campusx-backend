@@ -24,7 +24,7 @@ export const Discussion = defineModel<
     allowNull: false,
     references: { model: Institute, key: "id" },
   },
-  content: { type: DataTypes.STRING, allowNull: false },
+  message: { type: DataTypes.STRING, allowNull: false },
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,
