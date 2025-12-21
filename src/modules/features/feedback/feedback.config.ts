@@ -1,0 +1,7 @@
+export const FEEDBACK_CONFIG = {
+  STATUS: {
+    PENDING: "PENDING",
+    IN_CONSIDERATION: "CONSIDERING",
+    APPLIED: "APPLIED",
+  },
+};
