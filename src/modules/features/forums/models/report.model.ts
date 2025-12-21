@@ -41,4 +41,4 @@ Profile.hasMany(Report, {
   as: "reports",
   onDelete: "CASCADE",
 });
-Report.belongsTo(Profile, { foreignKey: "userId", as: "profile" });
+Report.belongsTo(Profile, { foreignKey: "userId", as: "user" });
