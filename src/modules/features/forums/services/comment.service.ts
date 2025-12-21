@@ -15,6 +15,19 @@ export class CommentService {
   static COMMENTS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.COMMENTS_PER_PAGE;
 
+  static getById = async (id: string) => {
+    const comment = await Comment.findByPk(id, {
+      include: [
+        CommentInclude.writer,
+        CommentInclude.forum,
+        CommentInclude.parentComment,
+      ],
+    });
+    if (!comment) throw new AppError("No Comment Found.", 404);
+
+    return CommentFS.parse(comment.get({ plain: true }));
+  };
+
   static getByForumId = async (
     forumId: string,
     commentId: string | null = null,
@@ -28,7 +41,11 @@ export class CommentService {
       limit: this.COMMENTS_PER_PAGE,
       offset: this.OFFSET(page),
       order: [["createDate", "desc"]],
-      include: [CommentInclude.writer, CommentInclude.forum],
+      include: [
+        CommentInclude.writer,
+        CommentInclude.forum,
+        CommentInclude.parentComment,
+      ],
     });
 
     return commentsCount.map((c) => CommentFS.parse(c.get({ plain: true })));
@@ -43,8 +60,10 @@ export class CommentService {
 
       const comment = await Comment.create({ ...data, userId });
 
-      if (data.replyingTo) {
-        await forum.increment({ commentsCount: 1 });
+      let parentComment = null;
+      if (!data.replyingTo) await forum.increment({ commentsCount: 1 });
+      else {
+        parentComment = await this.getById(data.replyingTo);
         await Comment.increment(
           { repliesCount: 1 },
           { where: { id: data.replyingTo } }
@@ -57,6 +76,7 @@ export class CommentService {
         writer,
         forum: forum.get({ plain: true }),
         ...comment.get({ plain: true }),
+        parentComment,
       });
     });
   };
@@ -67,7 +87,11 @@ export class CommentService {
 
       const comment = await Comment.findOne({
         where: { id, userId },
-        include: [CommentInclude.writer, CommentInclude.forum],
+        include: [
+          CommentInclude.writer,
+          CommentInclude.forum,
+          CommentInclude.parentComment,
+        ],
       });
       if (!comment) throw new AppError("No Comment Found.", 404);
 
@@ -83,7 +107,11 @@ export class CommentService {
     return await db.transaction(async () => {
       const comment = await Comment.findOne({
         where: { id, userId },
-        include: [CommentInclude.writer, CommentInclude.forum],
+        include: [
+          CommentInclude.writer,
+          CommentInclude.forum,
+          CommentInclude.parentComment,
+        ],
       });
       if (!comment) throw new AppError("No Comment Found.", 404);
 
@@ -94,8 +122,7 @@ export class CommentService {
           { commentsCount: 1 },
           { where: { id: comment.dataValues.forumId } }
         );
-
-      if (comment.dataValues.replyingTo)
+      else
         await Comment.decrement(
           { repliesCount: 1 },
           { where: { id: comment.dataValues.replyingTo } }
@@ -109,11 +136,23 @@ export class CommentService {
 }
 
 export class CommentInclude {
-  static writer: Includeable = { model: Profile, as: "writer" };
+  static get writer(): Includeable {
+    return { model: Profile, as: "writer" };
+  }
 
-  static forum: Includeable = {
-    model: Forum,
-    as: "forum",
-    include: [ForumInclude.writer],
-  };
+  static get forum(): Includeable {
+    return {
+      model: Forum,
+      as: "forum",
+      include: [ForumInclude.writer],
+    };
+  }
+
+  static get parentComment(): Includeable {
+    return {
+      model: Comment,
+      as: "parentComment",
+      include: [this.writer, this.forum],
+    };
+  }
 }

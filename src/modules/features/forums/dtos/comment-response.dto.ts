@@ -10,6 +10,14 @@ export const CommentResponseSchema = BaseSchema.extend({
   body: CommentInterface.fields.body,
   repliesCount: CommentInterface.fields.repliesCount,
   writer: CommentInterface.extra.fields.writer,
+  parentComment: z
+    .object({
+      id: CommentInterface.fields.id,
+      body: CommentInterface.fields.body,
+      writer: CommentInterface.extra.fields.writer,
+    })
+    .nullable()
+    .default(null),
 });
 
 export type CommentResponseDto = z.infer<typeof CommentResponseSchema>;

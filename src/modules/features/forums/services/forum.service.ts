@@ -92,16 +92,18 @@ export class ForumService {
 }
 
 export class ForumInclude {
-  static writer: Includeable = { model: Profile, as: "writer" };
+  static get writer(): Includeable {
+    return { model: Profile, as: "writer" };
+  }
 
-  static liked = (userId: string | null): Includeable => {
+  static liked(userId: string | null): Includeable {
     return {
       model: Like,
       as: "likes",
       where: { userId },
       required: false,
     };
-  };
+  }
 }
 
 export class ForumUtils {

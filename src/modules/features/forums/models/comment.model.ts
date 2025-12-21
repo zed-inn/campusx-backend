@@ -52,7 +52,7 @@ Comment.hasMany(Comment, {
   foreignKey: "replyingTo",
   as: "replies",
 });
-Comment.belongsTo(Comment, { foreignKey: "replyingTo" });
+Comment.belongsTo(Comment, { foreignKey: "replyingTo", as: "parentComment" });
 
 // Hooks
 Comment.beforeDestroy(async (comment) => {

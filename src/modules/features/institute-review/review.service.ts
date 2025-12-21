@@ -138,7 +138,11 @@ export class ReviewService {
 }
 
 class ReviewInclude {
-  static writer: Includeable = { model: Profile, as: "writer" };
+  static get writer(): Includeable {
+    return { model: Profile, as: "writer" };
+  }
 
-  static institute: Includeable = { model: Institute, as: "institute" };
+  static get institute(): Includeable {
+    return { model: Institute, as: "institute" };
+  }
 }
