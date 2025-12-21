@@ -6,6 +6,7 @@ import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { ForumCreateSchema } from "../dtos/forum-create.dto";
 import { ForumUpdateSchema } from "../dtos/forum-update.dto";
+import { ReportController } from "../controllers/report.controller";
 
 const router = Router();
 
@@ -36,6 +37,13 @@ router.delete("/", isLoggedIn, isProfiledUser, ForumController.deleteForum);
 router.get("/like", isLoggedIn, isProfiledUser, LikeController.likeForum);
 
 router.get("/unlike", isLoggedIn, isProfiledUser, LikeController.unlikeForum);
+
+router.post(
+  "/report",
+  isLoggedIn,
+  isProfiledUser,
+  ReportController.reportForum
+);
 
 router.use("/comments", CommentRouter);
 
