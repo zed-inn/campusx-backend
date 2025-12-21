@@ -22,6 +22,7 @@ export const DiscussionInterface = modelSchema(
     institute: z.object({
       id: InstituteInterface.fields.id,
     }),
+    isLiked: z.boolean(),
   }
 );
 

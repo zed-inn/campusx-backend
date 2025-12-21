@@ -15,7 +15,7 @@ export const DiscussionFullSchema = z.object({
     })
     .nullable()
     .default(null),
-  isLiked: z.boolean().default(false),
+  isLiked: DiscussionInterface.extra.fields.isLiked.default(false),
 });
 
 export type DiscussionFullDto = z.infer<typeof DiscussionFullSchema>;
