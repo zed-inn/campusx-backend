@@ -5,6 +5,7 @@ import { ForumRouter } from "@modules/features/forums";
 import { InsightsRouter } from "@modules/features/insights/insights.route";
 import { InstituteRouter } from "@modules/core/institutes";
 import { InstituteReviewRouter } from "@modules/features/institute-review";
+import { InstituteDiscussionRouter } from "@modules/features/institute-discussion";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/forums", ForumRouter);
 router.use("/insights", InsightsRouter);
 router.use("/institute", InstituteRouter);
 router.use("/institute/review", InstituteReviewRouter);
+router.use("/institute/message", InstituteDiscussionRouter);
 
 export const AppRouter = router;
