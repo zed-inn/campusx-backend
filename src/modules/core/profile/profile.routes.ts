@@ -5,6 +5,7 @@ import { ProfileCreateSchema } from "./dtos/profile-create.dto";
 import { ProfileUpdateSchema } from "./dtos/profile-update.dto";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { FollowController } from "./controllers/follow.controller";
+import { ReportController } from "./controllers/report.controller";
 
 const router = Router();
 
@@ -65,5 +66,7 @@ router.post(
   isProfiledUser,
   FollowController.unfollowUser
 );
+
+router.post("/report", isLoggedIn, isProfiledUser, ReportController.reportUser);
 
 export const ProfileRouter = router;

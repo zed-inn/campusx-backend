@@ -6,20 +6,19 @@ import {
 import db from "@config/database";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
-import { Forum } from "./forum.model";
 import { Profile } from "@modules/core/profile";
 
 export const Report = defineModel<ReportAttributes, ReportCreationAttributes>(
   db,
-  "ForumReport",
+  "UserReport",
   {
     id: { ...PRIMARY_ID },
-    forumId: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: { model: Forum, key: "id" },
+      references: { model: Profile, key: "id" },
     },
-    userId: {
+    reportedBy: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: Profile, key: "id" },
@@ -29,16 +28,16 @@ export const Report = defineModel<ReportAttributes, ReportCreationAttributes>(
 );
 
 // Associations
-Forum.hasMany(Report, {
-  foreignKey: "forumId",
+Profile.hasMany(Report, {
+  foreignKey: "userId",
   as: "reports",
   onDelete: "CASCADE",
 });
-Report.belongsTo(Forum, { foreignKey: "forumId", as: "forum" });
+Report.belongsTo(Profile, { foreignKey: "userId", as: "user" });
 
 Profile.hasMany(Report, {
-  foreignKey: "userId",
-  as: "forumReports",
+  foreignKey: "reportedBy",
+  as: "reported",
   onDelete: "CASCADE",
 });
-Report.belongsTo(Profile, { foreignKey: "userId", as: "user" });
+Report.belongsTo(Profile, { foreignKey: "reportedBy", as: "reportingUser" });

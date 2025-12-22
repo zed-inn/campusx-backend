@@ -14,13 +14,13 @@ import db from "@config/database";
 import { ReviewUpdateDto } from "./dtos/review-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { ReviewAttributes } from "./review.interface";
+import { getModel } from "@shared/utils/check-instance";
 
 export class ReviewService {
   static REVIEWS_PER_PAGE = 30;
   static OFFSET = (page: number) => (page - 1) * this.REVIEWS_PER_PAGE;
 
-  static parse = (review: any) =>
-    ReviewUtils.process(review?.get({ plain: true }));
+  static parse = (review: any) => ReviewUtils.process(getModel(review));
 
   static getById = async (id: string, reqUserId: string | null = null) => {
     const review = await Review.findByPk(id, {

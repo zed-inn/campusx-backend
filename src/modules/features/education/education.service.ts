@@ -1,10 +1,10 @@
 import { Institute, InstituteService } from "@modules/core/institutes";
-import { Includeable } from "sequelize";
+import { Includeable, Model } from "sequelize";
 import { Education } from "./education.model";
 import { AppError } from "@shared/errors/app-error";
 import { EducationFullSchema } from "./dtos/education-full.dto";
-import { User } from "@modules/core/user";
 import {
+  Profile,
   ProfileInclude,
   ProfileService,
   ProfileUtils,
@@ -13,13 +13,13 @@ import { EducationCreateDto } from "./dtos/education-create.dto";
 import { EducationUpdateDto } from "./dtos/education-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { EducationAttributes } from "./education.interface";
+import { getModel } from "@shared/utils/check-instance";
 
 export class EducationService {
   static EDUCATIONS_PER_PAGE = 30;
   static OFFSET = (page: number) => (page - 1) * this.EDUCATIONS_PER_PAGE;
 
-  static parse = (edu: any) =>
-    EducationUtils.process(edu?.get({ plain: true }));
+  static parse = (edu: any) => EducationUtils.process(getModel(edu));
 
   static getById = async (id: string, reqUserId: string | null = null) => {
     const education = await Education.findByPk(id, {
@@ -104,7 +104,7 @@ export class EducationService {
 class EducationInclude {
   static user(userId: string | null = null): Includeable {
     return {
-      model: User,
+      model: Profile,
       as: "user",
       include: [ProfileInclude.isFollowing(userId)],
     };

@@ -15,13 +15,13 @@ import { CommentCreateDto } from "../dtos/comment-create.dto";
 import { CommentUpdateDto } from "../dtos/comment-update.dto";
 import { CommentFullSchema as CommentFS } from "../dtos/comment-full.dto";
 import { ForumInclude } from "./forum.service";
+import { getModel } from "@shared/utils/check-instance";
 
 export class CommentService {
   static COMMENTS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.COMMENTS_PER_PAGE;
 
-  static parse = (comment: any) =>
-    CommentUtils.process(comment?.get({ plain: true }));
+  static parse = (comment: any) => CommentUtils.process(getModel(comment));
 
   static getById = async (id: string, reqUserId: string | null = null) => {
     const comment = await Comment.findByPk(id, {

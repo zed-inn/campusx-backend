@@ -14,13 +14,13 @@ import { ForumCreateDto } from "../dtos/forum-create.dto";
 import { ForumUpdateDto } from "../dtos/forum-update.dto";
 import { ForumAttributes } from "../interfaces/forum.interface";
 import { ForumFullSchema as ForumFS } from "../dtos/forum-full.dto";
+import { getModel } from "@shared/utils/check-instance";
 
 export class ForumService {
   static FORUMS_PER_PAGE = 20;
   static OFFSET = (page: number) => (page - 1) * this.FORUMS_PER_PAGE;
 
-  static parse = (forum: any) =>
-    ForumUtils.process(forum?.get({ plain: true }));
+  static parse = (forum: any) => ForumUtils.process(getModel(forum));
 
   static getById = async (id: string, reqUserId: string | null = null) => {
     const forum = await Forum.findByPk(id, {

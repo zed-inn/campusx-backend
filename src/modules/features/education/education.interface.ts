@@ -22,7 +22,20 @@ export const EducationInterface = modelSchema(
     isCompleted: z.boolean("Invalid Complete Status"),
   },
   {
-    institute: InstituteInterface.dbSchema,
+    institute: z.object({
+      id: InstituteInterface.fields.id,
+      name: InstituteInterface.fields.name,
+      aisheCode: InstituteInterface.fields.aisheCode,
+      shortName: InstituteInterface.fields.shortName,
+      about: InstituteInterface.fields.about,
+      district: InstituteInterface.fields.district,
+      state: InstituteInterface.fields.state,
+      country: InstituteInterface.fields.country,
+      yearOfEstablishment: InstituteInterface.fields.yearOfEstablishment,
+      website: InstituteInterface.fields.website,
+      imageUrl: InstituteInterface.fields.imageUrl,
+      category: InstituteInterface.fields.category,
+    }),
     user: z.object({
       id: ProfileInterface.fields.id,
       fullName: ProfileInterface.fields.fullName,

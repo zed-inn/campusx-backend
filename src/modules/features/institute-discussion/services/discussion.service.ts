@@ -13,13 +13,13 @@ import { DiscussionCreateDto } from "../dtos/discussion-create.dto";
 import db from "@config/database";
 import { DiscussionUpdateDto } from "../dtos/discussion-update.dto";
 import { Like } from "../models/like.model";
+import { getModel } from "@shared/utils/check-instance";
 
 export class DiscussionService {
   static DISCUSSIONS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.DISCUSSIONS_PER_PAGE;
 
-  static parse = (disc: any) =>
-    DiscussionUtils.process(disc?.get({ plain: true }));
+  static parse = (disc: any) => DiscussionUtils.process(getModel(disc));
 
   static getById = async (id: string, reqUserId: string | null = null) => {
     const discussion = await Discussion.findByPk(id, {
