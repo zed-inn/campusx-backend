@@ -13,6 +13,7 @@ export const ReportInterface = modelSchema(
     user: z.object({
       id: ProfileInterface.fields.id,
       fullName: ProfileInterface.fields.fullName,
+      username: ProfileInterface.fields.username,
       avatarUrl: ProfileInterface.fields.avatarUrl,
     }),
   }
