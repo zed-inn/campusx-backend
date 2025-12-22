@@ -18,7 +18,9 @@ export const ReviewInterface = modelSchema(
     writer: z.object({
       id: ProfileInterface.fields.id,
       fullName: ProfileInterface.fields.fullName,
+      username: ProfileInterface.fields.username,
       avatarUrl: ProfileInterface.fields.avatarUrl,
+      isFollowed: ProfileInterface.extra.fields.isFollowed,
     }),
     institute: z.object({
       id: InstituteInterface.fields.id,

@@ -7,6 +7,7 @@ import {
 import { User } from "@modules/core/user";
 import { PROFILE_CONFIG } from "../profile.config";
 import { defineModel } from "@shared/utils/define-model";
+import { STATS } from "@shared/utils/db-types";
 
 export const Profile = defineModel<
   ProfileAttributes,
@@ -56,6 +57,8 @@ export const Profile = defineModel<
     allowNull: true,
     validate: { min: PROFILE_CONFIG.DOB.MIN, max: PROFILE_CONFIG.DOB.MAX },
   },
+  followersCount: { ...STATS },
+  followingCount: { ...STATS },
 });
 
 // Association

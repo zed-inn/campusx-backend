@@ -3,6 +3,7 @@ import { Follow } from "../models/follow.model";
 import { Profile } from "../models/profile.model";
 import { FOLLOW_CONFIG } from "../profile.config";
 import { FollowFullSchema as FollowFS } from "../dtos/follow-full.dto";
+import db from "@config/database";
 
 export class FollowService {
   static FOLLOW_PER_PAGE = 30;
@@ -31,10 +32,18 @@ export class FollowService {
   };
 
   static follow = async (id: string, reqUserId: string) => {
-    await Follow.create({
-      followeeId: id,
-      followerId: reqUserId,
-      status: FOLLOW_CONFIG.STATUS.ACTIVE,
+    await db.transaction(async () => {
+      await Follow.create({
+        followeeId: id,
+        followerId: reqUserId,
+        status: FOLLOW_CONFIG.STATUS.ACTIVE,
+      });
+
+      await Profile.increment({ followersCount: 1 }, { where: { id } });
+      await Profile.increment(
+        { followingCount: 1 },
+        { where: { id: reqUserId } }
+      );
     });
   };
 
@@ -45,6 +54,12 @@ export class FollowService {
         followerId: reqUserId,
       },
     });
+
+    await Profile.decrement({ followersCount: 1 }, { where: { id } });
+    await Profile.decrement(
+      { followingCount: 1 },
+      { where: { id: reqUserId } }
+    );
   };
 }
 

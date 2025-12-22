@@ -1,6 +1,11 @@
 import { Includeable } from "sequelize";
 import { Discussion } from "../models/discussion.model";
-import { Profile, ProfileService } from "@modules/core/profile";
+import {
+  Profile,
+  ProfileInclude,
+  ProfileService,
+  ProfileUtils,
+} from "@modules/core/profile";
 import { Institute, InstituteService } from "@modules/core/institutes";
 import { DiscussionFullSchema as DiscussionFS } from "../dtos/discussion-full.dto";
 import { AppError } from "@shared/errors/app-error";
@@ -13,18 +18,21 @@ export class DiscussionService {
   static DISCUSSIONS_PER_PAGE = 200;
   static OFFSET = (page: number) => (page - 1) * this.DISCUSSIONS_PER_PAGE;
 
+  static parse = (disc: any) =>
+    DiscussionUtils.process(disc?.get({ plain: true }));
+
   static getById = async (id: string, reqUserId: string | null = null) => {
     const discussion = await Discussion.findByPk(id, {
       include: [
-        DiscussionInclude.writer,
+        DiscussionInclude.writer(reqUserId),
         DiscussionInclude.institute,
-        DiscussionInclude.parentMessage,
+        DiscussionInclude.parentMessage(reqUserId),
         DiscussionInclude.liked(reqUserId),
       ],
     });
     if (!discussion) throw new AppError("No Discussion Found.", 404);
 
-    return DiscussionUtils.parseFull(discussion.get({ plain: true }));
+    return this.parse(discussion);
   };
 
   static getByInstituteId = async (
@@ -38,16 +46,14 @@ export class DiscussionService {
       limit: this.DISCUSSIONS_PER_PAGE,
       order: [["createDate", "desc"]],
       include: [
-        DiscussionInclude.writer,
+        DiscussionInclude.writer(reqUserId),
         DiscussionInclude.institute,
-        DiscussionInclude.parentMessage,
+        DiscussionInclude.parentMessage(reqUserId),
         DiscussionInclude.liked(reqUserId),
       ],
     });
 
-    return discussions.map((d) =>
-      DiscussionUtils.parseFull(d.get({ plain: true }))
-    );
+    return discussions.map((d) => this.parse(d));
   };
 
   static create = async (data: DiscussionCreateDto, userId: string) => {
@@ -61,7 +67,7 @@ export class DiscussionService {
 
       const discussion = await Discussion.create({ ...data, userId });
 
-      return DiscussionUtils.parseFull({
+      return this.parse({
         ...discussion.get({ plain: true }),
         writer,
         institute,
@@ -74,9 +80,9 @@ export class DiscussionService {
     const discussion = await Discussion.findOne({
       where: { id: data.id, userId },
       include: [
-        DiscussionInclude.writer,
+        DiscussionInclude.writer(),
         DiscussionInclude.institute,
-        DiscussionInclude.parentMessage,
+        DiscussionInclude.parentMessage(userId),
         DiscussionInclude.liked(userId),
       ],
     });
@@ -84,45 +90,45 @@ export class DiscussionService {
 
     await discussion.update({ message: data.message });
 
-    return DiscussionUtils.parseFull(discussion.get({ plain: true }));
+    return this.parse(discussion);
   };
 
   static delete = async (id: string, userId: string) => {
     const discussion = await Discussion.findOne({
       where: { id: id, userId },
       include: [
-        DiscussionInclude.writer,
+        DiscussionInclude.writer(),
         DiscussionInclude.institute,
-        DiscussionInclude.parentMessage,
+        DiscussionInclude.parentMessage(userId),
         DiscussionInclude.liked(userId),
       ],
     });
     if (!discussion) throw new AppError("No Discussion Found.", 404);
 
-    const discussionData = DiscussionUtils.parseFull(
-      discussion.get({ plain: true })
-    );
-
     await discussion.destroy();
 
-    return discussionData;
+    return this.parse(discussion);
   };
 }
 
 class DiscussionInclude {
-  static get writer(): Includeable {
-    return { model: Profile, as: "writer" };
+  static writer(userId: string | null = null): Includeable {
+    return {
+      model: Profile,
+      as: "writer",
+      include: [ProfileInclude.isFollowing(userId)],
+    };
   }
 
   static get institute(): Includeable {
     return { model: Institute, as: "institute" };
   }
 
-  static get parentMessage(): Includeable {
+  static parentMessage(userId: string | null = null): Includeable {
     return {
       model: Discussion,
       as: "parentMessage",
-      include: [this.writer, this.institute],
+      include: [this.writer(userId), this.institute],
     };
   }
 
@@ -137,9 +143,14 @@ class DiscussionInclude {
 }
 
 class DiscussionUtils {
-  static parseFull = (discussion: Record<string, unknown>) => {
+  static process = (discussion: any) => {
     if (Array.isArray(discussion.likes) && discussion.likes.length)
       discussion.isLiked = true;
+    discussion.writer = ProfileUtils.process(discussion.writer);
+    if (discussion.parentMessage)
+      discussion.parentMessage.writer = ProfileUtils.process(
+        discussion.parentMessage.writer
+      );
 
     return DiscussionFS.parse(discussion);
   };

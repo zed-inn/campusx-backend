@@ -3,7 +3,9 @@ import { ForumInterface } from "../interfaces/forum.interface";
 import { ProfileInterface } from "@modules/core/profile";
 
 export const ForumFullSchema = ForumInterface.dbSchema.extend({
-  writer: ProfileInterface.dbSchema,
+  writer: ProfileInterface.dbSchema.extend({
+    ...ProfileInterface.extra.fields,
+  }),
   isLiked: ForumInterface.extra.fields.isLiked,
 });
 

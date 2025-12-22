@@ -19,7 +19,8 @@ export class CommentController {
     const comments = await CommentService.getByForumId(
       forumId,
       commentId,
-      page
+      page,
+      req.user?.id
     );
     const parsedComments = comments.map((c) => CommentResponseSchema.parse(c));
 

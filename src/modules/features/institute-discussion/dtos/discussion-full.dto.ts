@@ -5,12 +5,16 @@ import { InstituteInterface } from "@modules/core/institutes";
 
 export const DiscussionFullSchema = z.object({
   ...DiscussionInterface.fields,
-  writer: ProfileInterface.dbSchema,
+  writer: ProfileInterface.dbSchema.extend({
+    ...ProfileInterface.extra.fields,
+  }),
   institute: InstituteInterface.dbSchema,
   parentMessage: z
     .object({
       ...DiscussionInterface.fields,
-      writer: ProfileInterface.dbSchema,
+      writer: ProfileInterface.dbSchema.extend({
+        ...ProfileInterface.extra.fields,
+      }),
       institute: ProfileInterface.dbSchema,
     })
     .nullable()

@@ -14,7 +14,11 @@ export class ReviewController {
       const page = Parse.pageNum(req.query.page);
       const id = Parse.id(req.query.instituteId);
 
-      const reviews = await ReviewService.getByInstituteId(id, page);
+      const reviews = await ReviewService.getByInstituteId(
+        id,
+        page,
+        req.user?.id
+      );
       const parsedReviews = reviews.map((r) => ReviewResponseSchema.parse(r));
 
       return ApiResponse.success(res, "Reviews fetched.", {

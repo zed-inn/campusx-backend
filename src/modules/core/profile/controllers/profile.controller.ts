@@ -13,7 +13,7 @@ export class ProfileController {
   static getProfile = catchAsync(async (req: Request, res: Response) => {
     const id = z.uuidv4().parse(req.query.id);
 
-    const profileData = await ProfileService.getById(id);
+    const profileData = await ProfileService.getById(id, req.user?.id);
     const profile = ProfileResponseSchema.parse(profileData);
 
     return ApiResponse.success(res, "User found.", { profile });
@@ -31,7 +31,7 @@ export class ProfileController {
   static getMyProfile = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
 
-    const profileData = await ProfileService.getById(user.id);
+    const profileData = await ProfileService.getById(user.id, user.id);
     const profile = ProfileResponseSchema.parse(profileData);
 
     return ApiResponse.success(res, "User found.", { profile });
