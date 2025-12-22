@@ -51,8 +51,9 @@ const db = new Sequelize(
   }
 );
 
-export const connectDB = async () => {
+export const connectDB = async (fn: Function | null = null) => {
   try {
+    if (fn) fn();
     if (env.DB_RESET === "true") await db.sync({ force: true });
     else if (env.NODE_ENV === "development") await db.sync({ alter: true });
     return true;

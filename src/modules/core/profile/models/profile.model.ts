@@ -3,9 +3,9 @@ import { DataTypes } from "sequelize";
 import {
   ProfileAttributes,
   ProfileCreationAttributes,
-} from "./profile.interface";
+} from "../interfaces/profile.interface";
 import { User } from "@modules/core/user";
-import { PROFILE_CONFIG } from "./profile.config";
+import { PROFILE_CONFIG } from "../profile.config";
 import { defineModel } from "@shared/utils/define-model";
 
 export const Profile = defineModel<

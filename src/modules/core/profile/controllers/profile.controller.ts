@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
 import { ApiResponse } from "@shared/utils/api-response";
-import { ProfileService } from "./profile.service";
-import { ProfileCreateDto } from "./dtos/profile-create.dto";
-import { ProfileUpdateDto } from "./dtos/profile-update.dto";
-import { ProfileResponseSchema } from "./dtos/profile-response.dto";
+import { ProfileService } from "../services/profile.service";
+import { ProfileCreateDto } from "../dtos/profile-create.dto";
+import { ProfileUpdateDto } from "../dtos/profile-update.dto";
+import { ProfileResponseSchema } from "../dtos/profile-response.dto";
 import { z } from "zod";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
+import { Parse } from "@shared/utils/parse-fields";
 
 export class ProfileController {
   static getProfile = catchAsync(async (req: Request, res: Response) => {
@@ -16,6 +17,15 @@ export class ProfileController {
     const profile = ProfileResponseSchema.parse(profileData);
 
     return ApiResponse.success(res, "User found.", { profile });
+  });
+
+  static getUserProfiles = catchAsync(async (req: Request, res: Response) => {
+    const page = Parse.pageNum(req.query.pageNum);
+
+    const profiles = await ProfileService.getAll(page, req.user?.id);
+    const parsedProfiles = profiles.map((p) => ProfileResponseSchema.parse(p));
+
+    return ApiResponse.success(res, "User found.", { users: parsedProfiles });
   });
 
   static getMyProfile = catchAsync(async (req: Request, res: Response) => {

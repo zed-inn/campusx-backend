@@ -4,3 +4,7 @@ export const PROFILE_CONFIG = {
   GENDER: ["Male", "Female", "Other"],
   DOB: { MIN: 0, MAX: Infinity },
 };
+
+export const FOLLOW_CONFIG = {
+  STATUS: { ACTIVE: "ACTIVE", BLOCKED: "BLOCKED" },
+};

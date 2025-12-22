@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProfileInterface } from "../profile.interface";
+import { ProfileInterface } from "../interfaces/profile.interface";
 
 export const ProfileUpdateSchema = z.object({
   username: ProfileInterface.fields.username.optional(),

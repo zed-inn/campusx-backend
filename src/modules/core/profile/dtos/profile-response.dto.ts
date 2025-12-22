@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { BaseSchema } from "@shared/dtos/base.dto";
-import { ProfileInterface } from "../profile.interface";
+import { ProfileInterface } from "../interfaces/profile.interface";
 
 export const ProfileResponseSchema = ProfileInterface.dbSchema;
 

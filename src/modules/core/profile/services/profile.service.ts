@@ -1,16 +1,31 @@
 import { AppError } from "@shared/errors/app-error";
-import { ProfileAttributes } from "./profile.interface";
-import { Profile } from "./profile.model";
-import { ProfileCreateDto } from "./dtos/profile-create.dto";
-import { ProfileUpdateDto } from "./dtos/profile-update.dto";
+import { ProfileAttributes } from "../interfaces/profile.interface";
+import { Profile } from "../models/profile.model";
+import { ProfileCreateDto } from "../dtos/profile-create.dto";
+import { ProfileUpdateDto } from "../dtos/profile-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
+import { Op } from "sequelize";
 
 export class ProfileService {
+  static USERS_PER_PAGE = 30;
+  static OFFSET = (page: number) => (page - 1) * this.USERS_PER_PAGE;
+
   static getById = async (id: string) => {
     const profile = await Profile.findByPk(id);
     if (!profile) throw new AppError("No User Found.", 404);
 
     return profile.get({ plain: true });
+  };
+
+  static getAll = async (page: number, reqUserId: string | null = null) => {
+    const profiles = await Profile.findAll({
+      where: { ...(reqUserId ? { id: { [Op.not]: reqUserId } } : {}) },
+      offset: this.OFFSET(page),
+      limit: this.USERS_PER_PAGE,
+      order: [["fullName", "asc"]],
+    });
+
+    return profiles.map((p) => p.get({ plain: true }));
   };
 
   static getByUsername = async (username: string) => {

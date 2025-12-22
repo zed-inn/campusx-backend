@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
-import { PROFILE_CONFIG } from "./profile.config";
+import { PROFILE_CONFIG } from "../profile.config";
 
 export const ProfileInterface = modelSchema({
   id: z.uuidv4("Invalid Profile Id"),

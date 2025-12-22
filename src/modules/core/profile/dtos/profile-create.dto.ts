@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProfileInterface } from "../profile.interface";
+import { ProfileInterface } from "../interfaces/profile.interface";
 
 export const ProfileCreateSchema = z.object({
   username: ProfileInterface.fields.username.default(null),
