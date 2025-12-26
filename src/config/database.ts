@@ -1,6 +1,13 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { env } from "@config/env";
 import { createNamespace } from "cls-hooked";
+
+Object.defineProperty(Model.prototype, "plain", {
+  get() {
+    return this.get({ plain: true });
+  },
+  configurable: true,
+});
 
 const namespace = createNamespace("db-transaction");
 Sequelize.useCLS(namespace);

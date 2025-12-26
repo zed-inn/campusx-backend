@@ -4,9 +4,10 @@ import { LikeController } from "../controllers/like.controller";
 import { CommentRouter } from "./comment.route";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { ForumCreateSchema } from "../dtos/forum-create.dto";
-import { ForumUpdateSchema } from "../dtos/forum-update.dto";
+import { ForumCreateSchema } from "../dtos/service/forum-create.dto";
+import { ForumUpdateSchema } from "../dtos/service/forum-update.dto";
 import { ReportController } from "../controllers/report.controller";
+import { mount } from "@shared/utils/mount-router";
 
 const router = Router();
 
@@ -47,4 +48,4 @@ router.post(
 
 router.use("/comments", CommentRouter);
 
-export const ForumRouter = router;
+export const ForumRouter = mount("/forums", router);

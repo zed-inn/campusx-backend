@@ -1,29 +1,35 @@
 import { Router } from "express";
 import { ProfileController } from "./controllers/profile.controller";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { ProfileCreateSchema } from "./dtos/profile-create.dto";
-import { ProfileUpdateSchema } from "./dtos/profile-update.dto";
+import { ProfileCreateSchema } from "./dtos/service/profile-create.dto";
+import { ProfileUpdateSchema } from "./dtos/service/profile-update.dto";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { FollowController } from "./controllers/follow.controller";
 import { ReportController } from "./controllers/report.controller";
+import { mount } from "@shared/utils/mount-router";
 
 const router = Router();
 
-router.get("/", ProfileController.getProfile);
+router.get("/profile", ProfileController.getProfile);
 
-router.get("/all", ProfileController.getUserProfiles);
+router.get("/all", ProfileController.getUsers);
 
-router.get("/me", isLoggedIn, isProfiledUser, ProfileController.getMyProfile);
+router.get(
+  "/profile/me",
+  isLoggedIn,
+  isProfiledUser,
+  ProfileController.getMyProfile
+);
 
 router.post(
-  "/",
+  "/profile",
   isLoggedIn,
   validateRequestBody(ProfileCreateSchema),
   ProfileController.createProfile
 );
 
 router.put(
-  "/",
+  "/profile",
   isLoggedIn,
   isProfiledUser,
   validateRequestBody(ProfileUpdateSchema),
@@ -69,4 +75,4 @@ router.post(
 
 router.post("/report", isLoggedIn, isProfiledUser, ReportController.reportUser);
 
-export const ProfileRouter = router;
+export const ProfileRouter = mount("/user", router);

@@ -1,44 +1,55 @@
 import bcrypt from "bcryptjs";
 import { env } from "@config/env";
-import { AppError } from "@shared/errors/app-error";
+import { UserCreateDto } from "./dtos/service/user-create";
+import { UpdatePasswordDto } from "./dtos/service/update-password";
 import { User } from "./user.model";
-import { UserCreateDto } from "./dtos/user-create";
-import { UpdatePasswordDto } from "./dtos/update-password";
+import { UserErrors } from "./user.errors";
+import { UserSchema } from "./dtos/service/user-schema.dto";
+import { BaseService } from "@shared/services/base.service";
 
-class UserUtils {
-  static hashPassword = async (password: string) =>
-    await bcrypt.hash(password, env.BCRYPT_PASSWORD_HASH_SALT);
-}
+export class UserService extends BaseService<InstanceType<typeof User>> {
+  override get data() {
+    const user = super.data;
+    return UserSchema.parse(user);
+  }
 
-export class UserService {
+  static createWithPassword = async (data: UserCreateDto) => {
+    const passwordHash = await UserUtils.hashPassword(data.password);
+    const user = await User.create({ email: data.email, passwordHash });
+
+    return new UserService(user);
+  };
+
+  static createWithoutPassword = async (email: string) => {
+    const user = await User.create({ email });
+
+    return new UserService(user);
+  };
+
   static getById = async (id: string) => {
     const user = await User.findByPk(id);
-    if (!user) throw new AppError("No User Found.", 404);
+    if (!user) throw UserErrors.noUserFound;
 
-    return user.get({ plain: true });
+    return new UserService(user);
   };
 
   static getByEmail = async (email: string) => {
     const user = await User.findOne({ where: { email } });
-    if (!user) throw new AppError("No User Found.", 404);
+    if (!user) throw UserErrors.noUserFound;
 
-    return user.get({ plain: true });
-  };
-
-  static create = async (data: UserCreateDto) => {
-    const passwordHash = await UserUtils.hashPassword(data.password);
-    const user = await User.create({ email: data.email, passwordHash });
-
-    return user.get({ plain: true });
+    return new UserService(user);
   };
 
   static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
-    const user = await User.findOne({ where: { email: data.email } });
-    if (!user) throw new AppError("No User Found.", 404);
-
+    const user = (await UserService.getByEmail(data.email)).model;
     const passwordHash = await UserUtils.hashPassword(data.password);
     await user.update({ passwordHash });
 
-    return user.get({ plain: true });
+    return new UserService(user);
   };
+}
+
+class UserUtils {
+  static hashPassword = async (password: string) =>
+    await bcrypt.hash(password, env.BCRYPT_PASSWORD_HASH_SALT);
 }

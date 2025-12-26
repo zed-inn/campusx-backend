@@ -1,33 +1,34 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
 import { ApiResponse } from "@shared/utils/api-response";
 import { CategoryService } from "./services/category.service";
 import { InsightService } from "./services/insight.service";
 import { INSIGHT_CONFIG } from "./insight.config";
+import { InsightResponseSchema } from "./dtos/controller/insight-response.dto";
 
 export class InsightsController {
   static getCategories = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const categories = await CategoryService.getAll(page);
-    const parsedCategories = categories.map((c) => c.name);
+    const services = await CategoryService.getAll(q.page);
+    const categories = services.map((s) => s.data.name);
 
-    return ApiResponse.success(res, "Categories fetched.", {
-      categories: parsedCategories,
-    });
+    return ApiResponse.success(res, "Categories fetched.", { categories });
   });
 
   static getPublishedInsights = catchAsync(
     async (req: Request, res: Response) => {
-      const page = Parse.pageNum(req.query.page);
-      const categoryName = Parse.stringNullable(req.query.category);
-
-      const insights = await InsightService.getByCategoryAndStatus(
-        categoryName,
-        INSIGHT_CONFIG.STATUS.PUBLISHED,
-        page
+      const q = createSchema({ page: "page", category: "stringNull" }).parse(
+        req.query
       );
+
+      const services = await InsightService.getByCatAndStatus(
+        q.category,
+        INSIGHT_CONFIG.STATUS.PUBLISHED,
+        q.page
+      );
+      const insights = services.map((s) => InsightResponseSchema.parse(s.data));
 
       return ApiResponse.success(res, "Insights fetched.", { insights });
     }

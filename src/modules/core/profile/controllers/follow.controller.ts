@@ -3,81 +3,75 @@ import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
 import { FollowService } from "../services/follow.service";
 import { ApiResponse } from "@shared/utils/api-response";
-import { Parse } from "@shared/utils/parse-fields";
-import { FollowResponseSchema } from "../dtos/follow-response.dto";
+import { createSchema } from "@shared/utils/create-schema";
+import { ProfileResponseMinSchema as ResMin } from "../dtos/controller/profile-response.dto";
 
 export class FollowController {
   static getFollowers = catchAsync(async (req: Request, res: Response) => {
-    const id = Parse.id(req.query.id);
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ userId: "id", page: "page" }).parse(req.query);
 
-    const followers = await FollowService.getFollowersById(id, page);
-    const parsedFollowers = followers.map((f) =>
-      FollowResponseSchema.parse(f.followerProfile)
+    const services = await FollowService.getFollowersById(
+      q.userId,
+      q.page,
+      req.user?.id
     );
+    const followers = services.map((s) => ResMin.parse(s.data.followerProfile));
 
-    return ApiResponse.success(res, "Followers fetched.", {
-      followers: parsedFollowers,
-    });
+    return ApiResponse.success(res, "User's followers.", { followers });
   });
 
   static getMyFollowers = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const followers = await FollowService.getFollowersById(user.id, page);
-    const parsedFollowers = followers.map((f) =>
-      FollowResponseSchema.parse(f.followerProfile)
-    );
+    const services = await FollowService.getFollowersById(user.id, q.page);
+    const followers = services.map((s) => ResMin.parse(s.data.followerProfile));
 
-    return ApiResponse.success(res, "Your Followers.", {
-      followers: parsedFollowers,
-    });
+    return ApiResponse.success(res, "Your followers.", { followers });
   });
 
   static getFollowing = catchAsync(async (req: Request, res: Response) => {
-    const id = Parse.id(req.query.id);
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ id: "id", page: "page" }).parse(req.query);
 
-    const following = await FollowService.getFollowingById(id, page);
-    const parsedFollowing = following.map((f) =>
-      FollowResponseSchema.parse(f.followeeProfile)
+    const services = await FollowService.getFollowingsById(
+      q.id,
+      q.page,
+      req.user?.id
+    );
+    const followings = services.map((s) =>
+      ResMin.parse(s.data.followeeProfile)
     );
 
-    return ApiResponse.success(res, "Following fetched.", {
-      following: parsedFollowing,
-    });
+    return ApiResponse.success(res, "User's following.", { followings });
   });
 
   static getMyFollowing = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const following = await FollowService.getFollowingById(user.id, page);
-    const parsedFollowing = following.map((f) =>
-      FollowResponseSchema.parse(f.followeeProfile)
+    const services = await FollowService.getFollowingsById(user.id, q.page);
+    const followings = services.map((s) =>
+      ResMin.parse(s.data.followeeProfile)
     );
 
-    return ApiResponse.success(res, "Your Following.", {
-      following: parsedFollowing,
-    });
+    return ApiResponse.success(res, "Your following.", { followings });
   });
 
   static followUser = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const id = Parse.id(req.body.userId);
+    const q = createSchema({ id: "id" }).parse(req.body);
 
-    await FollowService.follow(id, user.id);
+    await FollowService.follow(q.id, user.id);
 
-    return ApiResponse.success(res, "Followed");
+    return ApiResponse.success(res, "Followed.");
   });
 
   static unfollowUser = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const id = Parse.id(req.body.userId);
+    const q = createSchema({ id: "id" }).parse(req.body);
 
-    await FollowService.unfollow(id, user.id);
+    await FollowService.unfollow(q.id, user.id);
 
-    return ApiResponse.success(res, "Unfollowed");
+    return ApiResponse.success(res, "Unfollowed.");
   });
 }

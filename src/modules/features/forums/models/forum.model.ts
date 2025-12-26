@@ -13,15 +13,15 @@ export const Forum = defineModel<ForumAttributes, ForumCreationAttributes>(
   "Forum",
   {
     id: { ...PRIMARY_ID },
-    localId: { type: DataTypes.STRING, allowNull: true },
+    localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: Profile, key: "id" },
     },
     title: { type: DataTypes.STRING, allowNull: false },
-    body: { type: DataTypes.STRING, allowNull: true },
-    imageUrl: { type: DataTypes.STRING, allowNull: true },
+    body: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+    imageUrl: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     commentsCount: { ...STATS },
     likesCount: { ...STATS },
   }

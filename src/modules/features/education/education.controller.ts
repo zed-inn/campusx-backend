@@ -1,55 +1,51 @@
 import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
-import { EducationCreateDto } from "./dtos/education-create.dto";
-import { EducationUpdateDto } from "./dtos/education-update.dto";
-import { Parse } from "@shared/utils/parse-fields";
+import { EducationCreateDto } from "./dtos/service/education-create.dto";
+import { createSchema } from "@shared/utils/create-schema";
 import { EducationService } from "./education.service";
-import { EducationResponseSchema } from "./dtos/education-response.dto";
+import { EducationResponseSchema } from "./dtos/controller/education-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
+import { ProfileResponseMinSchema as ResMinProfile } from "@modules/core/profile/dtos/controller/profile-response.dto";
+import { EducationUpdateDto } from "./dtos/service/education-update.dto";
 
 export class EducationController {
   static getUserEducation = catchAsync(async (req: Request, res: Response) => {
-    const id = Parse.id(req.query.userId);
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ id: "id", page: "page" }).parse(req.query);
 
-    const educations = await EducationService.getByUserId(
-      id,
-      page,
+    const services = await EducationService.getByUserId(
+      q.id,
+      q.page,
       req.user?.id
     );
-    const parsedEducations = educations.map((e) =>
-      EducationResponseSchema.parse(e)
+    const educations = services.map((s) =>
+      EducationResponseSchema.parse(s.data)
     );
 
-    return ApiResponse.success(res, "User's education", {
-      educations: parsedEducations,
-    });
+    return ApiResponse.success(res, "User's education.", { educations });
   });
 
   static getInstituteStudents = catchAsync(
     async (req: Request, res: Response) => {
-      const id = Parse.id(req.query.instituteId);
-      const page = Parse.pageNum(req.query.page);
+      const q = createSchema({ id: "id", page: "page" }).parse(req.query);
 
-      const educations = await EducationService.getByInstituteId(
-        id,
-        page,
+      const services = await EducationService.getByInstituteId(
+        q.id,
+        q.page,
         req.user?.id
       );
 
-      const studentsId: string[] = [];
-      const students = educations
-        .filter((e) => {
-          if (!studentsId.includes(e.user.id)) {
-            studentsId.push(e.user.id);
-            return true;
-          }
-          return false;
+      const studentsList = services.map((s) => s.data.user);
+      const temp: string[] = [];
+      const students = studentsList
+        .filter((s) => {
+          if (temp.includes(s.id)) return false;
+          temp.push(s.id);
+          return true;
         })
-        .map((s) => EducationResponseSchema.shape.user.parse(s.user));
+        .map((s) => ResMinProfile.parse(s));
 
-      return ApiResponse.success(res, "Institute's atudents", { students });
+      return ApiResponse.success(res, "Institute's students.", { students });
     }
   );
 
@@ -57,12 +53,10 @@ export class EducationController {
     async (req: Request<{}, {}, EducationCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const education = await EducationService.create(req.body, user.id);
-      const parsedEducation = EducationResponseSchema.parse(education);
+      const service = await EducationService.create(req.body, user.id);
+      const education = EducationResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Education added.", {
-        education: parsedEducation,
-      });
+      return ApiResponse.success(res, "Education added.", { education });
     }
   );
 
@@ -70,24 +64,20 @@ export class EducationController {
     async (req: Request<{}, {}, EducationUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const education = await EducationService.update(req.body, user.id);
-      const parsedEducation = EducationResponseSchema.parse(education);
+      const service = await EducationService.update(req.body, user.id);
+      const education = EducationResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Education updated.", {
-        education: parsedEducation,
-      });
+      return ApiResponse.success(res, "Education updated.", { education });
     }
   );
 
   static removeEducation = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const id = Parse.id(req.query.id);
+    const q = createSchema({ id: "id" }).parse(req.query);
 
-    const education = await EducationService.delete(id, user.id);
-    const parsedEducation = EducationResponseSchema.parse(education);
+    const service = await EducationService.delete(q.id, user.id);
+    const education = EducationResponseSchema.parse(service.data);
 
-    return ApiResponse.success(res, "Education removed.", {
-      education: parsedEducation,
-    });
+    return ApiResponse.success(res, "Education removed.", { education });
   });
 }

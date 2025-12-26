@@ -2,8 +2,9 @@ import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { Router } from "express";
 import { DiscussionController } from "./discussion.controller";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { DiscussionCreateSchema } from "./dtos/discussion-create.dto";
-import { DiscussionUpdateSchema } from "./dtos/discussion-update.dto";
+import { DiscussionCreateSchema } from "./dtos/service/discussion-create.dto";
+import { mount } from "@shared/utils/mount-router";
+import { DiscussionUpdateSchema } from "./dtos/service/discussion-update.dto";
 
 const router = Router();
 
@@ -46,4 +47,4 @@ router.get(
   DiscussionController.unlikeMessage
 );
 
-export const InstituteDiscussionRouter = router;
+export const InstituteDiscussionRouter = mount("/insitute/messages", router);

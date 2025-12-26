@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
-import { ProfileInterface } from "@modules/core/profile";
 import { InstituteInterface } from "@modules/core/institutes";
 
 export const DiscussionInterface = modelSchema(
@@ -11,20 +10,14 @@ export const DiscussionInterface = modelSchema(
     message: z
       .string("Invalid Message")
       .min(1, { error: "Message must contain one letter atleast" }),
-    replyingTo: z.uuidv4("Invalid Discussion Id To Reply").nullable(),
+    replyingTo: z
+      .uuidv4("Invalid Discussion Id To Reply")
+      .nullable()
+      .default(null),
   },
   {
-    writer: z.object({
-      id: ProfileInterface.fields.id,
-      fullName: ProfileInterface.fields.fullName,
-      username: ProfileInterface.fields.username,
-      avatarUrl: ProfileInterface.fields.avatarUrl,
-      isFollowed: ProfileInterface.extra.fields.isFollowed,
-    }),
-    institute: z.object({
-      id: InstituteInterface.fields.id,
-    }),
-    isLiked: z.boolean(),
+    institute: InstituteInterface.dbSchema.pick({ id: true }),
+    isLiked: z.boolean().default(false),
   }
 );
 

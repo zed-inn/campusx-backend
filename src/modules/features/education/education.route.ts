@@ -2,8 +2,9 @@ import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { Router } from "express";
 import { EducationController } from "./education.controller";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { EducationCreateSchema } from "./dtos/education-create.dto";
-import { EducationUpdateSchema } from "./dtos/education-update.dto";
+import { EducationCreateSchema } from "./dtos/service/education-create.dto";
+import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
+import { mount } from "@shared/utils/mount-router";
 
 const router = Router();
 
@@ -34,4 +35,4 @@ router.delete(
   EducationController.removeEducation
 );
 
-export const ProfileEducationRouter = router;
+export const ProfileEducationRouter = mount("/education", router);

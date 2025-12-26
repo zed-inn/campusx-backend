@@ -1,22 +1,33 @@
-import { AppError } from "@shared/errors/app-error";
 import { Category } from "../models/category.model";
+import { BaseService } from "@shared/services/base.service";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { InsightsErrors } from "../insights.errors";
+import { CategorySchema } from "../dtos/service/category-schema.dto";
 
-export class CategoryService {
+export class CategoryService extends BaseService<
+  InstanceType<typeof Category>
+> {
   static CATEGORIES_PER_PAGE = 100;
-  static OFFSET = (page: number) => (page - 1) * this.CATEGORIES_PER_PAGE;
+  static OFFSET = createOffsetFn(this.CATEGORIES_PER_PAGE);
+
+  override get data() {
+    const category = super.data;
+
+    return CategorySchema.parse(category);
+  }
 
   static getById = async (id: string) => {
     const category = await Category.findByPk(id);
-    if (!category) throw new AppError("No Category Found.", 404);
+    if (!category) throw InsightsErrors.noCategoryFound;
 
-    return category.get({ plain: true });
+    return new CategoryService(category);
   };
 
   static getByName = async (name: string) => {
     const category = await Category.findOne({ where: { name } });
-    if (!category) throw new AppError("No Category Found.", 404);
+    if (!category) throw InsightsErrors.noCategoryFound;
 
-    return category.get({ plain: true });
+    return new CategoryService(category);
   };
 
   static getAll = async (page: number) => {
@@ -26,29 +37,27 @@ export class CategoryService {
       order: ["createDate", "desc"],
     });
 
-    return categories.map((c) => c.get({ plain: true }));
+    return categories.map((c) => new CategoryService(c));
   };
 
   static create = async (name: string) => {
     const category = await Category.create({ name });
-    return category.get({ plain: true });
+    return new CategoryService(category);
   };
 
   static update = async (id: string, name: string) => {
-    const category = await Category.findByPk(id);
-    if (!category) throw new AppError("No Category Found.", 404);
+    const service = await this.getById(id);
 
+    const category = service.model;
     await category.update({ name });
-    return category.get({ plain: true });
+    return new CategoryService(category);
   };
 
   static delete = async (id: string) => {
-    const category = await Category.findByPk(id);
-    if (!category) throw new AppError("No Category Found.", 404);
+    const service = await this.getById(id);
 
-    const categoryData = category.get({ plain: true });
-
+    const category = service.model;
     await category.destroy();
-    return categoryData;
+    return new CategoryService(category);
   };
 }

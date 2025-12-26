@@ -2,8 +2,8 @@ import { Router } from "express";
 import { CommentController } from "../controllers/comment.controller";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { CommentCreateSchema } from "../dtos/comment-create.dto";
-import { CommentUpdateSchema } from "../dtos/comment-update.dto";
+import { CommentCreateSchema } from "../dtos/service/comment-create.dto";
+import { CommentUpdateSchema } from "../dtos/service/comment-update.dto";
 
 const router = Router();
 

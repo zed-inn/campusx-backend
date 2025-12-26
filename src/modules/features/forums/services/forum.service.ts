@@ -2,40 +2,46 @@ import { Includeable } from "sequelize";
 import db from "@config/database";
 import { AppError } from "@shared/errors/app-error";
 import { removeUndefined } from "@shared/utils/clean-object";
-import {
-  Profile,
-  ProfileInclude,
-  ProfileService,
-  ProfileUtils,
-} from "@modules/core/profile";
+import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
 import { Forum } from "../models/forum.model";
 import { Like } from "../models/like.model";
-import { ForumCreateDto } from "../dtos/forum-create.dto";
-import { ForumUpdateDto } from "../dtos/forum-update.dto";
+import { ForumCreateDto } from "../dtos/service/forum-create.dto";
+import { ForumUpdateDto } from "../dtos/service/forum-update.dto";
 import { ForumAttributes } from "../interfaces/forum.interface";
-import { ForumFullSchema as ForumFS } from "../dtos/forum-full.dto";
-import { getModel } from "@shared/utils/check-instance";
+import { BaseService } from "@shared/services/base.service";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { ForumSchema } from "../dtos/service/forum-schema.dto";
+import { Rui } from "@shared/dtos/req-user.dto";
+import { ForumErrors } from "../errors/forum.errors";
 
-export class ForumService {
+export class ForumService extends BaseService<InstanceType<typeof Forum>> {
   static FORUMS_PER_PAGE = 20;
-  static OFFSET = (page: number) => (page - 1) * this.FORUMS_PER_PAGE;
+  static OFFSET = createOffsetFn(this.FORUMS_PER_PAGE);
 
-  static parse = (forum: any) => ForumUtils.process(getModel(forum));
+  override get data() {
+    const forum = super.data;
+    forum.isLiked = Array.isArray(forum.likes) && forum.likes.length;
+    forum.writer = ProfileService.parse(forum.writer);
 
-  static getById = async (id: string, reqUserId: string | null = null) => {
+    return ForumSchema.parse(forum);
+  }
+
+  static create = async (data: ForumCreateDto, userId: string) => {
+    const f = await Forum.create({ ...data, userId });
+
+    return this.getById(f.dataValues.id);
+  };
+
+  static getById = async (id: string, reqUserId?: Rui) => {
     const forum = await Forum.findByPk(id, {
       include: [ForumInclude.writer(reqUserId), ForumInclude.liked(reqUserId)],
     });
-    if (!forum) throw new AppError("No Forum Found.", 404);
+    if (!forum) throw ForumErrors.noForumFound;
 
-    return this.parse(forum);
+    return new ForumService(forum);
   };
 
-  static getByUserId = async (
-    id: string,
-    page: number,
-    reqUserId: string | null = null
-  ) => {
+  static getByUserId = async (id: string, page: number, reqUserId?: Rui) => {
     const forums = await Forum.findAll({
       where: { userId: id },
       include: [ForumInclude.writer(reqUserId), ForumInclude.liked(reqUserId)],
@@ -44,10 +50,10 @@ export class ForumService {
       order: [["createDate", "desc"]],
     });
 
-    return forums.map((f) => this.parse(f));
+    return forums.map((f) => new ForumService(f));
   };
 
-  static getLatest = async (page: number, reqUserId: string | null = null) => {
+  static getLatest = async (page: number, reqUserId?: Rui) => {
     const forums = await Forum.findAll({
       include: [ForumInclude.writer(reqUserId), ForumInclude.liked(reqUserId)],
       limit: this.FORUMS_PER_PAGE,
@@ -55,58 +61,46 @@ export class ForumService {
       order: [["createDate", "desc"]],
     });
 
-    return forums.map((f) => this.parse(f));
-  };
-
-  static create = async (data: ForumCreateDto, userId: string) => {
-    const forum = await Forum.create({ ...data, userId });
-
-    const writer = await ProfileService.getById(userId);
-
-    return this.parse({ ...forum.get({ plain: true }), writer });
+    return forums.map((f) => new ForumService(f));
   };
 
   static update = async (data: ForumUpdateDto, userId: string) => {
     return await db.transaction(async (t) => {
       const { id, ...updateData } = data;
 
-      const forum = await Forum.findOne({
-        where: { id, userId },
-        include: [ForumInclude.writer(), ForumInclude.liked(userId)],
-      });
-      if (!forum) throw new AppError("No Forum Found.", 404);
+      const service = await this.getById(id);
+      service.checkOwnership(userId);
 
+      const forum = service.model;
       const cleanData = removeUndefined(updateData);
       if (Object.keys(cleanData).length)
         await forum.update(cleanData as Partial<ForumAttributes>);
 
-      return this.parse(forum);
+      return new ForumService(forum);
     });
   };
 
   static delete = async (id: string, userId: string) => {
-    const forum = await Forum.findOne({
-      where: { id, userId },
-      include: [ForumInclude.writer(), ForumInclude.liked(userId)],
-    });
-    if (!forum) throw new AppError("No Forum Found.", 404);
+    const service = await this.getById(id);
+    service.checkOwnership(userId);
 
+    const forum = service.model;
     await forum.destroy();
 
-    return this.parse(forum);
+    return new ForumService(forum);
   };
 }
 
 export class ForumInclude {
-  static writer(userId: string | null = null): Includeable {
+  static writer(userId?: Rui): Includeable {
     return {
       model: Profile,
       as: "writer",
-      include: [ProfileInclude.isFollowing(userId)],
+      include: [ProfileInclude.followedBy(userId)],
     };
   }
 
-  static liked(userId: string | null): Includeable {
+  static liked(userId: Rui = null): Includeable {
     return {
       model: Like,
       as: "likes",
@@ -114,14 +108,4 @@ export class ForumInclude {
       required: false,
     };
   }
-}
-
-export class ForumUtils {
-  static process = (forum: any) => {
-    if (Array.isArray(forum.likes) && forum.likes.length) forum.isLiked = true;
-
-    forum.writer = ProfileUtils.process(forum.writer);
-
-    return ForumFS.parse(forum);
-  };
 }

@@ -1,58 +1,50 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { ForumService } from "../services/forum.service";
-import { ForumResponseSchema } from "../dtos/forum-response.dto";
-import { ForumCreateDto } from "../dtos/forum-create.dto";
-import { ForumUpdateDto } from "../dtos/forum-update.dto";
+import { ForumResponseSchema } from "../dtos/controller/forum-response.dto";
+import { ForumCreateDto } from "../dtos/service/forum-create.dto";
+import { ForumUpdateDto } from "../dtos/service/forum-update.dto";
 
 export class ForumController {
   static getForums = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const forums = await ForumService.getLatest(page, req.user?.id);
-    const parsedForums = forums.map((f) => ForumResponseSchema.parse(f));
+    const services = await ForumService.getLatest(q.page, req.user?.id);
+    const forums = services.map((s) => ForumResponseSchema.parse(s.data));
 
-    return ApiResponse.success(res, "Forums fetched.", {
-      forums: parsedForums,
-    });
+    return ApiResponse.success(res, "Forums fetched.", { forums });
   });
 
   static getUserForums = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.page);
-    const userId = Parse.id(req.query.userId);
+    const q = createSchema({ id: "id", page: "page" }).parse(req.query);
 
-    const forums = await ForumService.getByUserId(userId, page, req.user?.id);
-    const parsedForums = forums.map((f) => ForumResponseSchema.parse(f));
+    const services = await ForumService.getByUserId(q.id, q.page, req.user?.id);
+    const forums = services.map((s) => ForumResponseSchema.parse(s.data));
 
-    return ApiResponse.success(res, "Forums fetched.", {
-      forums: parsedForums,
-    });
+    return ApiResponse.success(res, "Forums fetched.", { forums });
   });
 
   static getMyForums = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const page = Parse.pageNum(req.query.page);
+    const services = await ForumService.getByUserId(user.id, q.page);
+    const forums = services.map((s) => ForumResponseSchema.parse(s.data));
 
-    const forums = await ForumService.getByUserId(user.id, page, user.id);
-    const parsedForums = forums.map((f) => ForumResponseSchema.parse(f));
-
-    return ApiResponse.success(res, "Forums fetched.", {
-      forums: parsedForums,
-    });
+    return ApiResponse.success(res, "Forums fetched.", { forums });
   });
 
   static createForum = catchAsync(
     async (req: Request<{}, {}, ForumCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const forum = await ForumService.create(req.body, user.id);
-      const parsedForum = ForumResponseSchema.parse(forum);
+      const service = await ForumService.create(req.body, user.id);
+      const forum = ForumResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Forum created.", { forum: parsedForum });
+      return ApiResponse.success(res, "Forum created.", { forum });
     }
   );
 
@@ -60,21 +52,20 @@ export class ForumController {
     async (req: Request<{}, {}, ForumUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const forum = await ForumService.update(req.body, user.id);
-      const parsedForum = ForumResponseSchema.parse(forum);
+      const service = await ForumService.update(req.body, user.id);
+      const forum = ForumResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Forum updated.", { forum: parsedForum });
+      return ApiResponse.success(res, "Forum updated.", { forum });
     }
   );
 
   static deleteForum = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
+    const q = createSchema({ id: "id" }).parse(req.query);
 
-    const forumId = Parse.id(req.query.id);
+    const service = await ForumService.delete(q.id, user.id);
+    const forum = ForumResponseSchema.parse(service.data);
 
-    const forum = await ForumService.delete(forumId, user.id);
-    const parsedForum = ForumResponseSchema.parse(forum);
-
-    return ApiResponse.success(res, "Forum deleted.", { forum: parsedForum });
+    return ApiResponse.success(res, "Forum deleted.", { forum });
   });
 }

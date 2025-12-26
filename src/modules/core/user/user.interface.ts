@@ -6,8 +6,8 @@ export const UserInterface = modelSchema(
   {
     id: z.uuidv4("Invalid User Id"),
     email: z.email("Invalid Email"),
-    passwordHash: z.string("Invalid Password").nullable(),
-    fcmToken: z.string("Invalid Fcm Token").nullable(),
+    passwordHash: z.string("Invalid Password").nullable().default(null),
+    fcmToken: z.string("Invalid Fcm Token").nullable().default(null),
     referralCode: z
       .string("Invalid Referral Code")
       .length(env.REFERRAL_CODE_LENGTH, {

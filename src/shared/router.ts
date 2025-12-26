@@ -11,14 +11,18 @@ import { ProfileEducationRouter } from "@modules/features/education";
 
 const router = Router();
 
-router.use("/", AuthRouter);
-router.use("/profile", ProfileRouter);
-router.use("/forums", ForumRouter);
-router.use("/insights", InsightsRouter);
-router.use("/institute", InstituteRouter);
-router.use("/institute/review", InstituteReviewRouter);
-router.use("/institute/message", InstituteDiscussionRouter);
-router.use("/feedback", FeedbackRouter);
-router.use("/education", ProfileEducationRouter);
+const routers = [
+  AuthRouter,
+  ProfileRouter,
+  ForumRouter,
+  InsightsRouter,
+  InstituteRouter,
+  InstituteReviewRouter,
+  InstituteDiscussionRouter,
+  FeedbackRouter,
+  ProfileEducationRouter,
+];
+
+for (const ModuleRouter of routers) router.use("/", ModuleRouter);
 
 export const AppRouter = router;

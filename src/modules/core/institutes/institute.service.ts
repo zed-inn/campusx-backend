@@ -1,16 +1,28 @@
-import { AppError } from "@shared/errors/app-error";
 import { Institute } from "./institute.model";
 import { literal } from "sequelize";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { BaseService } from "@shared/services/base.service";
+import { InstituteErrors } from "./institute.errors";
+import { InstituteSchema } from "./dtos/service/institute-schema.dto";
 
-export class InstituteService {
-  static INSTITUTES_PER_PAGE = 30;
-  static OFFSET = (page: number) => (page - 1) * this.INSTITUTES_PER_PAGE;
+export class InstituteService extends BaseService<
+  InstanceType<typeof Institute>
+> {
+  protected static INSTITUTES_PER_PAGE = 30;
+  protected static OFFSET = createOffsetFn(this.INSTITUTES_PER_PAGE);
+
+  override get data() {
+    const institute = super.data;
+    return InstituteService.parse(institute);
+  }
+
+  static parse = (institute: any) => InstituteSchema.parse(institute);
 
   static getById = async (id: string) => {
     const institute = await Institute.findByPk(id);
-    if (!institute) throw new AppError("No Institute Found.", 404);
+    if (!institute) throw InstituteErrors.noInstituteFound;
 
-    return institute.get({ plain: true });
+    return new InstituteService(institute);
   };
 
   static getAll = async (page: number) => {
@@ -20,7 +32,7 @@ export class InstituteService {
       order: [["updateDate", "desc"]],
     });
 
-    return institutes.map((i) => i.get({ plain: true }));
+    return institutes.map((i) => new InstituteService(i));
   };
 
   static getRandom = async () => {
@@ -29,6 +41,6 @@ export class InstituteService {
       order: literal("RANDOM()"),
     });
 
-    return institutes.map((i) => i.get({ plain: true }));
+    return institutes.map((i) => new InstituteService(i));
   };
 }

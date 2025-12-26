@@ -1,50 +1,42 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { ApiResponse } from "@shared/utils/api-response";
-import { NotificationService } from "@modules/core/notifications";
-import { NOTIFICATION_CONFIG } from "@modules/core/notifications/notification.config";
 import { CommentService } from "../services/comment.service";
-import { CommentResponseSchema } from "../dtos/comment-response.dto";
-import { CommentCreateDto } from "../dtos/comment-create.dto";
-import { CommentUpdateDto } from "../dtos/comment-update.dto";
+import { CommentResponseSchema } from "../dtos/controller/comment-response.dto";
+import { CommentCreateDto } from "../dtos/service/comment-create.dto";
+import { CommentUpdateDto } from "../dtos/service/comment-update.dto";
 
 export class CommentController {
   static getForumComments = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.page);
-    const forumId = Parse.id(req.query.forumId);
-    const commentId = Parse.idNullable(req.query.replyingTo);
+    const q = createSchema({
+      forumId: "id",
+      commentId: "idNull",
+      page: "page",
+    }).parse(req.query);
 
-    const comments = await CommentService.getByForumId(
-      forumId,
-      commentId,
-      page,
+    const services = await CommentService.getByForumId(
+      q.forumId,
+      q.commentId,
+      q.page,
       req.user?.id
     );
-    const parsedComments = comments.map((c) => CommentResponseSchema.parse(c));
+    const comments = services.map((s) => CommentResponseSchema.parse(s));
 
-    return ApiResponse.success(res, "Comments fetched.", {
-      comments: parsedComments,
-    });
+    return ApiResponse.success(res, "Comments fetched.", { comments });
   });
 
   static createComment = catchAsync(
     async (req: Request<{}, {}, CommentCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const comment = await CommentService.create(req.body, user.id);
-      const parsedComment = CommentResponseSchema.parse(comment);
+      const service = await CommentService.create(req.body, user.id);
+      const comment = CommentResponseSchema.parse(service.data);
 
-      NotificationService.notify(comment.forum.writer.id, {
-        title: `${comment.forum.title}`,
-        body: `${comment.writer.fullName}: ${comment.body}`,
-        type: NOTIFICATION_CONFIG.TYPES.COMMENTED,
-      });
+      // TODO: notify user, include forum in comment service
 
-      return ApiResponse.success(res, "Comment created.", {
-        comment: parsedComment,
-      });
+      return ApiResponse.success(res, "Commented.", { comment });
     }
   );
 
@@ -52,25 +44,20 @@ export class CommentController {
     async (req: Request<{}, {}, CommentUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const comment = await CommentService.update(req.body, user.id);
-      const parsedComment = CommentResponseSchema.parse(comment);
+      const service = await CommentService.update(req.body, user.id);
+      const comment = CommentResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Comment updated.", {
-        comment: parsedComment,
-      });
+      return ApiResponse.success(res, "Comment updated.", { comment });
     }
   );
 
   static deleteComment = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
+    const q = createSchema({ id: "id" }).parse(req.query);
 
-    const commentId = Parse.id(req.query.id);
+    const service = await CommentService.delete(q.id, user.id);
+    const comment = CommentResponseSchema.parse(service.data);
 
-    const comment = await CommentService.delete(commentId, user.id);
-    const parsedComment = CommentResponseSchema.parse(comment);
-
-    return ApiResponse.success(res, "Comment deleted.", {
-      comment: parsedComment,
-    });
+    return ApiResponse.success(res, "Comment deleted.", { comment });
   });
 }

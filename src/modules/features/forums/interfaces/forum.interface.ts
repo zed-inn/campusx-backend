@@ -1,27 +1,19 @@
-import { ProfileInterface } from "@modules/core/profile";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
 
 export const ForumInterface = modelSchema(
   {
     id: z.uuidv4("Invalid Forum Id"),
-    localId: z.string("Invalid Local Id").nullable(),
+    localId: z.string("Invalid Local Id").nullable().default(null),
     userId: z.uuidv4("Invalid User Id"),
     title: z.string("Invalid Title").min(1, { error: "Title is too short" }),
-    body: z.string("Invalid Body").nullable(),
-    imageUrl: z.url("Invalid Image Url").nullable(),
+    body: z.string("Invalid Body").nullable().default(null),
+    imageUrl: z.url("Invalid Image Url").nullable().default(null),
     commentsCount: z.number().nonnegative().default(0),
     likesCount: z.number().nonnegative().default(0),
   },
   {
-    writer: z.object({
-      id: ProfileInterface.fields.id,
-      fullName: ProfileInterface.fields.fullName,
-      username: ProfileInterface.fields.username,
-      avatarUrl: ProfileInterface.fields.avatarUrl,
-      isFollowed: ProfileInterface.extra.fields.isFollowed,
-    }),
-    isLiked: z.boolean().default(false),
+    isLiked: z.boolean("Invalid isLiked Value").default(false),
   }
 );
 

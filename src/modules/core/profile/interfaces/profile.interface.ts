@@ -9,22 +9,25 @@ export const ProfileInterface = modelSchema(
       .string("Invalid Username")
       .min(PROFILE_CONFIG.USERNAME.MIN, { error: "Username is too short" })
       .max(PROFILE_CONFIG.USERNAME.MAX, { error: "Username is too long" })
-      .nullable(),
+      .nullable()
+      .default(null),
     fullName: z
       .string("Invalid Fullname")
       .min(PROFILE_CONFIG.FULLNAME.MIN, { error: "Fullname is too short" })
       .max(PROFILE_CONFIG.FULLNAME.MAX, { error: "Fullname is too long" }),
-    about: z.string("Invalid About").nullable(),
-    avatarUrl: z.url("Invalid Avatar Url").nullable(),
+    about: z.string("Invalid About").nullable().default(null),
+    avatarUrl: z.url("Invalid Avatar Url").nullable().default(null),
     gender: z
       .enum(PROFILE_CONFIG.GENDER, { error: "Invalid Gender" })
-      .nullable(),
+      .nullable()
+      .default(null),
     dob: z
       .number("Invalid Dob")
       .nonnegative("Dob cannot be negative")
       .min(PROFILE_CONFIG.DOB.MIN, { error: "You haven't lived that long!!" })
       .max(PROFILE_CONFIG.DOB.MAX, { error: "You are from future!!" })
-      .nullable(),
+      .nullable()
+      .default(null),
     followersCount: z
       .number("Invalid Followers")
       .nonnegative("Invalid Followers")

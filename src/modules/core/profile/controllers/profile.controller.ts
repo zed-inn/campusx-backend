@@ -2,49 +2,51 @@ import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
 import { ApiResponse } from "@shared/utils/api-response";
 import { ProfileService } from "../services/profile.service";
-import { ProfileCreateDto } from "../dtos/profile-create.dto";
-import { ProfileUpdateDto } from "../dtos/profile-update.dto";
-import { ProfileResponseSchema } from "../dtos/profile-response.dto";
-import { z } from "zod";
+import { ProfileCreateDto } from "../dtos/service/profile-create.dto";
+import { ProfileUpdateDto } from "../dtos/service/profile-update.dto";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
+import {
+  ProfileResponseMaxSchema as ResMax,
+  ProfileResponseMinSchema as ResMin,
+} from "../dtos/controller/profile-response.dto";
 
 export class ProfileController {
   static getProfile = catchAsync(async (req: Request, res: Response) => {
-    const id = z.uuidv4().parse(req.query.id);
+    const q = createSchema({ id: "id" }).parse(req.query);
 
-    const profileData = await ProfileService.getById(id, req.user?.id);
-    const profile = ProfileResponseSchema.parse(profileData);
+    const service = await ProfileService.getById(q.id, req.user?.id);
+    const profile = ResMax.parse(service.data);
 
-    return ApiResponse.success(res, "User found.", { profile });
+    return ApiResponse.success(res, "Profile fetched.", { profile });
   });
 
-  static getUserProfiles = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.pageNum);
+  static getUsers = catchAsync(async (req: Request, res: Response) => {
+    const q = createSchema({ page: "page" }).parse(req.query);
 
-    const profiles = await ProfileService.getAll(page, req.user?.id);
-    const parsedProfiles = profiles.map((p) => ProfileResponseSchema.parse(p));
+    const services = await ProfileService.getAll(q.page, req.user?.id);
+    const users = services.map((s) => ResMin.parse(s.data));
 
-    return ApiResponse.success(res, "User found.", { users: parsedProfiles });
+    return ApiResponse.success(res, "Users fetched.", { users });
   });
 
   static getMyProfile = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
 
-    const profileData = await ProfileService.getById(user.id, user.id);
-    const profile = ProfileResponseSchema.parse(profileData);
+    const service = await ProfileService.getById(user.id);
+    const profile = ResMax.parse(service.data);
 
-    return ApiResponse.success(res, "User found.", { profile });
+    return ApiResponse.success(res, "Profile fetched.", { profile });
   });
 
   static createProfile = catchAsync(
     async (req: Request<{}, {}, ProfileCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const profileData = await ProfileService.create(req.body, user.id);
-      const profile = ProfileResponseSchema.parse(profileData);
+      const service = await ProfileService.create(req.body, user.id);
+      const profile = ResMax.parse(service.data);
 
-      return ApiResponse.success(res, "User created.", { profile });
+      return ApiResponse.success(res, "Profile created.", { profile });
     }
   );
 
@@ -52,10 +54,10 @@ export class ProfileController {
     async (req: Request<{}, {}, ProfileUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const profileData = await ProfileService.update(req.body, user.id);
-      const profile = ProfileResponseSchema.parse(profileData);
+      const service = await ProfileService.update(req.body, user.id);
+      const profile = ResMax.parse(service.data);
 
-      return ApiResponse.success(res, "User updated.", { profile });
+      return ApiResponse.success(res, "Profile updated.", { profile });
     }
   );
 }

@@ -14,7 +14,7 @@ export const Comment = defineModel<
   CommentCreationAttributes
 >(db, "ForumComment", {
   id: { ...PRIMARY_ID },
-  localId: { type: DataTypes.STRING, allowNull: true },
+  localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -28,6 +28,7 @@ export const Comment = defineModel<
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,
+    defaultValue: null,
     references: { model: "ForumComments", key: "id" },
   },
   body: { type: DataTypes.STRING, allowNull: false },

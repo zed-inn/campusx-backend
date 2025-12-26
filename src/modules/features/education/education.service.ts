@@ -1,40 +1,47 @@
 import { Institute, InstituteService } from "@modules/core/institutes";
-import { Includeable, Model } from "sequelize";
+import { Includeable } from "sequelize";
 import { Education } from "./education.model";
-import { AppError } from "@shared/errors/app-error";
-import { EducationFullSchema } from "./dtos/education-full.dto";
-import {
-  Profile,
-  ProfileInclude,
-  ProfileService,
-  ProfileUtils,
-} from "@modules/core/profile";
-import { EducationCreateDto } from "./dtos/education-create.dto";
-import { EducationUpdateDto } from "./dtos/education-update.dto";
+import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
+import { EducationCreateDto } from "./dtos/service/education-create.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { EducationAttributes } from "./education.interface";
-import { getModel } from "@shared/utils/check-instance";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { BaseService } from "@shared/services/base.service";
+import { EducationErrors } from "./education.errros";
+import { Rui } from "@shared/dtos/req-user.dto";
+import { EducationSchema } from "./dtos/service/education-schema.dto";
+import { EducationUpdateDto } from "./dtos/service/education-update.dto";
 
-export class EducationService {
+export class EducationService extends BaseService<
+  InstanceType<typeof Education>
+> {
   static EDUCATIONS_PER_PAGE = 30;
-  static OFFSET = (page: number) => (page - 1) * this.EDUCATIONS_PER_PAGE;
+  static OFFSET = createOffsetFn(this.EDUCATIONS_PER_PAGE);
 
-  static parse = (edu: any) => EducationUtils.process(getModel(edu));
+  override get data() {
+    const edu = super.data;
+    edu.user = ProfileService.parse(edu.user);
+    edu.institute = InstituteService.parse(edu.institute);
 
-  static getById = async (id: string, reqUserId: string | null = null) => {
+    return EducationSchema.parse(edu);
+  }
+
+  static create = async (data: EducationCreateDto, userId: string) => {
+    const education = await Education.create({ ...data, userId });
+
+    return this.getById(education.dataValues.id);
+  };
+
+  static getById = async (id: string, reqUserId?: Rui) => {
     const education = await Education.findByPk(id, {
       include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
     });
-    if (!education) throw new AppError("No Education Found.", 404);
+    if (!education) throw EducationErrors.noEducationFound;
 
-    return this.parse(education);
+    return new EducationService(education);
   };
 
-  static getByUserId = async (
-    id: string,
-    page: number,
-    reqUserId: string | null = null
-  ) => {
+  static getByUserId = async (id: string, page: number, reqUserId?: Rui) => {
     const educations = await Education.findAll({
       where: { userId: id },
       offset: this.OFFSET(page),
@@ -43,13 +50,13 @@ export class EducationService {
       include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
     });
 
-    return educations.map((e) => this.parse(e));
+    return educations.map((e) => new EducationService(e));
   };
 
   static getByInstituteId = async (
     id: string,
     page: number,
-    reqUserId: string | null = null
+    reqUserId?: Rui
   ) => {
     const educations = await Education.findAll({
       where: { instituteId: id },
@@ -59,66 +66,44 @@ export class EducationService {
       include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
     });
 
-    return educations.map((e) => this.parse(e));
-  };
-
-  static create = async (data: EducationCreateDto, userId: string) => {
-    const education = await Education.create({ ...data, userId });
-
-    const institute = await InstituteService.getById(data.instituteId);
-    const user = await ProfileService.getById(userId);
-
-    return this.parse({ ...education.get({ plain: true }), institute, user });
+    return educations.map((e) => new EducationService(e));
   };
 
   static update = async (data: EducationUpdateDto, userId: string) => {
     const { id, ...updateData } = data;
 
-    const education = await Education.findOne({
-      where: { id, userId },
-      include: [EducationInclude.institute, EducationInclude.user()],
-    });
-    if (!education) throw new AppError("No Education Found.", 404);
+    const service = await this.getById(id);
+    service.checkOwnership(userId);
 
+    const education = service.model;
     const cleanData = removeUndefined(updateData);
-
     if (Object.keys(cleanData).length)
       await education.update(cleanData as Partial<EducationAttributes>);
 
-    return this.parse(education);
+    return new EducationService(education);
   };
 
   static delete = async (id: string, userId: string) => {
-    const education = await Education.findOne({
-      where: { id, userId },
-      include: [EducationInclude.institute, EducationInclude.user()],
-    });
-    if (!education) throw new AppError("No Education Found.", 404);
+    const service = await this.getById(id);
+    service.checkOwnership(userId);
 
+    const education = service.model;
     await education.destroy();
 
-    return this.parse(education);
+    return new EducationService(education);
   };
 }
 
 class EducationInclude {
-  static user(userId: string | null = null): Includeable {
+  static user(userId?: Rui): Includeable {
     return {
       model: Profile,
       as: "user",
-      include: [ProfileInclude.isFollowing(userId)],
+      include: [ProfileInclude.followedBy(userId)],
     };
   }
 
   static get institute(): Includeable {
     return { model: Institute, as: "institute" };
   }
-}
-
-class EducationUtils {
-  static process = (education: any) => {
-    education.user = ProfileUtils.process(education.user);
-
-    return EducationFullSchema.parse(education);
-  };
 }

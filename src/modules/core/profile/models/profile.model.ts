@@ -23,6 +23,7 @@ export const Profile = defineModel<
   username: {
     type: DataTypes.STRING(PROFILE_CONFIG.USERNAME.MAX),
     allowNull: true,
+    defaultValue: null,
     unique: true,
     validate: {
       len: {
@@ -45,22 +46,25 @@ export const Profile = defineModel<
   avatarUrl: {
     type: DataTypes.STRING,
     allowNull: true,
+    defaultValue: null,
     validate: { isUrl: true },
   },
   gender: {
     type: DataTypes.STRING,
     values: PROFILE_CONFIG.GENDER,
     allowNull: true,
+    defaultValue: null,
   },
   dob: {
     type: DataTypes.INTEGER,
     allowNull: true,
+    defaultValue: null,
     validate: { min: PROFILE_CONFIG.DOB.MIN, max: PROFILE_CONFIG.DOB.MAX },
   },
   followersCount: { ...STATS },
   followingCount: { ...STATS },
 });
 
-// Association
+// Associations
 User.hasOne(Profile, { foreignKey: "id", onDelete: "CASCADE", as: "profile" });
 Profile.belongsTo(User, { foreignKey: "id", as: "user" });

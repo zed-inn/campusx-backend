@@ -2,8 +2,9 @@ import { Router } from "express";
 import { ReviewController } from "./review.controller";
 import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { validateRequestBody } from "@shared/middlewares/validate-request";
-import { ReviewCreateSchema } from "./dtos/review-create.dto";
-import { ReviewUpdateSchema } from "./dtos/review-update.dto";
+import { ReviewCreateSchema } from "./dtos/service/review-create.dto";
+import { ReviewUpdateSchema } from "./dtos/service/review-update.dto";
+import { mount } from "@shared/utils/mount-router";
 
 const router = Router();
 
@@ -27,4 +28,4 @@ router.put(
 
 router.delete("/", isLoggedIn, isProfiledUser, ReviewController.deleteReview);
 
-export const InstituteReviewRouter = router;
+export const InstituteReviewRouter = mount("/insitute/review", router);

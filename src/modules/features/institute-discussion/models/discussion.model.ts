@@ -28,6 +28,7 @@ export const Discussion = defineModel<
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,
+    defaultValue: true,
     references: { model: "InstituteDiscussions", key: "id" },
   },
 });

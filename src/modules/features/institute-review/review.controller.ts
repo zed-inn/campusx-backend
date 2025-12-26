@@ -1,29 +1,26 @@
 import { catchAsync } from "@shared/utils/catch-async";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { ReviewService } from "./review.service";
-import { ReviewResponseSchema } from "./dtos/review-response.dto";
+import { ReviewResponseSchema } from "./dtos/controller/review-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
-import { ReviewCreateDto } from "./dtos/review-create.dto";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { ReviewUpdateDto } from "./dtos/review-update.dto";
+import { ReviewCreateDto } from "./dtos/service/review-create.dto";
+import { ReviewUpdateDto } from "./dtos/service/review-update.dto";
 
 export class ReviewController {
   static getInstituteReviews = catchAsync(
     async (req: Request, res: Response) => {
-      const page = Parse.pageNum(req.query.page);
-      const id = Parse.id(req.query.instituteId);
+      const q = createSchema({ page: "page", id: "id" }).parse(req.query);
 
-      const reviews = await ReviewService.getByInstituteId(
-        id,
-        page,
+      const services = await ReviewService.getByInstituteId(
+        q.id,
+        q.page,
         req.user?.id
       );
-      const parsedReviews = reviews.map((r) => ReviewResponseSchema.parse(r));
+      const reviews = services.map((s) => ReviewResponseSchema.parse(s));
 
-      return ApiResponse.success(res, "Reviews fetched.", {
-        reviews: parsedReviews,
-      });
+      return ApiResponse.success(res, "Reviews fetched.", { reviews });
     }
   );
 
@@ -31,10 +28,10 @@ export class ReviewController {
     async (req: Request<{}, {}, ReviewCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const review = await ReviewService.create(user.id, req.body);
-      const parsedReview = ReviewResponseSchema.parse(review);
+      const service = await ReviewService.create(user.id, req.body);
+      const review = ReviewResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Reviewed.", { review: parsedReview });
+      return ApiResponse.success(res, "Reviewed.", { review });
     }
   );
 
@@ -42,24 +39,20 @@ export class ReviewController {
     async (req: Request<{}, {}, ReviewUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const review = await ReviewService.update(user.id, req.body);
-      const parsedReview = ReviewResponseSchema.parse(review);
+      const service = await ReviewService.update(req.body, user.id);
+      const review = ReviewResponseSchema.parse(service.data);
 
-      return ApiResponse.success(res, "Review updated.", {
-        review: parsedReview,
-      });
+      return ApiResponse.success(res, "Review updated.", { review });
     }
   );
 
   static deleteReview = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const id = Parse.id(req.query.id);
+    const q = createSchema({ id: "id" }).parse(req.query);
 
-    const review = await ReviewService.delete(user.id, id);
-    const parsedReview = ReviewResponseSchema.parse(review);
+    const service = await ReviewService.delete(q.id, user.id);
+    const review = ReviewResponseSchema.parse(service.data);
 
-    return ApiResponse.success(res, "Review deleted.", {
-      review: parsedReview,
-    });
+    return ApiResponse.success(res, "Review deleted.", { review });
   });
 }

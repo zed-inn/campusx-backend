@@ -1,45 +1,36 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { Parse } from "@shared/utils/parse-fields";
+import { createSchema } from "@shared/utils/create-schema";
 import { ApiResponse } from "@shared/utils/api-response";
 import { InstituteService } from "./institute.service";
-import { InstituteResponseSchema } from "./dtos/institute-response.dto";
+import {
+  InstituteResponseMinSchema as ResMin,
+  InstituteResponseMaxSchema as ResMax,
+} from "./dtos/controller/institute-response.dto";
 
 export class InstituteController {
   static getInstitute = catchAsync(async (req: Request, res: Response) => {
-    const id = Parse.id(req.query.id);
+    const q = createSchema({ id: "id" }).parse(req.query);
+    const service = await InstituteService.getById(q.id);
+    const institute = ResMax.parse(service.data);
 
-    const institute = await InstituteService.getById(id);
-    const parsedInstitute = InstituteResponseSchema.parse(institute);
-
-    return ApiResponse.success(res, "Institute fetched.", {
-      institute: parsedInstitute,
-    });
+    return ApiResponse.success(res, "Institute fetched.", { institute });
   });
 
   static getAllInstitutes = catchAsync(async (req: Request, res: Response) => {
-    const page = Parse.pageNum(req.query.page);
+    const q = createSchema({ page: "page" }).parse(req.query);
+    const services = await InstituteService.getAll(q.page);
+    const institutes = services.map((i) => ResMin.parse(i.data));
 
-    const institutes = await InstituteService.getAll(page);
-    const parsedInstitutes = institutes.map((i) =>
-      InstituteResponseSchema.parse(i)
-    );
-
-    return ApiResponse.success(res, "Institute fetched.", {
-      institutes: parsedInstitutes,
-    });
+    return ApiResponse.success(res, "Institutes fetched.", { institutes });
   });
 
   static getAllInstitutesRandom = catchAsync(
     async (req: Request, res: Response) => {
-      const institutes = await InstituteService.getRandom();
-      const parsedInstitutes = institutes.map((i) =>
-        InstituteResponseSchema.parse(i)
-      );
+      const services = await InstituteService.getRandom();
+      const institutes = services.map((i) => ResMin.parse(i.data));
 
-      return ApiResponse.success(res, "Institute fetched.", {
-        institutes: parsedInstitutes,
-      });
+      return ApiResponse.success(res, "Institutes fetched.", { institutes });
     }
   );
 }

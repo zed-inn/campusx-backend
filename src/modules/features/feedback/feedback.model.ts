@@ -17,6 +17,7 @@ export const Feedback = defineModel<
   userId: {
     type: DataTypes.UUID,
     allowNull: true,
+    defaultValue: null,
     references: { model: Profile, key: "id" },
   },
   message: { type: DataTypes.STRING, allowNull: false },

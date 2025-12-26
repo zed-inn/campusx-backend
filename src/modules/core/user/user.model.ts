@@ -17,8 +17,12 @@ export const User = defineModel<UserAttributes, UserCreationAttributes>(
       unique: true,
       validate: { isEmail: true },
     },
-    passwordHash: { type: DataTypes.STRING, allowNull: true },
-    fcmToken: { type: DataTypes.STRING, allowNull: true },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+    fcmToken: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     referralCode: {
       type: DataTypes.CHAR(env.REFERRAL_CODE_LENGTH),
       allowNull: false,

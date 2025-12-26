@@ -14,14 +14,15 @@ export const Insight = defineModel<
   InsightCreationAttributes
 >(db, "Insight", {
   id: { ...PRIMARY_ID },
-  title: { type: DataTypes.STRING, allowNull: true },
-  body: { type: DataTypes.STRING, allowNull: true },
-  hindiTitle: { type: DataTypes.STRING, allowNull: true },
-  hindiBody: { type: DataTypes.STRING, allowNull: true },
-  imageUrl: { type: DataTypes.STRING, allowNull: true },
+  title: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  body: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  hindiTitle: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  hindiBody: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+  imageUrl: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   categoryId: {
     type: DataTypes.UUID,
     allowNull: true,
+    defaultValue: null,
     references: { model: Category, key: "id" },
   },
   status: {

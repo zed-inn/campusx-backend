@@ -2,73 +2,110 @@ import { Includeable } from "sequelize";
 import { Follow } from "../models/follow.model";
 import { Profile } from "../models/profile.model";
 import { FOLLOW_CONFIG } from "../profile.config";
-import { FollowFullSchema as FollowFS } from "../dtos/follow-full.dto";
 import db from "@config/database";
+import { BaseService } from "@shared/services/base.service";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { ProfileInclude, ProfileService } from "./profile.service";
+import { Rui } from "@shared/dtos/req-user.dto";
+import { FollowSchema } from "../dtos/service/follow-schema.dto";
 
-export class FollowService {
-  static FOLLOW_PER_PAGE = 30;
-  static OFFSET = (page: number) => (page - 1) * this.FOLLOW_PER_PAGE;
+export class FollowService extends BaseService<InstanceType<typeof Follow>> {
+  protected static FOLLOWS_PER_PAGE = 30;
+  protected static OFFSET = createOffsetFn(this.FOLLOWS_PER_PAGE);
 
-  static getFollowersById = async (id: string, page: number) => {
+  override get data() {
+    const follow = super.data;
+    follow.followerProfile = ProfileService.parse(follow.followerProfile);
+    follow.followeeProfile = ProfileService.parse(follow.followeeProfile);
+    return FollowSchema.parse(follow);
+  }
+
+  static getFollowersById = async (
+    id: string,
+    page: number,
+    reqUserId?: Rui
+  ) => {
     const followers = await Follow.findAll({
       where: { followeeId: id },
       offset: this.OFFSET(page),
-      limit: this.FOLLOW_PER_PAGE,
-      include: [FollowInclude.followerProfile, FollowInclude.followeeProfile],
+      limit: this.FOLLOWS_PER_PAGE,
+      include: [
+        FollowInclude.followeeProfile(reqUserId),
+        FollowInclude.followerProfile(reqUserId),
+      ],
     });
 
-    return followers.map((f) => FollowFS.parse(f.get({ plain: true })));
+    return followers.map((f) => new FollowService(f));
   };
 
-  static getFollowingById = async (id: string, page: number) => {
+  static getFollowingsById = async (
+    id: string,
+    page: number,
+    reqUserId?: Rui
+  ) => {
     const following = await Follow.findAll({
       where: { followerId: id },
       offset: this.OFFSET(page),
-      limit: this.FOLLOW_PER_PAGE,
-      include: [FollowInclude.followerProfile, FollowInclude.followeeProfile],
+      limit: this.FOLLOWS_PER_PAGE,
+      include: [
+        FollowInclude.followeeProfile(reqUserId),
+        FollowInclude.followerProfile(reqUserId),
+      ],
     });
 
-    return following.map((f) => FollowFS.parse(f.get({ plain: true })));
+    return following.map((f) => new FollowService(f));
   };
 
-  static follow = async (id: string, reqUserId: string) => {
+  static follow = async (followeeId: string, followerId: string) => {
     await db.transaction(async () => {
       await Follow.create({
-        followeeId: id,
-        followerId: reqUserId,
+        followeeId,
+        followerId,
         status: FOLLOW_CONFIG.STATUS.ACTIVE,
       });
 
-      await Profile.increment({ followersCount: 1 }, { where: { id } });
+      await Profile.increment(
+        { followersCount: 1 },
+        { where: { id: followeeId } }
+      );
       await Profile.increment(
         { followingCount: 1 },
-        { where: { id: reqUserId } }
+        { where: { id: followerId } }
       );
     });
   };
 
-  static unfollow = async (id: string, reqUserId: string) => {
-    await Follow.destroy({
-      where: {
-        followeeId: id,
-        followerId: reqUserId,
-      },
-    });
+  static unfollow = async (followeeId: string, followerId: string) => {
+    await db.transaction(async () => {
+      await Follow.destroy({
+        where: {
+          followeeId,
+          followerId,
+        },
+      });
 
-    await Profile.decrement({ followersCount: 1 }, { where: { id } });
-    await Profile.decrement(
-      { followingCount: 1 },
-      { where: { id: reqUserId } }
-    );
+      await Profile.decrement(
+        { followersCount: 1 },
+        { where: { id: followeeId } }
+      );
+      await Profile.decrement(
+        { followingCount: 1 },
+        { where: { id: followerId } }
+      );
+    });
   };
 }
 
 class FollowInclude {
-  static get followerProfile(): Includeable {
-    return { model: Profile, as: "followerProfile" };
-  }
+  static followerProfile = (id?: Rui): Includeable => ({
+    model: Profile,
+    as: "followerProfile",
+    include: [ProfileInclude.followedBy(id)],
+  });
 
-  static get followeeProfile(): Includeable {
-    return { model: Profile, as: "followeeProfile" };
-  }
+  static followeeProfile = (id?: Rui): Includeable => ({
+    model: Profile,
+    as: "followeeProfile",
+    include: [ProfileInclude.followedBy(id)],
+  });
 }

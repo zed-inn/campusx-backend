@@ -1,70 +1,43 @@
 import { Includeable } from "sequelize";
 import { Feedback } from "./feedback.model";
 import { Profile, ProfileService } from "@modules/core/profile";
-import { AppError } from "@shared/errors/app-error";
-import { FeedbackFullSchema as FeedbackFS } from "./dtos/feedback-full.dto";
 import { FEEDBACK_CONFIG } from "./feedback.config";
+import { createOffsetFn } from "@shared/utils/create-offset";
+import { BaseService } from "@shared/services/base.service";
+import { FeedbackErrors } from "./feedback.errors";
+import { Rui } from "@shared/dtos/req-user.dto";
+import { FeedbackSchema } from "./dtos/service/feedback-schema.dto";
 
-export class FeedbackService {
+export class FeedbackService extends BaseService<
+  InstanceType<typeof Feedback>
+> {
   static FEEDBACKS_PER_PAGE = 30;
-  static OFFSET = (page: number) => (page - 1) * this.FEEDBACKS_PER_PAGE;
+  static OFFSET = createOffsetFn(this.FEEDBACKS_PER_PAGE);
 
-  static getById = async (id: string) => {
-    const feedback = await Feedback.findByPk(id, {
-      include: [FeedbackInclude.writer],
-    });
-    if (!feedback) throw new AppError("No Feedback Found.", 404);
+  override get data() {
+    const feedback = super.data;
+    feedback.writer = ProfileService.parse(feedback.writer);
 
-    return FeedbackFS.parse(feedback.get({ plain: true }));
-  };
+    return FeedbackSchema.parse(feedback);
+  }
 
-  static getByStatus = async (status: string, page: number) => {
-    const feedbacks = await Feedback.findAll({
-      where: { status },
-      offset: this.OFFSET(page),
-      limit: this.FEEDBACKS_PER_PAGE,
-      order: [["createDate", "desc"]],
-      include: [FeedbackInclude.writer],
-    });
-
-    return feedbacks.map((f) => FeedbackFS.parse(f.get({ plain: true })));
-  };
-
-  static create = async (message: string, userId: string | null = null) => {
-    const feedback = await Feedback.create({
+  static create = async (message: string, userId: Rui = null) => {
+    const f = await Feedback.create({
       message,
       userId,
       status: FEEDBACK_CONFIG.STATUS.PENDING,
     });
 
-    let writer = null;
-    if (userId) writer = await ProfileService.getById(userId);
-
-    return FeedbackFS.parse({ ...feedback.get({ plain: true }), writer });
+    return this.getById(f.dataValues.id);
   };
 
-  static update = async (id: string, status: string) => {
+  static getById = async (id: string) => {
     const feedback = await Feedback.findByPk(id, {
       include: [FeedbackInclude.writer],
     });
-    if (!feedback) throw new AppError("No Feedback Found.", 404);
+    if (!feedback) throw FeedbackErrors.noFeedbackFound;
 
-    await feedback.update({ status });
-
-    return FeedbackFS.parse(feedback.get({ plain: true }));
-  };
-
-  static delete = async (id: string) => {
-    const feedback = await Feedback.findByPk(id, {
-      include: [FeedbackInclude.writer],
-    });
-    if (!feedback) throw new AppError("No Feedback Found.", 404);
-
-    const feedbackData = feedback.get({ plain: true });
-
-    await feedback.destroy();
-
-    return FeedbackFS.parse(feedbackData);
+    return new FeedbackService(feedback);
   };
 }
 
