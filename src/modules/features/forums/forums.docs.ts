@@ -15,7 +15,7 @@ export const ForumDocs: EndpointDetails[] = [
     endpoint: "/forums",
     description: "Get forums of a specified user",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
       page: z.number(),
     }),
     response: {
@@ -96,7 +96,7 @@ export const ForumDocs: EndpointDetails[] = [
     description: "Deletes a forum",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("forum id"),
     }),
     response: {
       message: "Forum deleted.",
@@ -113,7 +113,7 @@ export const ForumDocs: EndpointDetails[] = [
     description: "Likes a forum",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("forum id"),
     }),
     response: {
       message: "Liked.",
@@ -127,7 +127,7 @@ export const ForumDocs: EndpointDetails[] = [
     description: "Unlikes a forum",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("forum id"),
     }),
     response: {
       message: "Unliked.",
@@ -141,7 +141,7 @@ export const ForumDocs: EndpointDetails[] = [
     description: "Reports a forum by a currently logged in user",
     authTokenReq: true,
     body: z.object({
-      id: z.string(),
+      id: z.string().describe("forum id"),
       reason: z.string(),
     }),
     response: {
@@ -183,7 +183,7 @@ export const ForumDocs: EndpointDetails[] = [
   {
     category: "Forum Comment",
     title: "Update comment/reply",
-    method: "POST",
+    method: "PUT",
     endpoint: "/forums/comments",
     description: "Update your comment/reply on a forum/comment",
     body: CommentUpdateSchema,
@@ -197,11 +197,11 @@ export const ForumDocs: EndpointDetails[] = [
   {
     category: "Forum Comment",
     title: "Delete comment/reply",
-    method: "POST",
+    method: "DELETE",
     endpoint: "/forums/comments",
     description: "Deletes your comment/reply on a forum/comment",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("comment id"),
     }),
     response: {
       message: "Comment deleted.",

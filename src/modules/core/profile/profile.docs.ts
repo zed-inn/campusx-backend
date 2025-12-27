@@ -15,7 +15,7 @@ export const ProfileDocs: EndpointDetails[] = [
     endpoint: "/user/profile",
     description: "Gets user's display attributes, like dob, name, etc.",
     query: z.object({
-      id: z.string().describe("User id"),
+      id: z.string().describe("user id"),
     }),
     response: {
       message: "Profile fetched.",
@@ -31,7 +31,7 @@ export const ProfileDocs: EndpointDetails[] = [
     endpoint: "/user/all",
     description: "Get all users.",
     query: z.object({
-      page: z.number().describe("Page number"),
+      page: z.number(),
     }),
     response: {
       message: "Users fetched.",
@@ -90,9 +90,9 @@ export const ProfileDocs: EndpointDetails[] = [
     title: "Get user's followers",
     method: "GET",
     endpoint: "/user/followers",
-    description: "Get followers of a user with thier id",
+    description: "Get followers of a user with their id",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
       page: z.number(),
     }),
     response: {
@@ -126,7 +126,7 @@ export const ProfileDocs: EndpointDetails[] = [
     endpoint: "/user/following",
     description: "Get follwoings of a user with thier id",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
       page: z.number(),
     }),
     response: {
@@ -161,7 +161,7 @@ export const ProfileDocs: EndpointDetails[] = [
     description: "Follow a user",
     authTokenReq: true,
     body: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
     }),
     response: {
       message: "Followed.",
@@ -175,7 +175,7 @@ export const ProfileDocs: EndpointDetails[] = [
     description: "Unfollow a user",
     authTokenReq: true,
     body: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
     }),
     response: {
       message: "Unfollowed.",
@@ -189,7 +189,7 @@ export const ProfileDocs: EndpointDetails[] = [
     description: "Report a user with reason",
     authTokenReq: true,
     body: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
       reason: z.string(),
     }),
     response: {

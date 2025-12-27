@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { InstituteInterface } from "../../institute.interface";
+import { InstituteSchema } from "../service/institute-schema.dto";
 
-export const InstituteResponseMaxSchema = InstituteInterface.dbSchema.pick({
+export const InstituteResponseMaxSchema = InstituteSchema.pick({
   id: true,
   about: true,
   address: true,
@@ -35,7 +35,7 @@ export type InstituteResponseMaxDto = z.infer<
   typeof InstituteResponseMaxSchema
 >;
 
-export const InstituteResponseMinSchema = InstituteInterface.dbSchema.pick({
+export const InstituteResponseMinSchema = InstituteSchema.pick({
   id: true,
   name: true,
   aisheCode: true,

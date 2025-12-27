@@ -12,7 +12,7 @@ export const ReviewDocs: EndpointDetails[] = [
     endpoint: "/institute/review",
     description: "Get reviews for an insitute",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("institute id"),
       page: z.number(),
     }),
     response: {
@@ -40,7 +40,7 @@ export const ReviewDocs: EndpointDetails[] = [
   {
     category: "Review",
     title: "Update review",
-    method: "POST",
+    method: "PUT",
     endpoint: "/institute/review",
     description: "Update a review you have written",
     authTokenReq: true,
@@ -60,7 +60,7 @@ export const ReviewDocs: EndpointDetails[] = [
     description: "Deletes a review you have written",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("review id"),
     }),
     response: {
       message: "Review deleted.",

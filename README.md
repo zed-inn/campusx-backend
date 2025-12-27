@@ -13,7 +13,7 @@ Gets user's display attributes, like dob, name, etc.
 **Query Parameters :**
 ```ts
 {
-  id: string; // User id
+  id: string; // user id
 }
 ```
 
@@ -172,7 +172,7 @@ Get all users.
 **Query Parameters :**
 ```ts
 {
-  page: number; // Page number
+  page: number;
 }
 ```
 
@@ -203,7 +203,7 @@ Report a user with reason
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // user id
   reason: string;
 }
 ```
@@ -224,12 +224,12 @@ Report a user with reason
 
 **GET** `/user/followers`
 
-Get followers of a user with thier id
+Get followers of a user with their id
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // user id
   page: number;
 }
 ```
@@ -292,7 +292,7 @@ Get follwoings of a user with thier id
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // user id
   page: number;
 }
 ```
@@ -355,7 +355,7 @@ Follow a user
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // user id
 }
 ```
 
@@ -378,7 +378,7 @@ Unfollow a user
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // user id
 }
 ```
 
@@ -403,7 +403,7 @@ Get details about one specific institute
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // institute id
 }
 ```
 
@@ -525,7 +525,7 @@ Get students list of an institute, whether passed or ongoing
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // institute id
   page: number;
 }
 ```
@@ -759,7 +759,7 @@ Get education list of a specific user
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // user id
   page: number;
 }
 ```
@@ -931,7 +931,7 @@ Remove an education
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // education id
 }
 ```
 
@@ -1011,7 +1011,7 @@ Get forums of a specified user
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // user id
   page: number;
 }
 ```
@@ -1234,7 +1234,7 @@ Deletes a forum
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // forum id
 }
 ```
 
@@ -1277,7 +1277,7 @@ Likes a forum
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // forum id
 }
 ```
 
@@ -1300,7 +1300,7 @@ Unlikes a forum
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // forum id
 }
 ```
 
@@ -1323,7 +1323,7 @@ Reports a forum by a currently logged in user
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // forum id
   reason: string;
 }
 ```
@@ -1451,7 +1451,7 @@ Comment on a forum, or reply on a comment
 
 ### Update comment/reply
 
-**POST** `/forums/comments`
+**PUT** `/forums/comments`
 
 Update your comment/reply on a forum/comment
 
@@ -1505,14 +1505,14 @@ Update your comment/reply on a forum/comment
 
 ### Delete comment/reply
 
-**POST** `/forums/comments`
+**DELETE** `/forums/comments`
 
 Deletes your comment/reply on a forum/comment
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // comment id
 }
 ```
 
@@ -1631,7 +1631,7 @@ Get messages of an institute discussion
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // institute id
   page: number;
 }
 ```
@@ -1678,7 +1678,7 @@ Get messages of an institute discussion
 
 ### Create message
 
-**GET** `/institute/messages`  **( Login Required )**
+**POST** `/institute/messages`  **( Login Required )**
 
 Message in an insitute discussion
 
@@ -1733,7 +1733,7 @@ Message in an insitute discussion
 
 ### Update message
 
-**GET** `/institute/messages`  **( Login Required )**
+**PUT** `/institute/messages`  **( Login Required )**
 
 Udpate your message in an insitute discussion
 
@@ -1787,14 +1787,14 @@ Udpate your message in an insitute discussion
 
 ### Delete message
 
-**GET** `/institute/messages`  **( Login Required )**
+**DELETE** `/institute/messages`  **( Login Required )**
 
 Deletes your message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // message/discussion id
 }
 ```
 
@@ -1840,14 +1840,14 @@ Deletes your message in an insitute discussion
 
 ### Like message
 
-**GET** `/institute/messages`  **( Login Required )**
+**POST** `/institute/messages`  **( Login Required )**
 
 Like a message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // message/discussion id
 }
 ```
 
@@ -1863,14 +1863,14 @@ Like a message in an insitute discussion
 
 ### Unlike message
 
-**GET** `/institute/messages`  **( Login Required )**
+**POST** `/institute/messages`  **( Login Required )**
 
 Unlike a liked message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // message/discussion id
 }
 ```
 
@@ -1895,7 +1895,7 @@ Get reviews for an insitute
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // institute id
   page: number;
 }
 ```
@@ -1975,7 +1975,7 @@ Review an institute with a rating and some content
 
 ### Update review
 
-**POST** `/institute/review`  **( Login Required )**
+**PUT** `/institute/review`  **( Login Required )**
 
 Update a review you have written
 
@@ -2026,7 +2026,7 @@ Deletes a review you have written
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // review id
 }
 ```
 

@@ -12,7 +12,7 @@ export const DiscussionDocs: EndpointDetails[] = [
     endpoint: "/institute/messages",
     description: "Get messages of an institute discussion",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("institute id"),
       page: z.number(),
     }),
     response: {
@@ -25,7 +25,7 @@ export const DiscussionDocs: EndpointDetails[] = [
   {
     category: "Institute Discussion",
     title: "Create message",
-    method: "GET",
+    method: "POST",
     endpoint: "/institute/messages",
     description: "Message in an insitute discussion",
     authTokenReq: true,
@@ -40,7 +40,7 @@ export const DiscussionDocs: EndpointDetails[] = [
   {
     category: "Institute Discussion",
     title: "Update message",
-    method: "GET",
+    method: "PUT",
     endpoint: "/institute/messages",
     description: "Udpate your message in an insitute discussion",
     authTokenReq: true,
@@ -55,12 +55,12 @@ export const DiscussionDocs: EndpointDetails[] = [
   {
     category: "Institute Discussion",
     title: "Delete message",
-    method: "GET",
+    method: "DELETE",
     endpoint: "/institute/messages",
     description: "Deletes your message in an insitute discussion",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("message/discussion id"),
     }),
     response: {
       message: "Message deleted.",
@@ -72,12 +72,12 @@ export const DiscussionDocs: EndpointDetails[] = [
   {
     category: "Institute Discussion",
     title: "Like message",
-    method: "GET",
+    method: "POST",
     endpoint: "/institute/messages",
     description: "Like a message in an insitute discussion",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("message/discussion id"),
     }),
     response: {
       message: "Message liked.",
@@ -86,12 +86,12 @@ export const DiscussionDocs: EndpointDetails[] = [
   {
     category: "Institute Discussion",
     title: "Unlike message",
-    method: "GET",
+    method: "POST",
     endpoint: "/institute/messages",
     description: "Unlike a liked message in an insitute discussion",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("message/discussion id"),
     }),
     response: {
       message: "Message unliked.",

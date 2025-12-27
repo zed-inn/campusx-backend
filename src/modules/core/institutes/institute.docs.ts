@@ -13,7 +13,7 @@ export const InstituteDocs: EndpointDetails[] = [
     endpoint: "/institute",
     description: "Get details about one specific institute",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("institute id"),
     }),
     response: {
       message: "Institute fetched.",

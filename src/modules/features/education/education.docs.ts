@@ -13,7 +13,7 @@ export const EducationDocs: EndpointDetails[] = [
     endpoint: "/education",
     description: "Get education list of a specific user",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("user id"),
       page: z.number(),
     }),
     response: {
@@ -27,10 +27,10 @@ export const EducationDocs: EndpointDetails[] = [
     category: "Institute",
     title: "Get institute students",
     method: "GET",
-    endpoint: "/educations/students",
+    endpoint: "/education/students",
     description: "Get students list of an institute, whether passed or ongoing",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("institute id"),
       page: z.number(),
     }),
     response: {
@@ -74,7 +74,7 @@ export const EducationDocs: EndpointDetails[] = [
     description: "Remove an education",
     authTokenReq: true,
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("education id"),
     }),
     response: {
       message: "Education removed.",
