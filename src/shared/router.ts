@@ -8,6 +8,7 @@ import { InstituteReviewRouter } from "@modules/features/institute-review";
 import { InstituteDiscussionRouter } from "@modules/features/institute-discussion";
 import { FeedbackRouter } from "@modules/features/feedback";
 import { ProfileEducationRouter } from "@modules/features/education";
+import { DocRouter } from "./docs/readme.route";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ const routers = [
   InstituteDiscussionRouter,
   FeedbackRouter,
   ProfileEducationRouter,
+  DocRouter,
 ];
 
 for (const ModuleRouter of routers) router.use("/", ModuleRouter);

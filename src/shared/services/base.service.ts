@@ -9,7 +9,7 @@ export abstract class BaseService<M extends Model> {
   }
 
   get data(): any {
-    return this.model.plain;
+    return this.model.get({ plain: true });
   }
 
   public checkOwnership = (userId: string, alias: string = "userId") => {

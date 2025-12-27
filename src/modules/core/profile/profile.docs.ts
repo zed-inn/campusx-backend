@@ -15,7 +15,7 @@ export const ProfileDocs: EndpointDetails[] = [
     endpoint: "/user/profile",
     description: "Gets user's display attributes, like dob, name, etc.",
     query: z.object({
-      id: z.string(),
+      id: z.string().describe("User id"),
     }),
     response: {
       message: "Profile fetched.",
@@ -31,7 +31,7 @@ export const ProfileDocs: EndpointDetails[] = [
     endpoint: "/user/all",
     description: "Get all users.",
     query: z.object({
-      page: z.number(),
+      page: z.number().describe("Page number"),
     }),
     response: {
       message: "Users fetched.",

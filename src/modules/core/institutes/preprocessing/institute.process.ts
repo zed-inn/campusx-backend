@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { InstituteCreateSchema } from "../dtos/institute-create.dto";
+import { InstituteCreateSchema } from "../dtos/service/institute-create.dto";
 import { Institute } from "../institute.model";
 import { connectDB } from "@config/database";
 

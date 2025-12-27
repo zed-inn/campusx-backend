@@ -6,19 +6,20 @@
 
 ### Get user's profile
 
-**GET** `/user/profile`
+**GET** `/user/profile` 
+(Auth: No)
 
 Gets user's display attributes, like dob, name, etc.
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // User id
+  id: string; // required, User id
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -44,12 +45,13 @@ Gets user's display attributes, like dob, name, etc.
 
 ### Get my profile
 
-**GET** `/user/profile/me`  **( Login Required )**
+**GET** `/user/profile/me` 
+(Auth: Required)
 
 Get the profile of currently logged in user
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -75,24 +77,25 @@ Get the profile of currently logged in user
 
 ### Create profile (after signup)
 
-**POST** `/user/profile`  **( Login Required )**
+**POST** `/user/profile` 
+(Auth: Required)
 
 Create profile for the user after signing up
 
 **Body :**
 ```ts
 {
-  avatarUrl: string | null;
-  fullName: string;
-  username: string | null;
-  about: string | null;
-  gender: string | null;
-  dob: number | null;
+  avatarUrl: string | null; // required
+  fullName: string; // required
+  username: string | null; // required
+  about: string | null; // required
+  gender: string | null; // required
+  dob: number | null; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -118,7 +121,8 @@ Create profile for the user after signing up
 
 ### Update profile
 
-**PUT** `/user/profile`  **( Login Required )**
+**PUT** `/user/profile` 
+(Auth: Required)
 
 Update profile of currently logged in user
 Only updates the fields sent
@@ -137,7 +141,7 @@ Does not update if no fields given
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -165,19 +169,20 @@ Does not update if no fields given
 
 ### Get users
 
-**GET** `/user/all`
+**GET** `/user/all` 
+(Auth: No)
 
 Get all users.
 
 **Query Parameters :**
 ```ts
 {
-  page: number; // Page number
+  page: number; // required, Page number
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -196,20 +201,21 @@ Get all users.
 
 ### Report user
 
-**POST** `/user/report`  **( Login Required )**
+**POST** `/user/report` 
+(Auth: Required)
 
 Report a user with reason
 
 **Body :**
 ```ts
 {
-  id: string;
-  reason: string;
+  id: string; // required
+  reason: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -222,20 +228,21 @@ Report a user with reason
 
 ### Get user's followers
 
-**GET** `/user/followers`
+**GET** `/user/followers` 
+(Auth: No)
 
 Get followers of a user with thier id
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -254,19 +261,20 @@ Get followers of a user with thier id
 
 ### Get my followers
 
-**GET** `/user/followers/me`  **( Login Required )**
+**GET** `/user/followers/me` 
+(Auth: Required)
 
 Get followers of currently logged in user
 
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -285,20 +293,21 @@ Get followers of currently logged in user
 
 ### Get user's following
 
-**GET** `/user/following`
+**GET** `/user/following` 
+(Auth: No)
 
 Get follwoings of a user with thier id
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -317,19 +326,20 @@ Get follwoings of a user with thier id
 
 ### Get my following
 
-**GET** `/user/following/me`  **( Login Required )**
+**GET** `/user/following/me` 
+(Auth: Required)
 
 Get following of currently logged in user
 
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -348,19 +358,20 @@ Get following of currently logged in user
 
 ### Follow user
 
-**POST** `/user/follow`  **( Login Required )**
+**POST** `/user/follow` 
+(Auth: Required)
 
 Follow a user
 
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -371,19 +382,20 @@ Follow a user
 
 ### Unfollow user
 
-**POST** `/user/unfollow`  **( Login Required )**
+**POST** `/user/unfollow` 
+(Auth: Required)
 
 Unfollow a user
 
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -396,19 +408,20 @@ Unfollow a user
 
 ### Get institute
 
-**GET** `/institute`
+**GET** `/institute` 
+(Auth: No)
 
 Get details about one specific institute
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -449,19 +462,20 @@ Get details about one specific institute
 
 ### Get all institutes
 
-**GET** `/institute/all`
+**GET** `/institute/all` 
+(Auth: No)
 
 Get institutes arranged in descending order per updateDate
 
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -487,12 +501,13 @@ Get institutes arranged in descending order per updateDate
 
 ### Get random institutes
 
-**GET** `/institute/random`
+**GET** `/institute/random` 
+(Auth: No)
 
 Get random list of institutes
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -518,20 +533,21 @@ Get random list of institutes
 
 ### Get institute students
 
-**GET** `/educations/students`
+**GET** `/educations/students` 
+(Auth: No)
 
 Get students list of an institute, whether passed or ongoing
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -552,7 +568,8 @@ Get students list of an institute, whether passed or ongoing
 
 ### Basic: email and password
 
-**POST** `/auth/login/basic`
+**POST** `/auth/login/basic` 
+(Auth: No)
 
 Login with email and password
 
@@ -561,12 +578,12 @@ Login with email and password
 {
   email?: string;
   username?: string | null;
-  password: string;
+  password: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -586,20 +603,21 @@ Login with email and password
 
 ### Google
 
-**POST** `/auth/login/google`
+**POST** `/auth/login/google` 
+(Auth: No)
 
 Login with google from flutter screen
 
 **Body :**
 ```ts
 {
-  email: string;
-  fullName: string;
+  email: string; // required
+  fullName: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -621,19 +639,20 @@ Login with google from flutter screen
 
 ### Get otp
 
-**POST** `/auth/otp/get`
+**POST** `/auth/otp/get` 
+(Auth: No)
 
 Get Otp to desired mail to verify it
 
 **Body :**
 ```ts
 {
-  email: string;
+  email: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -644,20 +663,21 @@ Get Otp to desired mail to verify it
 
 ### Verify otp
 
-**POST** `/auth/otp/verify`
+**POST** `/auth/otp/verify` 
+(Auth: No)
 
 Verify the 'sent' Otp to the given mail in previous step
 
 **Body :**
 ```ts
 {
-  email: string;
-  otp: string;
+  email: string; // required
+  otp: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -672,20 +692,21 @@ Verify the 'sent' Otp to the given mail in previous step
 
 ### Create password
 
-**POST** `/auth/signup/create-password`
+**POST** `/auth/signup/create-password` 
+(Auth: No)
 
 Create password after getting and verifying otp
 
 **Body :**
 ```ts
 {
-  otpToken: string;
-  password: string;
+  otpToken: string; // required
+  password: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -707,20 +728,21 @@ Create password after getting and verifying otp
 
 ### Reset password
 
-**POST** `/auth/forgot-password/reset-password`
+**POST** `/auth/forgot-password/reset-password` 
+(Auth: No)
 
 Reset password after getting and verifying otp
 
 **Body :**
 ```ts
 {
-  otpToken: string;
-  password: string;
+  otpToken: string; // required
+  password: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -733,13 +755,14 @@ Reset password after getting and verifying otp
 
 ### Logout
 
-**GET** `/auth/logout`
+**GET** `/auth/logout` 
+(Auth: No)
 
 Logouts the current logged in user
 Makes the <authToken> lose its authorization
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -752,20 +775,21 @@ Makes the <authToken> lose its authorization
 
 ### Get user's education
 
-**GET** `/education`
+**GET** `/education` 
+(Auth: No)
 
 Get education list of a specific user
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -808,24 +832,25 @@ Get education list of a specific user
 
 ### Add education
 
-**POST** `/education`  **( Login Required )**
+**POST** `/education` 
+(Auth: Required)
 
 Add institute and relevant details as your education
 
 **Body :**
 ```ts
 {
-  instituteId: string;
-  startYear: number;
-  startMonth: number;
-  endYear: number | null;
-  endMonth: number | null;
-  isCompleted: boolean;
+  instituteId: string; // required
+  startYear: number; // required
+  startMonth: number; // required
+  endYear: number | null; // required
+  endMonth: number | null; // required
+  isCompleted: boolean; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -866,14 +891,15 @@ Add institute and relevant details as your education
 
 ### Update education
 
-**PUT** `/education`  **( Login Required )**
+**PUT** `/education` 
+(Auth: Required)
 
 Update relevant details of your education
 
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // required
   startYear?: number;
   startMonth?: number;
   endYear?: number | null;
@@ -883,7 +909,7 @@ Update relevant details of your education
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -924,19 +950,20 @@ Update relevant details of your education
 
 ### Remove education
 
-**DELETE** `/education`  **( Login Required )**
+**DELETE** `/education` 
+(Auth: Required)
 
 Remove an education
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -979,19 +1006,20 @@ Remove an education
 
 ### Give feedback
 
-**POST** `/feedback`
+**POST** `/feedback` 
+(Auth: No)
 
 Give feedback, either by logging in or without
 
 **Query Parameters :**
 ```ts
 {
-  message: string;
+  message: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1004,20 +1032,21 @@ Give feedback, either by logging in or without
 
 ### Get user's forums
 
-**GET** `/forums`
+**GET** `/forums` 
+(Auth: No)
 
 Get forums of a specified user
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1048,19 +1077,20 @@ Get forums of a specified user
 
 ### Get forums (latest)
 
-**GET** `/forums/latest`
+**GET** `/forums/latest` 
+(Auth: No)
 
 Get latest forums, will be upgraded to recommended forums
 
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1091,19 +1121,20 @@ Get latest forums, will be upgraded to recommended forums
 
 ### Get my forums
 
-**GET** `/forums/me`  **( Login Required )**
+**GET** `/forums/me` 
+(Auth: Required)
 
 Get forums of the currently logged in user
 
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1134,22 +1165,23 @@ Get forums of the currently logged in user
 
 ### Create forum
 
-**POST** `/forums`  **( Login Required )**
+**POST** `/forums` 
+(Auth: Required)
 
 Creates a forum
 
 **Body :**
 ```ts
 {
-  localId: string | null;
-  title: string;
-  body: string | null;
-  imageUrl: string | null;
+  localId: string | null; // required
+  title: string; // required
+  body: string | null; // required
+  imageUrl: string | null; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1180,14 +1212,15 @@ Creates a forum
 
 ### Update forum
 
-**PUT** `/forums`  **( Login Required )**
+**PUT** `/forums` 
+(Auth: Required)
 
 Updates a forum
 
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // required
   localId?: string | null;
   title?: string;
   body?: string | null;
@@ -1196,7 +1229,7 @@ Updates a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1227,19 +1260,20 @@ Updates a forum
 
 ### Delete forum
 
-**DELETE** `/forums`  **( Login Required )**
+**DELETE** `/forums` 
+(Auth: Required)
 
 Deletes a forum
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1270,19 +1304,20 @@ Deletes a forum
 
 ### Like forum
 
-**POST** `/forums/like`  **( Login Required )**
+**POST** `/forums/like` 
+(Auth: Required)
 
 Likes a forum
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1293,19 +1328,20 @@ Likes a forum
 
 ### Unlike forum
 
-**POST** `/forums/unlike`  **( Login Required )**
+**POST** `/forums/unlike` 
+(Auth: Required)
 
 Unlikes a forum
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1316,20 +1352,21 @@ Unlikes a forum
 
 ### Report forum
 
-**POST** `/forums/report`  **( Login Required )**
+**POST** `/forums/report` 
+(Auth: Required)
 
 Reports a forum by a currently logged in user
 
 **Body :**
 ```ts
 {
-  id: string;
-  reason: string;
+  id: string; // required
+  reason: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1342,21 +1379,22 @@ Reports a forum by a currently logged in user
 
 ### Get comments/replies
 
-**GET** `/forums/comments`
+**GET** `/forums/comments` 
+(Auth: No)
 
 Get comments on a forum, or replies on a comment of a forum
 
 **Query Parameters :**
 ```ts
 {
-  forumId: string;
-  commentId: string | null;
-  page: number;
+  forumId: string; // required
+  commentId: string | null; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1396,22 +1434,23 @@ Get comments on a forum, or replies on a comment of a forum
 
 ### Comment/reply
 
-**POST** `/forums/comments`
+**POST** `/forums/comments` 
+(Auth: No)
 
 Comment on a forum, or reply on a comment
 
 **Body :**
 ```ts
 {
-  localId: string | null;
-  forumId: string;
-  body: string;
-  replyingTo: string | null;
+  localId: string | null; // required
+  forumId: string; // required
+  body: string; // required
+  replyingTo: string | null; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1451,21 +1490,22 @@ Comment on a forum, or reply on a comment
 
 ### Update comment/reply
 
-**POST** `/forums/comments`
+**POST** `/forums/comments` 
+(Auth: No)
 
 Update your comment/reply on a forum/comment
 
 **Body :**
 ```ts
 {
-  id: string;
-  localId: string | null;
-  body: string;
+  id: string; // required
+  localId: string | null; // required
+  body: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1505,19 +1545,20 @@ Update your comment/reply on a forum/comment
 
 ### Delete comment/reply
 
-**POST** `/forums/comments`
+**POST** `/forums/comments` 
+(Auth: No)
 
 Deletes your comment/reply on a forum/comment
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1559,19 +1600,20 @@ Deletes your comment/reply on a forum/comment
 
 ### Get categories
 
-**GET** `/insights/categories`
+**GET** `/insights/categories` 
+(Auth: No)
 
 Get category names of insights
 
 **Query Parameters :**
 ```ts
 {
-  page: string;
+  page: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1584,20 +1626,21 @@ Get category names of insights
 
 ### Get insights
 
-**GET** `/insights`
+**GET** `/insights` 
+(Auth: No)
 
 Get insights
 
 **Query Parameters :**
 ```ts
 {
-  page: string;
-  category: string;
+  page: string; // required
+  category: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1624,20 +1667,21 @@ Get insights
 
 ### Get messages
 
-**GET** `/institute/messages`
+**GET** `/institute/messages` 
+(Auth: No)
 
 Get messages of an institute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1678,21 +1722,22 @@ Get messages of an institute discussion
 
 ### Create message
 
-**GET** `/institute/messages`  **( Login Required )**
+**GET** `/institute/messages` 
+(Auth: Required)
 
 Message in an insitute discussion
 
 **Body :**
 ```ts
 {
-  instituteId: string;
-  message: string;
-  replyingTo: string | null;
+  instituteId: string; // required
+  message: string; // required
+  replyingTo: string | null; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1733,20 +1778,21 @@ Message in an insitute discussion
 
 ### Update message
 
-**GET** `/institute/messages`  **( Login Required )**
+**GET** `/institute/messages` 
+(Auth: Required)
 
 Udpate your message in an insitute discussion
 
 **Body :**
 ```ts
 {
-  id: string;
-  message: string;
+  id: string; // required
+  message: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1787,19 +1833,20 @@ Udpate your message in an insitute discussion
 
 ### Delete message
 
-**GET** `/institute/messages`  **( Login Required )**
+**GET** `/institute/messages` 
+(Auth: Required)
 
 Deletes your message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1840,19 +1887,20 @@ Deletes your message in an insitute discussion
 
 ### Like message
 
-**GET** `/institute/messages`  **( Login Required )**
+**GET** `/institute/messages` 
+(Auth: Required)
 
 Like a message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1863,19 +1911,20 @@ Like a message in an insitute discussion
 
 ### Unlike message
 
-**GET** `/institute/messages`  **( Login Required )**
+**GET** `/institute/messages` 
+(Auth: Required)
 
 Unlike a liked message in an insitute discussion
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1888,20 +1937,21 @@ Unlike a liked message in an insitute discussion
 
 ### Get reviews
 
-**GET** `/institute/review`
+**GET** `/institute/review` 
+(Auth: No)
 
 Get reviews for an insitute
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
-  page: number;
+  id: string; // required
+  page: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1931,21 +1981,22 @@ Get reviews for an insitute
 
 ### Create review
 
-**POST** `/institute/review`  **( Login Required )**
+**POST** `/institute/review` 
+(Auth: Required)
 
 Review an institute with a rating and some content
 
 **Body :**
 ```ts
 {
-  instituteId: string;
-  body: string;
-  rating: number;
+  instituteId: string; // required
+  body: string; // required
+  rating: number; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1975,21 +2026,22 @@ Review an institute with a rating and some content
 
 ### Update review
 
-**POST** `/institute/review`  **( Login Required )**
+**POST** `/institute/review` 
+(Auth: Required)
 
 Update a review you have written
 
 **Body :**
 ```ts
 {
-  id: string;
+  id: string; // required
   body?: string;
   rating?: number;
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -2019,19 +2071,20 @@ Update a review you have written
 
 ### Delete review
 
-**DELETE** `/institute/review`  **( Login Required )**
+**DELETE** `/institute/review` 
+(Auth: Required)
 
 Deletes a review you have written
 
 **Query Parameters :**
 ```ts
 {
-  id: string;
+  id: string; // required
 }
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserInterface } from "../user.interface";
+import { UserInterface } from "../../user.interface";
 
 export const UserCreateSchema = z.object({
   email: UserInterface.fields.email,

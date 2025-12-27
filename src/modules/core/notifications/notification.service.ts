@@ -6,8 +6,8 @@ import { Notification } from "./notification.model";
 
 export class NotificationService {
   static getFcmTokenByUserId = async (userId: string) => {
-    const user = await UserService.getById(userId);
-    return user.fcmToken;
+    const service = await UserService.getById(userId);
+    return service.data.fcmToken;
   };
 
   static sendByFcmToken = async (
