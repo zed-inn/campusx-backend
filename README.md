@@ -1376,7 +1376,7 @@ Get comments on a forum, or replies on a comment of a forum
         avatarUrl: string | null;
         isFollowed: boolean;
       };
-      parenComment: {
+      parentComment: {
         id: string;
         body: string;
         writer: {
@@ -1431,7 +1431,7 @@ Comment on a forum, or reply on a comment
         avatarUrl: string | null;
         isFollowed: boolean;
       };
-      parenComment: {
+      parentComment: {
         id: string;
         body: string;
         writer: {
@@ -1485,7 +1485,7 @@ Update your comment/reply on a forum/comment
         avatarUrl: string | null;
         isFollowed: boolean;
       };
-      parenComment: {
+      parentComment: {
         id: string;
         body: string;
         writer: {
@@ -1537,7 +1537,7 @@ Deletes your comment/reply on a forum/comment
         avatarUrl: string | null;
         isFollowed: boolean;
       };
-      parenComment: {
+      parentComment: {
         id: string;
         body: string;
         writer: {
