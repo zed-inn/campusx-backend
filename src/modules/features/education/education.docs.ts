@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/docs/readme-types";
 import { EducationResponseSchema } from "./dtos/controller/education-response.dto";
 import { EducationCreateSchema } from "./dtos/service/education-create.dto";
 import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
 import { ProfileResMin } from "@modules/core/profile";
+import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const EducationDocs: EndpointDetails[] = [
   {
@@ -50,7 +50,9 @@ export const EducationDocs: EndpointDetails[] = [
     body: EducationCreateSchema,
     response: {
       message: "Education added.",
-      data: EducationResponseSchema,
+      data: z.object({
+        education: EducationResponseSchema,
+      }),
     },
   },
   {
@@ -63,7 +65,9 @@ export const EducationDocs: EndpointDetails[] = [
     body: EducationUpdateSchema,
     response: {
       message: "Education updated.",
-      data: EducationResponseSchema,
+      data: z.object({
+        education: EducationResponseSchema,
+      }),
     },
   },
   {
@@ -78,7 +82,9 @@ export const EducationDocs: EndpointDetails[] = [
     }),
     response: {
       message: "Education removed.",
-      data: EducationResponseSchema,
+      data: z.object({
+        education: EducationResponseSchema,
+      }),
     },
   },
 ];

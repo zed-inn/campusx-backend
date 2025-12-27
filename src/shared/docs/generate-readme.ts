@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 import { formatSchemaToTs } from "./schema-to-clean-ts";
-import { EndpointDetails } from "@shared/docs/readme-types";
+import { EndpointDetails } from "./readme-types";
 
 export const generateReadme = (
   endpoints: EndpointDetails[],

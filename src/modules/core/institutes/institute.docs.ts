@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/docs/readme-types";
 import {
   InstituteResponseMaxSchema as ResMax,
   InstituteResponseMinSchema as ResMin,
 } from "./dtos/controller/institute-response.dto";
+import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const InstituteDocs: EndpointDetails[] = [
   {

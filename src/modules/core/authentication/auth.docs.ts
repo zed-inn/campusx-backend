@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/docs/readme-types";
 import { LoginBasicSchema } from "./dtos/service/login-basic.dto";
 import { AuthResponseSchema } from "./dtos/controller/auth-response.dto";
 import { LoginGoogleSchema } from "./dtos/service/login-google.dto";
 import { SignupSchema } from "./dtos/service/signup-final.dto";
+import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const AuthDocs: EndpointDetails[] = [
   {

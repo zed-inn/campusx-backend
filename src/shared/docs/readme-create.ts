@@ -1,4 +1,3 @@
-import { EndpointDetails } from "@shared/docs/readme-types";
 import { generateReadme } from "./generate-readme";
 import { ProfileDocs } from "@modules/core/profile";
 import { InstituteDocs } from "@modules/core/institutes";
@@ -9,6 +8,7 @@ import { ForumDocs } from "@modules/features/forums";
 import { InsightsDocs } from "@modules/features/insights";
 import { InstituteDiscussionDocs } from "@modules/features/institute-discussion";
 import { InstituteReviewDocs } from "@modules/features/institute-review";
+import { EndpointDetails } from "./readme-types";
 
 const Docs = [
   ProfileDocs,

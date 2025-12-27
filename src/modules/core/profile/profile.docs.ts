@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/docs/readme-types";
 import {
   ProfileResponseMaxSchema as ResMax,
   ProfileResponseMinSchema as ResMin,
 } from "./dtos/controller/profile-response.dto";
 import { ProfileCreateSchema } from "./dtos/service/profile-create.dto";
 import { ProfileUpdateSchema } from "./dtos/service/profile-update.dto";
+import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const ProfileDocs: EndpointDetails[] = [
   {

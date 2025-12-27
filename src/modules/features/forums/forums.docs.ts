@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/docs/readme-types";
 import { ForumResponseSchema } from "./dtos/controller/forum-response.dto";
 import { ForumCreateSchema } from "./dtos/service/forum-create.dto";
 import { ForumUpdateSchema } from "./dtos/service/forum-update.dto";
 import { CommentResponseSchema } from "./dtos/controller/comment-response.dto";
 import { CommentCreateSchema } from "./dtos/service/comment-create.dto";
 import { CommentUpdateSchema } from "./dtos/service/comment-update.dto";
+import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const ForumDocs: EndpointDetails[] = [
   {

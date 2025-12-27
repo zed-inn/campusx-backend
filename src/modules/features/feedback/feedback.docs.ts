@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { z } from "zod";
 
 export const FeedbackDocs: EndpointDetails[] = [
   {
