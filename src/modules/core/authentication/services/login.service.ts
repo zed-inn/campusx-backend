@@ -34,20 +34,20 @@ export class LoginService {
   };
 
   static loginGoogle = async (data: LoginGoogleDto) => {
+    const { email, ...createData } = data;
     let user: UserService["data"] | null = null;
     try {
-      const service = await UserService.getByEmail(data.email);
+      const service = await UserService.getByEmail(email);
       user = service.data;
     } catch {
       user = await db.transaction(async () => {
-        const service = await UserService.createWithoutPassword(data.email);
+        const service = await UserService.createWithoutPassword(email);
         const user = service.data;
 
         await ProfileService.create(
           {
-            fullName: data.fullName,
+            ...createData,
             about: null,
-            avatarUrl: null,
             dob: null,
             gender: null,
             username: null,

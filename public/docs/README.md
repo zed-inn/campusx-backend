@@ -595,6 +595,7 @@ Login with google from flutter screen
 {
   email: string;
   fullName: string;
+  avatarUrl: string | null;
 }
 ```
 
