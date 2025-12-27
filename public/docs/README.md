@@ -577,7 +577,7 @@ Login with email and password
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
-    };
+    } | null;
   };
 }
 ```
@@ -610,7 +610,7 @@ Login with google from flutter screen
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
-    };
+    } | null;
   };
 }
 ```
@@ -696,7 +696,7 @@ Create password after getting and verifying otp
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
-    };
+    } | null;
   };
 }
 ```
@@ -779,24 +779,47 @@ Get education list of a specific user
       startYear: number;
       updateDate: number;
       institute: {
+        createDate: number;
+        updateDate: number;
         id: string;
-        name: string;
         aisheCode: string | null;
+        name: string;
+        nameNormalized: string;
         shortName: string | null;
         about: string | null;
         district: string | null;
         state: string | null;
         country: string | null;
+        address: string | null;
+        pinCode: number | null;
         yearOfEstablishment: number | null;
         website: string | null;
-        imageUrl: string | null;
+        location: string | null;
         category: string | null;
+        administrativeMinistry: string | null;
+        standaloneType: string | null;
+        management: string | null;
+        collegeType: string | null;
+        universityName: string | null;
+        universityType: string | null;
+        phone: string | null;
+        landline: string | null;
+        imageUrl: string | null;
+        rating: number;
+        reviewsCount: number;
       };
       user: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     }[];
@@ -838,24 +861,47 @@ Add institute and relevant details as your education
     startYear: number;
     updateDate: number;
     institute: {
+      createDate: number;
+      updateDate: number;
       id: string;
-      name: string;
       aisheCode: string | null;
+      name: string;
+      nameNormalized: string;
       shortName: string | null;
       about: string | null;
       district: string | null;
       state: string | null;
       country: string | null;
+      address: string | null;
+      pinCode: number | null;
       yearOfEstablishment: number | null;
       website: string | null;
-      imageUrl: string | null;
+      location: string | null;
       category: string | null;
+      administrativeMinistry: string | null;
+      standaloneType: string | null;
+      management: string | null;
+      collegeType: string | null;
+      universityName: string | null;
+      universityType: string | null;
+      phone: string | null;
+      landline: string | null;
+      imageUrl: string | null;
+      rating: number;
+      reviewsCount: number;
     };
     user: {
+      createDate: number;
+      updateDate: number;
       id: string;
       username: string | null;
       fullName: string;
+      about: string | null;
       avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      followersCount: number;
+      followingCount: number;
       isFollowed: boolean;
     };
   };
@@ -896,24 +942,47 @@ Update relevant details of your education
     startYear: number;
     updateDate: number;
     institute: {
+      createDate: number;
+      updateDate: number;
       id: string;
-      name: string;
       aisheCode: string | null;
+      name: string;
+      nameNormalized: string;
       shortName: string | null;
       about: string | null;
       district: string | null;
       state: string | null;
       country: string | null;
+      address: string | null;
+      pinCode: number | null;
       yearOfEstablishment: number | null;
       website: string | null;
-      imageUrl: string | null;
+      location: string | null;
       category: string | null;
+      administrativeMinistry: string | null;
+      standaloneType: string | null;
+      management: string | null;
+      collegeType: string | null;
+      universityName: string | null;
+      universityType: string | null;
+      phone: string | null;
+      landline: string | null;
+      imageUrl: string | null;
+      rating: number;
+      reviewsCount: number;
     };
     user: {
+      createDate: number;
+      updateDate: number;
       id: string;
       username: string | null;
       fullName: string;
+      about: string | null;
       avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      followersCount: number;
+      followingCount: number;
       isFollowed: boolean;
     };
   };
@@ -949,24 +1018,47 @@ Remove an education
     startYear: number;
     updateDate: number;
     institute: {
+      createDate: number;
+      updateDate: number;
       id: string;
-      name: string;
       aisheCode: string | null;
+      name: string;
+      nameNormalized: string;
       shortName: string | null;
       about: string | null;
       district: string | null;
       state: string | null;
       country: string | null;
+      address: string | null;
+      pinCode: number | null;
       yearOfEstablishment: number | null;
       website: string | null;
-      imageUrl: string | null;
+      location: string | null;
       category: string | null;
+      administrativeMinistry: string | null;
+      standaloneType: string | null;
+      management: string | null;
+      collegeType: string | null;
+      universityName: string | null;
+      universityType: string | null;
+      phone: string | null;
+      landline: string | null;
+      imageUrl: string | null;
+      rating: number;
+      reviewsCount: number;
     };
     user: {
+      createDate: number;
+      updateDate: number;
       id: string;
       username: string | null;
       fullName: string;
+      about: string | null;
       avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      followersCount: number;
+      followingCount: number;
       isFollowed: boolean;
     };
   };
@@ -1033,10 +1125,17 @@ Get forums of a specified user
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     }[];
@@ -1076,10 +1175,17 @@ Get latest forums, will be upgraded to recommended forums
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     }[];
@@ -1119,10 +1225,17 @@ Get forums of the currently logged in user
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     }[];
@@ -1165,10 +1278,17 @@ Creates a forum
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     };
@@ -1212,10 +1332,17 @@ Updates a forum
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     };
@@ -1255,10 +1382,17 @@ Deletes a forum
       title: string;
       isLiked: boolean;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
     };
@@ -1370,20 +1504,34 @@ Get comments on a forum, or replies on a comment of a forum
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          createDate: number;
+          updateDate: number;
           id: string;
           username: string | null;
           fullName: string;
+          about: string | null;
           avatarUrl: string | null;
+          gender: string | null;
+          dob: number | null;
+          followersCount: number;
+          followingCount: number;
           isFollowed: boolean;
         };
       };
@@ -1425,20 +1573,34 @@ Comment on a forum, or reply on a comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          createDate: number;
+          updateDate: number;
           id: string;
           username: string | null;
           fullName: string;
+          about: string | null;
           avatarUrl: string | null;
+          gender: string | null;
+          dob: number | null;
+          followersCount: number;
+          followingCount: number;
           isFollowed: boolean;
         };
       };
@@ -1479,20 +1641,34 @@ Update your comment/reply on a forum/comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          createDate: number;
+          updateDate: number;
           id: string;
           username: string | null;
           fullName: string;
+          about: string | null;
           avatarUrl: string | null;
+          gender: string | null;
+          dob: number | null;
+          followersCount: number;
+          followingCount: number;
           isFollowed: boolean;
         };
       };
@@ -1531,20 +1707,34 @@ Deletes your comment/reply on a forum/comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          createDate: number;
+          updateDate: number;
           id: string;
           username: string | null;
           fullName: string;
+          about: string | null;
           avatarUrl: string | null;
+          gender: string | null;
+          dob: number | null;
+          followersCount: number;
+          followingCount: number;
           isFollowed: boolean;
         };
       };
@@ -1649,11 +1839,21 @@ Get messages of an institute discussion
       replyingTo: string | null;
       updateDate: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
+      };
+      institute: {
+        name: string;
       };
       parentMessage: {
         id: string;
@@ -1665,9 +1865,6 @@ Get messages of an institute discussion
           avatarUrl: string | null;
           isFollowed: boolean;
         };
-      };
-      institute: {
-        name: string;
       };
     }[];
   };
@@ -1704,11 +1901,21 @@ Message in an insitute discussion
       replyingTo: string | null;
       updateDate: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
+      };
+      institute: {
+        name: string;
       };
       parentMessage: {
         id: string;
@@ -1720,9 +1927,6 @@ Message in an insitute discussion
           avatarUrl: string | null;
           isFollowed: boolean;
         };
-      };
-      institute: {
-        name: string;
       };
     };
   };
@@ -1758,11 +1962,21 @@ Udpate your message in an insitute discussion
       replyingTo: string | null;
       updateDate: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
+      };
+      institute: {
+        name: string;
       };
       parentMessage: {
         id: string;
@@ -1774,9 +1988,6 @@ Udpate your message in an insitute discussion
           avatarUrl: string | null;
           isFollowed: boolean;
         };
-      };
-      institute: {
-        name: string;
       };
     };
   };
@@ -1811,11 +2022,21 @@ Deletes your message in an insitute discussion
       replyingTo: string | null;
       updateDate: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
+      };
+      institute: {
+        name: string;
       };
       parentMessage: {
         id: string;
@@ -1827,9 +2048,6 @@ Deletes your message in an insitute discussion
           avatarUrl: string | null;
           isFollowed: boolean;
         };
-      };
-      institute: {
-        name: string;
       };
     };
   };
@@ -1912,10 +2130,17 @@ Get reviews for an insitute
       body: string;
       rating: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       institute: {
@@ -1956,10 +2181,17 @@ Review an institute with a rating and some content
       body: string;
       rating: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       institute: {
@@ -2000,10 +2232,17 @@ Update a review you have written
       body: string;
       rating: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       institute: {
@@ -2042,10 +2281,17 @@ Deletes a review you have written
       body: string;
       rating: number;
       writer: {
+        createDate: number;
+        updateDate: number;
         id: string;
         username: string | null;
         fullName: string;
+        about: string | null;
         avatarUrl: string | null;
+        gender: string | null;
+        dob: number | null;
+        followersCount: number;
+        followingCount: number;
         isFollowed: boolean;
       };
       institute: {
