@@ -18,7 +18,7 @@ Gets user's display attributes, like dob, name, etc.
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -49,7 +49,7 @@ Gets user's display attributes, like dob, name, etc.
 Get the profile of currently logged in user
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -92,7 +92,7 @@ Create profile for the user after signing up
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -137,7 +137,7 @@ Does not update if no fields given
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -177,7 +177,7 @@ Get all users.
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -209,7 +209,7 @@ Report a user with reason
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -235,7 +235,7 @@ Get followers of a user with their id
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -266,7 +266,7 @@ Get followers of currently logged in user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -298,7 +298,7 @@ Get follwoings of a user with thier id
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -329,7 +329,7 @@ Get following of currently logged in user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -360,7 +360,7 @@ Follow a user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -383,7 +383,7 @@ Unfollow a user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -408,7 +408,7 @@ Get details about one specific institute
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -461,7 +461,7 @@ Get institutes arranged in descending order per updateDate
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -492,7 +492,7 @@ Get institutes arranged in descending order per updateDate
 Get random list of institutes
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -518,7 +518,7 @@ Get random list of institutes
 
 ### Get institute students
 
-**GET** `/educations/students`
+**GET** `/education/students`
 
 Get students list of an institute, whether passed or ongoing
 
@@ -531,7 +531,7 @@ Get students list of an institute, whether passed or ongoing
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -566,7 +566,7 @@ Login with email and password
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -599,7 +599,7 @@ Login with google from flutter screen
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -633,7 +633,7 @@ Get Otp to desired mail to verify it
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -657,7 +657,7 @@ Verify the 'sent' Otp to the given mail in previous step
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -685,7 +685,7 @@ Create password after getting and verifying otp
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -720,7 +720,7 @@ Reset password after getting and verifying otp
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -739,7 +739,7 @@ Logouts the current logged in user
 Makes the <authToken> lose its authorization
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -765,7 +765,7 @@ Get education list of a specific user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -825,7 +825,7 @@ Add institute and relevant details as your education
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -883,7 +883,7 @@ Update relevant details of your education
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -936,7 +936,7 @@ Remove an education
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -991,7 +991,7 @@ Give feedback, either by logging in or without
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1017,7 +1017,7 @@ Get forums of a specified user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1060,7 +1060,7 @@ Get latest forums, will be upgraded to recommended forums
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1103,7 +1103,7 @@ Get forums of the currently logged in user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1149,7 +1149,7 @@ Creates a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1196,7 +1196,7 @@ Updates a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1239,7 +1239,7 @@ Deletes a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1282,7 +1282,7 @@ Likes a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1305,7 +1305,7 @@ Unlikes a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1329,7 +1329,7 @@ Reports a forum by a currently logged in user
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1356,7 +1356,7 @@ Get comments on a forum, or replies on a comment of a forum
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1411,7 +1411,7 @@ Comment on a forum, or reply on a comment
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1465,7 +1465,7 @@ Update your comment/reply on a forum/comment
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1517,7 +1517,7 @@ Deletes your comment/reply on a forum/comment
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1571,7 +1571,7 @@ Get category names of insights
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1597,7 +1597,7 @@ Get insights
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1637,7 +1637,7 @@ Get messages of an institute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1692,7 +1692,7 @@ Message in an insitute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1746,7 +1746,7 @@ Udpate your message in an insitute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1799,7 +1799,7 @@ Deletes your message in an insitute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1852,7 +1852,7 @@ Like a message in an insitute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1875,7 +1875,7 @@ Unlike a liked message in an insitute discussion
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data?: any;
@@ -1901,7 +1901,7 @@ Get reviews for an insitute
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1945,7 +1945,7 @@ Review an institute with a rating and some content
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -1989,7 +1989,7 @@ Update a review you have written
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {
@@ -2031,7 +2031,7 @@ Deletes a review you have written
 ```
 
 **Response (200 OK) :**
-```dart
+```ts
 {
   message: string;
   data: {

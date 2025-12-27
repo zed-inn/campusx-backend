@@ -71,7 +71,7 @@ export const generateReadme = (
       }
 
       // 6. Response (200 OK)
-      md += `**Response (200 OK) :**\n\`\`\`dart\n`;
+      md += `**Response (200 OK) :**\n\`\`\`ts\n`;
 
       const responseSchema = z.object({
         message: z.literal(route.response.message),
