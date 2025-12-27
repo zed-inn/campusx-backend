@@ -13,7 +13,7 @@ export const CommentResponseSchema = CommentSchema.pick({
   replyingTo: true,
 }).extend({
   writer: ProfileResponseMinSchema,
-  parenComment: CommentSchema.pick({
+  parentComment: CommentSchema.pick({
     id: true,
     body: true,
   }).extend({
