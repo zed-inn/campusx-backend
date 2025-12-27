@@ -28,5 +28,6 @@ for (const Doc of Docs) {
 }
 
 export const createDocs = () => {
-  generateReadme(ALL_DOCS, "./public/docs/README.md");
+  generateReadme(ALL_DOCS, "./public/docs/README.md"); // at /docs level
+  generateReadme(ALL_DOCS); // at main level
 };
