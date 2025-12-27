@@ -1,10 +1,10 @@
-import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { Router } from "express";
 import { EducationController } from "./education.controller";
-import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { EducationCreateSchema } from "./dtos/service/education-create.dto";
 import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
 import { mount } from "@shared/utils/mount-router";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 
 const router = Router();
 
@@ -14,24 +14,24 @@ router.get("/students", EducationController.getInstituteStudents);
 
 router.post(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(EducationCreateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(EducationCreateSchema),
   EducationController.addEducation
 );
 
 router.put(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(EducationUpdateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(EducationUpdateSchema),
   EducationController.updateEducation
 );
 
 router.delete(
   "/",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   EducationController.removeEducation
 );
 

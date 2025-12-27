@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { CommentController } from "../controllers/comment.controller";
-import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
-import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { CommentCreateSchema } from "../dtos/service/comment-create.dto";
 import { CommentUpdateSchema } from "../dtos/service/comment-update.dto";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 
 const router = Router();
 
@@ -11,20 +11,25 @@ router.get("/", CommentController.getForumComments);
 
 router.post(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(CommentCreateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(CommentCreateSchema),
   CommentController.createComment
 );
 
 router.put(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(CommentUpdateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(CommentUpdateSchema),
   CommentController.updateComment
 );
 
-router.delete("/", isLoggedIn, isProfiledUser, CommentController.deleteComment);
+router.delete(
+  "/",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  CommentController.deleteComment
+);
 
 export const CommentRouter = router;

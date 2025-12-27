@@ -1,49 +1,54 @@
-import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { Router } from "express";
 import { DiscussionController } from "./discussion.controller";
-import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { DiscussionCreateSchema } from "./dtos/service/discussion-create.dto";
 import { mount } from "@shared/utils/mount-router";
 import { DiscussionUpdateSchema } from "./dtos/service/discussion-update.dto";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 
 const router = Router();
 
-router.get("/", isLoggedIn, isProfiledUser, DiscussionController.getMessages);
+router.get(
+  "/",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  DiscussionController.getMessages
+);
 
 router.post(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(DiscussionCreateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(DiscussionCreateSchema),
   DiscussionController.createMessage
 );
 
 router.put(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(DiscussionUpdateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(DiscussionUpdateSchema),
   DiscussionController.updateMessage
 );
 
 router.delete(
   "/",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   DiscussionController.deleteMessage
 );
 
 router.get(
   "/like",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   DiscussionController.likeMessage
 );
 
 router.get(
   "/unlike",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   DiscussionController.unlikeMessage
 );
 

@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { ProfileController } from "./controllers/profile.controller";
-import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { ProfileCreateSchema } from "./dtos/service/profile-create.dto";
 import { ProfileUpdateSchema } from "./dtos/service/profile-update.dto";
-import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
 import { FollowController } from "./controllers/follow.controller";
 import { ReportController } from "./controllers/report.controller";
 import { mount } from "@shared/utils/mount-router";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 
 const router = Router();
 
@@ -16,63 +16,73 @@ router.get("/all", ProfileController.getUsers);
 
 router.get(
   "/profile/me",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   ProfileController.getMyProfile
 );
 
 router.post(
   "/profile",
-  isLoggedIn,
-  validateRequestBody(ProfileCreateSchema),
+  RestrictTo.loggedInUser,
+  ValidateReq.body(ProfileCreateSchema),
   ProfileController.createProfile
 );
 
 router.put(
   "/profile",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(ProfileUpdateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(ProfileUpdateSchema),
   ProfileController.updateProfile
 );
 
 router.get(
   "/followers",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   FollowController.getFollowers
 );
 
 router.get(
   "/followers/me",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   FollowController.getMyFollowers
 );
 
 router.get(
   "/following",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   FollowController.getFollowing
 );
 
 router.get(
   "/following/me",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   FollowController.getMyFollowing
 );
 
-router.post("/follow", isLoggedIn, isProfiledUser, FollowController.followUser);
+router.post(
+  "/follow",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  FollowController.followUser
+);
 
 router.post(
   "/unfollow",
-  isLoggedIn,
-  isProfiledUser,
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
   FollowController.unfollowUser
 );
 
-router.post("/report", isLoggedIn, isProfiledUser, ReportController.reportUser);
+router.post(
+  "/report",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ReportController.reportUser
+);
 
 export const ProfileRouter = mount("/user", router);

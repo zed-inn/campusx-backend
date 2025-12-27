@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { ReviewController } from "./review.controller";
-import { isLoggedIn, isProfiledUser } from "@shared/middlewares/auth-restrict";
-import { validateRequestBody } from "@shared/middlewares/validate-request";
 import { ReviewCreateSchema } from "./dtos/service/review-create.dto";
 import { ReviewUpdateSchema } from "./dtos/service/review-update.dto";
 import { mount } from "@shared/utils/mount-router";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 
 const router = Router();
 
@@ -12,20 +12,25 @@ router.get("/", ReviewController.getInstituteReviews);
 
 router.post(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(ReviewCreateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(ReviewCreateSchema),
   ReviewController.createReview
 );
 
 router.put(
   "/",
-  isLoggedIn,
-  isProfiledUser,
-  validateRequestBody(ReviewUpdateSchema),
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.body(ReviewUpdateSchema),
   ReviewController.updateReview
 );
 
-router.delete("/", isLoggedIn, isProfiledUser, ReviewController.deleteReview);
+router.delete(
+  "/",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ReviewController.deleteReview
+);
 
 export const InstituteReviewRouter = mount("/insitute/review", router);
