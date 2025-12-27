@@ -30,16 +30,17 @@ export class ReviewService extends BaseService<ReviewInstance> {
       const r = await Review.create({ ...data, userId });
       const service = await InstituteService.getById(data.instituteId);
 
-      const instituteData = service.data;
+      const instData = service.data;
       const institute = service.model;
-      const newRating =
-        (instituteData.rating * instituteData.reviewsCount +
-          r.dataValues.rating) /
-        (instituteData.reviewsCount + 1);
+      const newRating = ReviewUtils.addInRating(
+        instData.rating,
+        instData.reviewsCount,
+        r.dataValues.rating
+      );
 
       await institute.update({
-        rating: isNaN(newRating) ? 0 : newRating,
-        reviewsCount: instituteData.reviewsCount + 1,
+        rating: newRating,
+        reviewsCount: instData.reviewsCount + 1,
       });
 
       return this.getById(r.dataValues.id);
@@ -102,16 +103,21 @@ export class ReviewService extends BaseService<ReviewInstance> {
         service.data.instituteId
       );
       const institute = serviceInst.model;
-      const instituteData = serviceInst.data;
+      const instData = serviceInst.data;
 
       if (data.rating) {
         const currRating = data.rating;
-        const newRating =
-          (instituteData.reviewsCount * instituteData.rating -
-            prevRating +
-            currRating) /
-          instituteData.reviewsCount;
-        await institute.update({ rating: isNaN(newRating) ? 0 : newRating });
+        const newRating = ReviewUtils.addInRating(
+          ReviewUtils.subtractFromRating(
+            instData.rating,
+            instData.reviewsCount,
+            prevRating
+          ),
+          instData.reviewsCount - 1,
+          currRating
+        );
+
+        await institute.update({ rating: newRating });
       }
 
       return this.getById(service.data.id);
@@ -127,13 +133,15 @@ export class ReviewService extends BaseService<ReviewInstance> {
       const reviewData = service.data;
       await review.destroy();
 
-      const newRating =
-        (reviewData.institute.rating * reviewData.institute.reviewsCount -
-          reviewData.rating) /
-        (reviewData.institute.reviewsCount - 1);
+      const newRating = ReviewUtils.subtractFromRating(
+        reviewData.institute.rating,
+        reviewData.institute.reviewsCount,
+        reviewData.rating
+      );
+
       await Institute.update(
         {
-          rating: isNaN(newRating) ? 0 : newRating,
+          rating: newRating,
           reviewsCount: reviewData.institute.reviewsCount - 1,
         },
         { where: { id: reviewData.instituteId } }
@@ -156,4 +164,29 @@ class ReviewInclude {
   static get institute(): Includeable {
     return { model: Institute, as: "institute" };
   }
+}
+
+class ReviewUtils {
+  static normalizeIsNanRating = (rating: number) =>
+    isNaN(rating) ? 0 : rating;
+
+  static addInRating = (
+    oldRating: number,
+    oldRatingsCount: number,
+    ratingToAdd: number
+  ) => {
+    const newRating =
+      (oldRating * oldRatingsCount + ratingToAdd) / (oldRatingsCount + 1);
+    return this.normalizeIsNanRating(newRating);
+  };
+
+  static subtractFromRating = (
+    oldRating: number,
+    oldRatingsCount: number,
+    ratingToSubtract: number
+  ) => {
+    const newRating =
+      (oldRating * oldRatingsCount - ratingToSubtract) / (oldRatingsCount - 1);
+    return this.normalizeIsNanRating(newRating);
+  };
 }
