@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/utils/readme-types";
+import { EndpointDetails } from "@shared/docs/readme-types";
 import { DiscussionResponseSchema } from "./dtos/controller/discussion-response.dto";
 import { DiscussionCreateSchema } from "./dtos/service/discussion-create.dto";
 import { DiscussionUpdateSchema } from "./dtos/service/discussion-update.dto";

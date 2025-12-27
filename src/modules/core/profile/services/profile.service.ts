@@ -1,5 +1,5 @@
 import { ProfileAttributes } from "../interfaces/profile.interface";
-import { Profile } from "../models/profile.model";
+import { Profile, ProfileInstance } from "../models/profile.model";
 import { ProfileCreateDto } from "../dtos/service/profile-create.dto";
 import { ProfileUpdateDto } from "../dtos/service/profile-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
@@ -11,7 +11,7 @@ import { UserErrors } from "@modules/core/user";
 import { ProfileSchema } from "../dtos/service/profile-schema.dto";
 import { BaseService } from "@shared/services/base.service";
 
-export class ProfileService extends BaseService<InstanceType<typeof Profile>> {
+export class ProfileService extends BaseService<ProfileInstance> {
   protected static USERS_PER_PAGE = 30;
   protected static offset = createOffsetFn(this.USERS_PER_PAGE);
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/utils/readme-types";
+import { EndpointDetails } from "@shared/docs/readme-types";
 import { ForumResponseSchema } from "./dtos/controller/forum-response.dto";
 import { ForumCreateSchema } from "./dtos/service/forum-create.dto";
 import { ForumUpdateSchema } from "./dtos/service/forum-update.dto";

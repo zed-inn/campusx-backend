@@ -1,16 +1,13 @@
 import { z } from "zod";
-import { FeedbackInterface } from "../../feedback.interface";
+import { FeedbackSchema } from "../service/feedback-schema.dto";
 
-export const FeedbackResponseSchema = FeedbackInterface.dbSchema
-  .pick({
-    id: true,
-    message: true,
-    status: true,
-    createDate: true,
-    updateDate: true,
-  })
-  .extend({
-    writer: FeedbackInterface.extra.fields.writer,
-  });
+export const FeedbackResponseSchema = FeedbackSchema.pick({
+  id: true,
+  message: true,
+  status: true,
+  createDate: true,
+  updateDate: true,
+  writer: true,
+});
 
 export type FeedbackResponseDto = z.infer<typeof FeedbackResponseSchema>;

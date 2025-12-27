@@ -73,6 +73,8 @@ export const Institute = defineModel<
   reviewsCount: { ...STATS },
 });
 
+export type InstituteInstance = InstanceType<typeof Institute>;
+
 // Hooks
 Institute.beforeValidate(async (institute: any) => {
   if (institute.name)

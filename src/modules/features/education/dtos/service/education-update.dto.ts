@@ -1,17 +1,16 @@
 import { z } from "zod";
-import { EducationInterface } from "../../education.interface";
+import { EducationSchema } from "./education-schema.dto";
 
-export const EducationUpdateSchema = z.object({
-  id: EducationInterface.fields.id,
-  ...EducationInterface.dbSchema
-    .pick({
-      startYear: true,
-      startMonth: true,
-      endYear: true,
-      endMonth: true,
-      isCompleted: true,
-    })
-    .partial().shape,
+export const EducationUpdateSchema = EducationSchema.pick({
+  id: true,
+}).extend({
+  ...EducationSchema.pick({
+    startYear: true,
+    startMonth: true,
+    endYear: true,
+    endMonth: true,
+    isCompleted: true,
+  }).partial().shape,
 });
 
 export type EducationUpdateDto = z.infer<typeof EducationUpdateSchema>;

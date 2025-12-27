@@ -35,6 +35,8 @@ export const Comment = defineModel<
   repliesCount: { ...STATS },
 });
 
+export type CommentInstance = InstanceType<typeof Comment>;
+
 // Associations
 Forum.hasMany(Comment, {
   foreignKey: "forumId",

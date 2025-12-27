@@ -1,5 +1,5 @@
 import { Includeable } from "sequelize";
-import { Feedback } from "./feedback.model";
+import { Feedback, FeedbackInstance } from "./feedback.model";
 import { Profile, ProfileService } from "@modules/core/profile";
 import { FEEDBACK_CONFIG } from "./feedback.config";
 import { createOffsetFn } from "@shared/utils/create-offset";
@@ -8,9 +8,7 @@ import { FeedbackErrors } from "./feedback.errors";
 import { Rui } from "@shared/dtos/req-user.dto";
 import { FeedbackSchema } from "./dtos/service/feedback-schema.dto";
 
-export class FeedbackService extends BaseService<
-  InstanceType<typeof Feedback>
-> {
+export class FeedbackService extends BaseService<FeedbackInstance> {
   static FEEDBACKS_PER_PAGE = 30;
   static OFFSET = createOffsetFn(this.FEEDBACKS_PER_PAGE);
 

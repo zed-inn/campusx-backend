@@ -27,6 +27,8 @@ export const Report = defineModel<ReportAttributes, ReportCreationAttributes>(
   }
 );
 
+export type ReportInstance = InstanceType<typeof Report>;
+
 // Associations
 Profile.hasMany(Report, {
   foreignKey: "userId",

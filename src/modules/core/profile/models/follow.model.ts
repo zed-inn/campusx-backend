@@ -40,6 +40,8 @@ export const Follow = defineModel<FollowAttributes, FollowCreationAttributes>(
   }
 );
 
+export type FollowInstance = InstanceType<typeof Follow>;
+
 // Associations
 Profile.hasMany(Follow, { foreignKey: "followerId", as: "following" });
 Follow.belongsTo(Profile, { foreignKey: "followerId", as: "followerProfile" });

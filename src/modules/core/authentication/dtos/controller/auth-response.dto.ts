@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { ProfileResponseMinSchema } from "@modules/core/profile/dtos/controller/profile-response.dto";
+import { ProfileResMin } from "@modules/core/profile";
 
 export const AuthResponseSchema = z.object({
   authToken: z.string({ error: "Invalid authentication token" }),
-  user: ProfileResponseMinSchema,
+  user: ProfileResMin.nullable().default(null),
 });
 
 export type AuthResponseDto = z.infer<typeof AuthResponseSchema>;

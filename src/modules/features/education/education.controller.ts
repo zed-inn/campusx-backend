@@ -6,8 +6,8 @@ import { EducationService } from "./education.service";
 import { EducationResponseSchema } from "./dtos/controller/education-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { ProfileResponseMinSchema as ResMinProfile } from "@modules/core/profile/dtos/controller/profile-response.dto";
 import { EducationUpdateDto } from "./dtos/service/education-update.dto";
+import { ProfileResMin } from "@modules/core/profile";
 
 export class EducationController {
   static getUserEducation = catchAsync(async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ export class EducationController {
           temp.push(s.id);
           return true;
         })
-        .map((s) => ResMinProfile.parse(s));
+        .map((s) => ProfileResMin.parse(s));
 
       return ApiResponse.success(res, "Institute's students.", { students });
     }

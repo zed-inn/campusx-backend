@@ -27,37 +27,39 @@ Redis: ${cacheConnected ? "Connected" : "Not Connected"}
 startServer();
 
 const shutdown = async (signal: string) => {
-  console.log(`\n${signal} received. Starting graceful shutdown...`);
+  try {
+    console.log(`\n${signal} received. Starting graceful shutdown...`);
 
-  if (socketService.io) {
-    socketService.io.close(() => {
-      console.log("Socket.io closed.");
+    if (socketService.io) {
+      socketService.io.close(() => {
+        console.log("Socket.io closed.");
+      });
+    }
+
+    httpServer.close(() => {
+      console.log("HTTP Server closed.");
     });
+
+    await disconnectDB(() => {
+      console.log("Database closed.");
+    });
+    await disconnectRedis(() => {
+      console.log("Cache closed.");
+    });
+
+    console.log("Shutdown successfull!");
+    process.exit(0);
+  } catch (err) {
+    console.log("Some error occured :", err);
+    process.exit(1);
   }
-
-  httpServer.close(() => {
-    console.log("HTTP Server closed.");
-  });
-
-  await disconnectDB(() => {
-    console.log("Database closed.");
-  });
-  await disconnectRedis(() => {
-    console.log("Cache closed.");
-  });
-
-  console.log("Shutdown successfull!");
-  process.exit(0);
 };
 
 {
-  // Ctrl+C (Terminal)
   process.on("SIGINT", () => shutdown("SIGINT"));
 
-  // Kill command (Docker/Kubernetes stops container)
   process.on("SIGTERM", () => shutdown("SIGTERM"));
 
-  // Nodemon restart signal
   process.on("SIGUSR2", async () => {
     await shutdown("SIGUSR2");
     process.kill(process.pid, "SIGUSR2");

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CommentInterface } from "../../interfaces/comment.interface";
-import { ProfileSchema } from "@modules/core/profile/dtos/service/profile-schema.dto";
+import { ProfileSchema } from "@modules/core/profile";
 
 export const CommentSchema = CommentInterface.dbSchema.extend({
   writer: ProfileSchema,

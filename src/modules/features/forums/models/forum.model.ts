@@ -27,6 +27,8 @@ export const Forum = defineModel<ForumAttributes, ForumCreationAttributes>(
   }
 );
 
+export type ForumInstance = InstanceType<typeof Forum>;
+
 // Associations
 Profile.hasMany(Forum, {
   foreignKey: "userId",

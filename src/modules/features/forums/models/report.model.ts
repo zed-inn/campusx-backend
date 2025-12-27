@@ -28,6 +28,8 @@ export const Report = defineModel<ReportAttributes, ReportCreationAttributes>(
   }
 );
 
+export type ReportInstance = InstanceType<typeof Report>;
+
 // Associations
 Forum.hasMany(Report, {
   foreignKey: "forumId",

@@ -39,6 +39,8 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
   }
 );
 
+export type ReviewInstance = InstanceType<typeof Review>;
+
 // Associations
 Institute.hasMany(Review, {
   foreignKey: "instituteId",

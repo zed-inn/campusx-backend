@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
 import { FEEDBACK_CONFIG } from "./feedback.config";
-import { ProfileResponseMinSchema as ResMin } from "@modules/core/profile/dtos/controller/profile-response.dto";
+import { ProfileResMin } from "@modules/core/profile";
 
 export const FeedbackInterface = modelSchema(
   {
@@ -13,7 +13,7 @@ export const FeedbackInterface = modelSchema(
     }),
   },
   {
-    writer: ResMin.nullable(),
+    writer: ProfileResMin.nullable(),
   }
 );
 

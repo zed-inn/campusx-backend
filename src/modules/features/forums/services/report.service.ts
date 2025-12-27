@@ -1,12 +1,12 @@
 import { Profile, ProfileService } from "@modules/core/profile";
 import { Includeable } from "sequelize";
-import { Report } from "../models/report.model";
+import { Report, ReportInstance } from "../models/report.model";
 import { BaseService } from "@shared/services/base.service";
 import { ReportSchema } from "../dtos/service/report-schema.dto";
 import { Rui } from "@shared/dtos/req-user.dto";
 import { ReportErrors } from "../errors/report.errors";
 
-export class ReportService extends BaseService<InstanceType<typeof Report>> {
+export class ReportService extends BaseService<ReportInstance> {
   override get data() {
     const report = super.data;
     report.user = ProfileService.parse(report.user);

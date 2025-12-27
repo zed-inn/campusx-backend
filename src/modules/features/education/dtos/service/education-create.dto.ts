@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { EducationInterface } from "../../education.interface";
+import { EducationSchema } from "./education-schema.dto";
 
-export const EducationCreateSchema = EducationInterface.dbSchema.pick({
+export const EducationCreateSchema = EducationSchema.pick({
   instituteId: true,
   startYear: true,
   startMonth: true,

@@ -1,9 +1,8 @@
 import { Includeable } from "sequelize";
 import db from "@config/database";
-import { AppError } from "@shared/errors/app-error";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
-import { Forum } from "../models/forum.model";
+import { Forum, ForumInstance } from "../models/forum.model";
 import { Like } from "../models/like.model";
 import { ForumCreateDto } from "../dtos/service/forum-create.dto";
 import { ForumUpdateDto } from "../dtos/service/forum-update.dto";
@@ -14,7 +13,7 @@ import { ForumSchema } from "../dtos/service/forum-schema.dto";
 import { Rui } from "@shared/dtos/req-user.dto";
 import { ForumErrors } from "../errors/forum.errors";
 
-export class ForumService extends BaseService<InstanceType<typeof Forum>> {
+export class ForumService extends BaseService<ForumInstance> {
   static FORUMS_PER_PAGE = 20;
   static OFFSET = createOffsetFn(this.FORUMS_PER_PAGE);
 

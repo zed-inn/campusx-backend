@@ -1,12 +1,10 @@
-import { Category } from "../models/category.model";
+import { Category, CategoryInstance } from "../models/category.model";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { InsightsErrors } from "../insights.errors";
 import { CategorySchema } from "../dtos/service/category-schema.dto";
 
-export class CategoryService extends BaseService<
-  InstanceType<typeof Category>
-> {
+export class CategoryService extends BaseService<CategoryInstance> {
   static CATEGORIES_PER_PAGE = 100;
   static OFFSET = createOffsetFn(this.CATEGORIES_PER_PAGE);
 

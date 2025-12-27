@@ -9,4 +9,4 @@ router.get("/create", (_, res) => {
   res.send("Docs Created");
 });
 
-export const DocRouter = mount("/docs", router);
+export const DocsRouter = mount("/docs", router);

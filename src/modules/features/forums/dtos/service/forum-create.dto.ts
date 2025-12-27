@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { ForumInterface } from "../../interfaces/forum.interface";
+import { ForumSchema } from "./forum-schema.dto";
 
-export const ForumCreateSchema = ForumInterface.dbSchema.pick({
+export const ForumCreateSchema = ForumSchema.pick({
   localId: true,
   title: true,
   body: true,

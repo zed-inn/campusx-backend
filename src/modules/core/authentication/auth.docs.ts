@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/utils/readme-types";
+import { EndpointDetails } from "@shared/docs/readme-types";
 import { LoginBasicSchema } from "./dtos/service/login-basic.dto";
 import { AuthResponseSchema } from "./dtos/controller/auth-response.dto";
 import { LoginGoogleSchema } from "./dtos/service/login-google.dto";

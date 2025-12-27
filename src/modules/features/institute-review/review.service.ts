@@ -1,7 +1,7 @@
 import { Institute, InstituteService } from "@modules/core/institutes";
 import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
 import { Includeable } from "sequelize";
-import { Review } from "./review.model";
+import { Review, ReviewInstance } from "./review.model";
 import { ReviewCreateDto } from "./dtos/service/review-create.dto";
 import db from "@config/database";
 import { ReviewUpdateDto } from "./dtos/service/review-update.dto";
@@ -9,11 +9,11 @@ import { removeUndefined } from "@shared/utils/clean-object";
 import { ReviewAttributes } from "./review.interface";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { ReviewSchema } from "./dtos/service/review-full.dto";
+import { ReviewSchema } from "./dtos/service/review-schema.dto";
 import { Rui } from "@shared/dtos/req-user.dto";
 import { ReviewErrors } from "./review.errors";
 
-export class ReviewService extends BaseService<InstanceType<typeof Review>> {
+export class ReviewService extends BaseService<ReviewInstance> {
   static REVIEWS_PER_PAGE = 30;
   static OFFSET = createOffsetFn(this.REVIEWS_PER_PAGE);
 

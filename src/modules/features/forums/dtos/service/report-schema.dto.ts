@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ReportInterface } from "../../interfaces/report.interface";
-import { ProfileSchema } from "@modules/core/profile/dtos/service/profile-schema.dto";
+import { ProfileSchema } from "@modules/core/profile";
 
 export const ReportSchema = ReportInterface.dbSchema.extend({
   user: ProfileSchema,

@@ -44,6 +44,8 @@ export const Education = defineModel<
   },
 });
 
+export type EducationInstance = InstanceType<typeof Education>;
+
 // Associations
 Profile.hasMany(Education, {
   foreignKey: "userId",

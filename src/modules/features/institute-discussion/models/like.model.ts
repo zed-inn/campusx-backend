@@ -34,6 +34,8 @@ export const Like = defineModel<LikeAttributes, LikeCreationAttributes>(
   }
 );
 
+export type LikeInstance = InstanceType<typeof Like>;
+
 // Associations
 Discussion.hasMany(Like, {
   foreignKey: "discussionId",

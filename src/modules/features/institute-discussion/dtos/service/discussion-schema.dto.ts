@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { DiscussionInterface } from "../../interfaces/discussion.interface";
-import { ProfileSchema } from "@modules/core/profile/dtos/service/profile-schema.dto";
-import { InstituteSchema } from "@modules/core/institutes/dtos/service/institute-schema.dto";
+import { ProfileSchema } from "@modules/core/profile";
+import { InstituteSchema } from "@modules/core/institutes";
 
 export const DiscussionSchema = DiscussionInterface.dbSchema.extend({
   writer: ProfileSchema,

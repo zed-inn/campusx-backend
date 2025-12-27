@@ -1,6 +1,6 @@
 import { Institute, InstituteService } from "@modules/core/institutes";
 import { Includeable } from "sequelize";
-import { Education } from "./education.model";
+import { Education, EducationInstance } from "./education.model";
 import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
 import { EducationCreateDto } from "./dtos/service/education-create.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
@@ -12,9 +12,7 @@ import { Rui } from "@shared/dtos/req-user.dto";
 import { EducationSchema } from "./dtos/service/education-schema.dto";
 import { EducationUpdateDto } from "./dtos/service/education-update.dto";
 
-export class EducationService extends BaseService<
-  InstanceType<typeof Education>
-> {
+export class EducationService extends BaseService<EducationInstance> {
   static EDUCATIONS_PER_PAGE = 30;
   static OFFSET = createOffsetFn(this.EDUCATIONS_PER_PAGE);
 

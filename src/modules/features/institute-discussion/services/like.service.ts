@@ -1,8 +1,9 @@
-import { Like } from "../models/like.model";
+import { Like, LikeInstance } from "../models/like.model";
 import { DiscussionService } from "./discussion.service";
 import { DiscussionErrors } from "../discussion.errors";
+import { BaseService } from "@shared/services/base.service";
 
-export class LikeService {
+export class LikeService extends BaseService<LikeInstance> {
   static like = async (id: string, userId: string) => {
     const service = await DiscussionService.getById(id);
     await Like.create({ discussionId: service.data.id, userId });

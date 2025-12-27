@@ -1,5 +1,5 @@
 import { CategoryService } from "./category.service";
-import { Insight } from "../models/insight.model";
+import { Insight, InsightInstance } from "../models/insight.model";
 import { INSIGHT_CONFIG } from "../insight.config";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
@@ -9,7 +9,7 @@ import { Includeable } from "sequelize";
 import { Category } from "../models/category.model";
 import { Rui } from "@shared/dtos/req-user.dto";
 
-export class InsightService extends BaseService<InstanceType<typeof Insight>> {
+export class InsightService extends BaseService<InsightInstance> {
   static INSIGHTS_PER_PAGE = 20;
   static OFFSET = createOffsetFn(this.INSIGHTS_PER_PAGE);
 

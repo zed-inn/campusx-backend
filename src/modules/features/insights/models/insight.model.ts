@@ -33,6 +33,8 @@ export const Insight = defineModel<
   },
 });
 
+export type InsightInstance = InstanceType<typeof Insight>;
+
 // Associations
 Category.hasMany(Insight, {
   foreignKey: "categoryId",

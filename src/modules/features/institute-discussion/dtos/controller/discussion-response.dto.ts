@@ -10,15 +10,15 @@ export const DiscussionResponseSchema = DiscussionSchema.pick({
   message: true,
   replyingTo: true,
   updateDate: true,
+  writer: true,
 }).extend({
-  writer: ProfileResponseMinSchema,
+  institute: InstituteSchema.pick({ name: true }),
   parentMessage: DiscussionSchema.pick({
     id: true,
     message: true,
   }).extend({
     writer: ProfileResponseMinSchema,
   }),
-  institute: InstituteSchema.pick({ name: true }),
 });
 
 export type DiscussionResponseDto = z.infer<typeof DiscussionResponseSchema>;

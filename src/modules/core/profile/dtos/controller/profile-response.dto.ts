@@ -3,7 +3,7 @@ import { ProfileSchema } from "../service/profile-schema.dto";
 
 export const ProfileResponseMaxSchema = ProfileSchema;
 
-export const ProfileResponseMinSchema = ProfileResponseMaxSchema.pick({
+export const ProfileResponseMinSchema = ProfileSchema.pick({
   id: true,
   username: true,
   fullName: true,

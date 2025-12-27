@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { env } from "@config/env";
-import { UserCreateDto } from "./dtos/service/user-create";
-import { UpdatePasswordDto } from "./dtos/service/update-password";
+import { UserCreateDto } from "./dtos/service/user-create.dto";
+import { UpdatePasswordDto } from "./dtos/service/update-password.dto";
 import { User } from "./user.model";
 import { UserErrors } from "./user.errors";
 import { UserSchema } from "./dtos/service/user-schema.dto";

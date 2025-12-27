@@ -2,7 +2,7 @@ import { Includeable } from "sequelize";
 import db from "@config/database";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
-import { Comment } from "../models/comment.model";
+import { Comment, CommentInstance } from "../models/comment.model";
 import { Forum } from "../models/forum.model";
 import { CommentAttributes } from "../interfaces/comment.interface";
 import { CommentCreateDto } from "../dtos/service/comment-create.dto";
@@ -14,7 +14,7 @@ import { Rui } from "@shared/dtos/req-user.dto";
 import { CommentErrors } from "../errors/comment.errros";
 import { CommentSchema } from "../dtos/service/comment-schema.dto";
 
-export class CommentService extends BaseService<InstanceType<typeof Comment>> {
+export class CommentService extends BaseService<CommentInstance> {
   static COMMENTS_PER_PAGE = 200;
   static OFFSET = createOffsetFn(this.COMMENTS_PER_PAGE);
 

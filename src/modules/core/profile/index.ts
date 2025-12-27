@@ -1,3 +1,4 @@
+export { ProfileDocs } from "./profile.docs";
 export {
   ProfileResponseMaxSchema as ProfileResMax,
   ProfileResponseMinSchema as ProfileResMin,

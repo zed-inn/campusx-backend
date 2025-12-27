@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ProfileResponseMinSchema } from "@modules/core/profile/dtos/controller/profile-response.dto";
 import { ForumSchema } from "../service/forum-schema.dto";
 
 export const ForumResponseSchema = ForumSchema.pick({
@@ -13,8 +12,7 @@ export const ForumResponseSchema = ForumSchema.pick({
   localId: true,
   title: true,
   isLiked: true,
-}).extend({
-  writer: ProfileResponseMinSchema,
+  writer: true,
 });
 
 export type ForumResponseDto = z.infer<typeof ForumResponseSchema>;

@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { AuthRouter } from "@modules/core/authentication/auth.routes";
-import { ProfileRouter } from "@modules/core/profile";
-import { ForumRouter } from "@modules/features/forums";
-import { InsightsRouter } from "@modules/features/insights/insights.route";
+import { AuthRouter } from "@modules/core/authentication";
 import { InstituteRouter } from "@modules/core/institutes";
-import { InstituteReviewRouter } from "@modules/features/institute-review";
-import { InstituteDiscussionRouter } from "@modules/features/institute-discussion";
-import { FeedbackRouter } from "@modules/features/feedback";
+import { ProfileRouter } from "@modules/core/profile";
 import { ProfileEducationRouter } from "@modules/features/education";
-import { DocRouter } from "./docs/readme.route";
+import { FeedbackRouter } from "@modules/features/feedback";
+import { ForumRouter } from "@modules/features/forums";
+import { InsightsRouter } from "@modules/features/insights";
+import { InstituteDiscussionRouter } from "@modules/features/institute-discussion";
+import { InstituteReviewRouter } from "@modules/features/institute-review";
+import { Router } from "express";
+import { DocsRouter } from "./docs/readme.route";
 
 const router = Router();
 
@@ -22,7 +22,7 @@ const routers = [
   InstituteDiscussionRouter,
   FeedbackRouter,
   ProfileEducationRouter,
-  DocRouter,
+  DocsRouter,
 ];
 
 for (const ModuleRouter of routers) router.use("/", ModuleRouter);

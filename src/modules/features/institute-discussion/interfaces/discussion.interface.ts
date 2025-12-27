@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
-import { InstituteInterface } from "@modules/core/institutes";
+import { InstituteSchema } from "@modules/core/institutes";
 
 export const DiscussionInterface = modelSchema(
   {
@@ -16,7 +16,7 @@ export const DiscussionInterface = modelSchema(
       .default(null),
   },
   {
-    institute: InstituteInterface.dbSchema.pick({ id: true }),
+    institute: InstituteSchema.pick({ id: true }),
     isLiked: z.boolean().default(false),
   }
 );

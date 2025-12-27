@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { EducationInterface } from "../../education.interface";
-import { ProfileSchema } from "@modules/core/profile/dtos/service/profile-schema.dto";
-import { InstituteSchema } from "@modules/core/institutes/dtos/service/institute-schema.dto";
+import { InstituteSchema } from "@modules/core/institutes";
+import { ProfileSchema } from "@modules/core/profile";
 
 export const EducationSchema = EducationInterface.dbSchema.extend({
   institute: InstituteSchema,

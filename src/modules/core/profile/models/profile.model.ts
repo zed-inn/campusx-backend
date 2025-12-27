@@ -65,6 +65,8 @@ export const Profile = defineModel<
   followingCount: { ...STATS },
 });
 
+export type ProfileInstance = InstanceType<typeof Profile>;
+
 // Associations
 User.hasOne(Profile, { foreignKey: "id", onDelete: "CASCADE", as: "profile" });
 Profile.belongsTo(User, { foreignKey: "id", as: "user" });

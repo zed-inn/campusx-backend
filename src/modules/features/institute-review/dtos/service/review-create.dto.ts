@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ReviewSchema } from "./review-full.dto";
+import { ReviewSchema } from "./review-schema.dto";
 
 export const ReviewCreateSchema = ReviewSchema.pick({
   instituteId: true,

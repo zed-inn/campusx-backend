@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { CommentInterface } from "../../interfaces/comment.interface";
+import { CommentSchema } from "./comment-schema.dto";
 
-export const CommentCreateSchema = CommentInterface.dbSchema.pick({
+export const CommentCreateSchema = CommentSchema.pick({
   localId: true,
   forumId: true,
   body: true,

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { ProfileInterface } from "../../interfaces/profile.interface";
+import { ProfileSchema } from "./profile-schema.dto";
 
-export const ProfileCreateSchema = ProfileInterface.dbSchema.pick({
+export const ProfileCreateSchema = ProfileSchema.pick({
   avatarUrl: true,
   fullName: true,
   username: true,

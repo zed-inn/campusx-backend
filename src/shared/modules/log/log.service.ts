@@ -1,5 +1,5 @@
 import { Sanitize } from "@shared/utils/sanitize";
-import { LogCreateDto } from "./dtos/log-create.dto";
+import { LogCreateDto } from "./dtos/service/log-create.dto";
 import { LOG_CONFIG } from "./log.config";
 import { Log } from "./log.model";
 

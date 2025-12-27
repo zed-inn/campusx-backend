@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { CommentSchema } from "../service/comment-schema.dto";
-import { ProfileResponseMinSchema } from "@modules/core/profile/dtos/controller/profile-response.dto";
 
 export const CommentResponseSchema = CommentSchema.pick({
   createDate: true,
@@ -11,13 +10,12 @@ export const CommentResponseSchema = CommentSchema.pick({
   localId: true,
   repliesCount: true,
   replyingTo: true,
+  writer: true,
 }).extend({
-  writer: ProfileResponseMinSchema,
   parentComment: CommentSchema.pick({
     id: true,
     body: true,
-  }).extend({
-    writer: ProfileResponseMinSchema,
+    writer: true,
   }),
 });
 

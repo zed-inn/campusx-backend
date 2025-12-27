@@ -33,6 +33,8 @@ export const Discussion = defineModel<
   },
 });
 
+export type DiscussionInstance = InstanceType<typeof Discussion>;
+
 // Associations
 Institute.hasMany(Discussion, {
   foreignKey: "instituteId",

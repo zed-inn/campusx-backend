@@ -25,3 +25,5 @@ export const Category = defineModel<
     },
   },
 });
+
+export type CategoryInstance = InstanceType<typeof Category>;

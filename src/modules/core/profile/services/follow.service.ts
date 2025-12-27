@@ -1,5 +1,5 @@
 import { Includeable } from "sequelize";
-import { Follow } from "../models/follow.model";
+import { Follow, FollowInstance } from "../models/follow.model";
 import { Profile } from "../models/profile.model";
 import { FOLLOW_CONFIG } from "../profile.config";
 import db from "@config/database";
@@ -9,7 +9,7 @@ import { ProfileInclude, ProfileService } from "./profile.service";
 import { Rui } from "@shared/dtos/req-user.dto";
 import { FollowSchema } from "../dtos/service/follow-schema.dto";
 
-export class FollowService extends BaseService<InstanceType<typeof Follow>> {
+export class FollowService extends BaseService<FollowInstance> {
   protected static FOLLOWS_PER_PAGE = 30;
   protected static OFFSET = createOffsetFn(this.FOLLOWS_PER_PAGE);
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ForumInterface } from "../../interfaces/forum.interface";
-import { ProfileSchema } from "@modules/core/profile/dtos/service/profile-schema.dto";
+import { ProfileSchema } from "@modules/core/profile";
 
 export const ForumSchema = ForumInterface.dbSchema.extend({
   writer: ProfileSchema,

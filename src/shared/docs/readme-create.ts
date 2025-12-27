@@ -1,25 +1,25 @@
-import { AuthDocs } from "@modules/core/authentication/auth.docs";
-import { InstituteDocs } from "@modules/core/institutes/institute.docs";
-import { ProfileDocs } from "@modules/core/profile/profile.docs";
-import { EducationDocs } from "@modules/features/education/education.docs";
-import { FeedbackDocs } from "@modules/features/feedback/feedback.docs";
-import { ForumDocs } from "@modules/features/forums/forums.docs";
-import { InsightsDocs } from "@modules/features/insights/insights.docs";
-import { DiscussionDocs } from "@modules/features/institute-discussion/discussion.docs";
-import { ReviewDocs } from "@modules/features/institute-review/review.docs";
-import { EndpointDetails } from "@shared/utils/readme-types";
+import { EndpointDetails } from "@shared/docs/readme-types";
 import { generateReadme } from "./generate-readme";
+import { ProfileDocs } from "@modules/core/profile";
+import { InstituteDocs } from "@modules/core/institutes";
+import { AuthDocs } from "@modules/core/authentication";
+import { ProfileEducationDocs } from "@modules/features/education";
+import { FeedbackDocs } from "@modules/features/feedback";
+import { ForumDocs } from "@modules/features/forums";
+import { InsightsDocs } from "@modules/features/insights";
+import { InstituteDiscussionDocs } from "@modules/features/institute-discussion";
+import { InstituteReviewDocs } from "@modules/features/institute-review";
 
 const Docs = [
   ProfileDocs,
   InstituteDocs,
   AuthDocs,
-  EducationDocs,
+  ProfileEducationDocs,
   FeedbackDocs,
   ForumDocs,
   InsightsDocs,
-  DiscussionDocs,
-  ReviewDocs,
+  InstituteDiscussionDocs,
+  InstituteReviewDocs,
 ];
 
 const ALL_DOCS: EndpointDetails[] = [];

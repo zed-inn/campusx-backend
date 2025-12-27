@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LogInterface } from "../log.interface";
+import { LogInterface } from "../../log.interface";
 
 export const LogCreateSchema = z.object({
   req: LogInterface.fields.req.default(null),

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { InstituteInterface } from "../../institute.interface";
+import { InstituteSchema } from "./institute-schema.dto";
 
-export const InstituteCreateSchema = InstituteInterface.dbSchema.pick({
+export const InstituteCreateSchema = InstituteSchema.pick({
   name: true,
   aisheCode: true,
   shortName: true,

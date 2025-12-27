@@ -1,5 +1,5 @@
 import { Includeable } from "sequelize";
-import { Discussion } from "../models/discussion.model";
+import { Discussion, DiscussionInstance } from "../models/discussion.model";
 import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
 import { Institute } from "@modules/core/institutes";
 import { DiscussionCreateDto } from "../dtos/service/discussion-create.dto";
@@ -11,9 +11,7 @@ import { Rui } from "@shared/dtos/req-user.dto";
 import { DiscussionSchema } from "../dtos/service/discussion-schema.dto";
 import { DiscussionErrors } from "../discussion.errors";
 
-export class DiscussionService extends BaseService<
-  InstanceType<typeof Discussion>
-> {
+export class DiscussionService extends BaseService<DiscussionInstance> {
   static DISCUSSIONS_PER_PAGE = 200;
   static OFFSET = createOffsetFn(this.DISCUSSIONS_PER_PAGE);
 

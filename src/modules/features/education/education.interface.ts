@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
-import { InstituteInterface } from "@modules/core/institutes";
 
 export const EducationInterface = modelSchema({
   id: z.uuidv4("Invalid Education Id"),

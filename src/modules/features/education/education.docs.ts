@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { EndpointDetails } from "@shared/utils/readme-types";
+import { EndpointDetails } from "@shared/docs/readme-types";
 import { EducationResponseSchema } from "./dtos/controller/education-response.dto";
-import { ProfileResponseMinSchema as ResMinProfile } from "@modules/core/profile/dtos/controller/profile-response.dto";
 import { EducationCreateSchema } from "./dtos/service/education-create.dto";
 import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
+import { ProfileResMin } from "@modules/core/profile";
 
 export const EducationDocs: EndpointDetails[] = [
   {
@@ -36,7 +36,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "Institute's students.",
       data: z.object({
-        students: z.array(ResMinProfile),
+        students: z.array(ProfileResMin),
       }),
     },
   },

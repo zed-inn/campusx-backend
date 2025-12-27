@@ -1,13 +1,11 @@
-import { Institute } from "./institute.model";
+import { Institute, InstituteInstance } from "./institute.model";
 import { literal } from "sequelize";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
 import { InstituteErrors } from "./institute.errors";
 import { InstituteSchema } from "./dtos/service/institute-schema.dto";
 
-export class InstituteService extends BaseService<
-  InstanceType<typeof Institute>
-> {
+export class InstituteService extends BaseService<InstituteInstance> {
   protected static INSTITUTES_PER_PAGE = 30;
   protected static OFFSET = createOffsetFn(this.INSTITUTES_PER_PAGE);
 

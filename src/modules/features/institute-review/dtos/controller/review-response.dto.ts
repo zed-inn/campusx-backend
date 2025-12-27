@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { ReviewSchema } from "../service/review-full.dto";
-import { ProfileResponseMinSchema } from "@modules/core/profile/dtos/controller/profile-response.dto";
-import { InstituteSchema } from "@modules/core/institutes/dtos/service/institute-schema.dto";
+import { ReviewSchema } from "../service/review-schema.dto";
+import { InstituteSchema } from "@modules/core/institutes";
 
 export const ReviewResponseSchema = ReviewSchema.pick({
   createDate: true,
@@ -9,8 +8,8 @@ export const ReviewResponseSchema = ReviewSchema.pick({
   id: true,
   body: true,
   rating: true,
+  writer: true,
 }).extend({
-  writer: ProfileResponseMinSchema,
   institute: InstituteSchema.pick({ id: true, name: true }),
 });
 

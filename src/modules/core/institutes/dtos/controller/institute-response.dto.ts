@@ -31,10 +31,6 @@ export const InstituteResponseMaxSchema = InstituteSchema.pick({
   yearOfEstablishment: true,
 });
 
-export type InstituteResponseMaxDto = z.infer<
-  typeof InstituteResponseMaxSchema
->;
-
 export const InstituteResponseMinSchema = InstituteSchema.pick({
   id: true,
   name: true,
@@ -49,6 +45,10 @@ export const InstituteResponseMinSchema = InstituteSchema.pick({
   imageUrl: true,
   category: true,
 });
+
+export type InstituteResponseMaxDto = z.infer<
+  typeof InstituteResponseMaxSchema
+>;
 
 export type InstituteResponseMinDto = z.infer<
   typeof InstituteResponseMinSchema

@@ -1,12 +1,10 @@
 import db from "@config/database";
-import { Forum } from "../models/forum.model";
-import { Like } from "../models/like.model";
+import { Like, LikeInstance } from "../models/like.model";
 import { ForumService } from "./forum.service";
-import { ProfileService } from "@modules/core/profile";
 import { BaseService } from "@shared/services/base.service";
 import { ForumErrors } from "../errors/forum.errors";
 
-export class LikeService extends BaseService<InstanceType<typeof Like>> {
+export class LikeService extends BaseService<LikeInstance> {
   static likeForum = async (id: string, userId: string) => {
     return await db.transaction(async () => {
       const service = await ForumService.getById(id);

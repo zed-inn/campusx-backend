@@ -28,6 +28,8 @@ export const Feedback = defineModel<
   },
 });
 
+export type FeedbackInstance = InstanceType<typeof Feedback>;
+
 // Associations
 Profile.hasMany(Feedback, {
   foreignKey: "userId",
