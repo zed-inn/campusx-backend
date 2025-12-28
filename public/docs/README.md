@@ -2326,6 +2326,41 @@ Deletes a review you have written
 
 ## Ambassador
 
+### Get request info
+
+**GET** `/ambassador`  **( Login Required )**
+
+Get ambassador request info, like status (PENDING, REJECTED or ACCEPTED), and institute info
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    request: {
+      status: string;
+      reasonToBecome: string | null;
+      institute: {
+        id: string;
+        name: string;
+        aisheCode: string | null;
+        shortName: string | null;
+        about: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+        website: string | null;
+        imageUrl: string | null;
+        category: string | null;
+      };
+    };
+  };
+}
+```
+
+---
+
 ### Get institute's ambassadors
 
 **GET** `/ambassador`
@@ -2366,7 +2401,7 @@ Get users that are ambassadors of an institute
 
 ### Request for ambassador position
 
-**POST** `/ambassador`
+**POST** `/ambassador`  **( Login Required )**
 
 Request for an ambassador position
 
@@ -2390,7 +2425,7 @@ Request for an ambassador position
 
 ### Update ambassador request
 
-**PUT** `/ambassador`
+**PUT** `/ambassador`  **( Login Required )**
 
 Udpate the request given for ambassador position
 
@@ -2414,7 +2449,7 @@ Udpate the request given for ambassador position
 
 ### Withdraw Request
 
-**POST** `/ambassador`
+**DELETE** `/ambassador`  **( Login Required )**
 
 Delete the request for an ambassador position
 

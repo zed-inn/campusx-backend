@@ -12,6 +12,7 @@ import { removeUndefined } from "@shared/utils/clean-object";
 import { AmbassadorAttributes } from "./ambassador.interface";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { AMBASSADOR_CONFIG } from "./ambassador.config";
+import { Institute, InstituteService } from "@modules/core/institutes";
 
 export class AmbassadorService extends BaseService<AmbassadorInstance> {
   static AMBASSADORS_PER_PAGE = 30;
@@ -20,6 +21,7 @@ export class AmbassadorService extends BaseService<AmbassadorInstance> {
   override get data() {
     const ambassador = super.data;
     ambassador.user = ProfileService.parse(ambassador.user);
+    ambassador.institute = InstituteService.parse(ambassador.institute)
 
     return AmbassadorSchema.parse(ambassador);
   }
@@ -91,4 +93,8 @@ class AmbassadorInclude {
     as: "user",
     include: [ProfileInclude.followedBy(userId), ProfileInclude.ambassador],
   });
+
+  static get institute(): Includeable {
+    return { model: Institute, as: "institute" };
+  }
 }

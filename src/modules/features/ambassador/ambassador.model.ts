@@ -41,7 +41,7 @@ export const Ambassador = defineModel<
 export type AmbassadorInstance = InstanceType<typeof Ambassador>;
 
 // Associations
-Profile.hasMany(Ambassador, {
+Profile.hasOne(Ambassador, {
   foreignKey: "id",
   onDelete: "CASCADE",
   as: "ambassador",

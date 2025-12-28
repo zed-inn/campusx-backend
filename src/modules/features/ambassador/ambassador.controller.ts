@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { AmbassadorService } from "./ambassador.service";
 import { ProfileResMin } from "@modules/core/profile";
 import { ApiResponse } from "@shared/utils/api-response";
+import { AmbassadorResponseSchema } from "./dtos/controller/ambassador-response.dto";
 
 export class AmbassadorController {
   static getInstituteAmbassadors = catchAsync(
@@ -22,15 +23,24 @@ export class AmbassadorController {
     }
   );
 
+  static getCurrentRequest = catchAsync(async (req: Request, res: Response) => {
+    const user = AuthPayloadSchema.parse(req.user);
+
+    const service = await AmbassadorService.getById(user.id);
+    const request = AmbassadorResponseSchema.parse(service.data);
+
+    return ApiResponse.success(res, "Request Info.", { request });
+  });
+
   static requestForAmbassadorPosition = catchAsync(
     async (req: Request, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
-      const q = createSchema({ reason: "stringNull", id: "id" }).parse(
+      const q = createSchema({ reasonToBecome: "stringNull", id: "id" }).parse(
         req.body
       );
 
       await AmbassadorService.create(
-        { instituteId: q.id, reasonToBecome: q.reason },
+        { instituteId: q.id, reasonToBecome: q.reasonToBecome },
         user.id
       );
 
@@ -40,10 +50,12 @@ export class AmbassadorController {
 
   static updateRequest = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ reason: "stringNull", id: "id" }).parse(req.body);
+    const q = createSchema({ reasonToBecome: "stringNull", id: "id" }).parse(
+      req.body
+    );
 
     await AmbassadorService.update(
-      { instituteId: q.id, reasonToBecome: q.reason },
+      { instituteId: q.id, reasonToBecome: q.reasonToBecome },
       user.id
     );
 
