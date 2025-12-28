@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { FeedbackSchema } from "../service/feedback-schema.dto";
+import { ProfileResMin } from "@modules/core/profile";
 
 export const FeedbackResponseSchema = FeedbackSchema.pick({
   id: true,
@@ -7,7 +8,8 @@ export const FeedbackResponseSchema = FeedbackSchema.pick({
   status: true,
   createDate: true,
   updateDate: true,
-  writer: true,
+}).extend({
+  writer: ProfileResMin,
 });
 
 export type FeedbackResponseDto = z.infer<typeof FeedbackResponseSchema>;

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { InstituteSchema } from "@modules/core/institutes/dtos/service/institute-schema.dto";
 import { DiscussionSchema } from "../service/discussion-schema.dto";
-import { ProfileResponseMinSchema } from "@modules/core/profile/dtos/controller/profile-response.dto";
+import { ProfileResMin } from "@modules/core/profile";
+import { InstituteSchema } from "@modules/core/institutes";
 
 export const DiscussionResponseSchema = DiscussionSchema.pick({
   createDate: true,
@@ -10,14 +10,14 @@ export const DiscussionResponseSchema = DiscussionSchema.pick({
   message: true,
   replyingTo: true,
   updateDate: true,
-  writer: true,
 }).extend({
+  writer: ProfileResMin,
   institute: InstituteSchema.pick({ name: true }),
   parentMessage: DiscussionSchema.pick({
     id: true,
     message: true,
   }).extend({
-    writer: ProfileResponseMinSchema,
+    writer: ProfileResMin,
   }),
 });
 
