@@ -10,6 +10,8 @@ import { Rui } from "@shared/dtos/req-user.dto";
 import { UserErrors } from "@modules/core/user";
 import { ProfileSchema } from "../dtos/service/profile-schema.dto";
 import { BaseService } from "@shared/services/base.service";
+import { Ambassador } from "@modules/features/ambassador";
+import { Institute, InstituteService } from "@modules/core/institutes";
 
 export class ProfileService extends BaseService<ProfileInstance> {
   protected static USERS_PER_PAGE = 30;
@@ -23,6 +25,9 @@ export class ProfileService extends BaseService<ProfileInstance> {
   static parse = (profile: any) => {
     profile.isFollowed =
       Array.isArray(profile.followers) && profile.followers.length;
+    profile.ambassador = profile.ambassador
+      ? { institute: InstituteService.parse(profile.ambassador.institute) }
+      : null;
     return ProfileSchema.parse(profile);
   };
 
@@ -34,7 +39,7 @@ export class ProfileService extends BaseService<ProfileInstance> {
 
   static getById = async (id: string, reqUserId?: Rui) => {
     const profile = await Profile.findByPk(id, {
-      include: [ProfileInclude.followedBy(reqUserId)],
+      include: [ProfileInclude.followedBy(reqUserId),ProfileInclude.ambassador],
     });
     if (!profile) throw UserErrors.noUserFound;
 
@@ -44,7 +49,7 @@ export class ProfileService extends BaseService<ProfileInstance> {
   static getByUsername = async (username: string, reqUserId?: Rui) => {
     const profile = await Profile.findOne({
       where: { username },
-      include: [ProfileInclude.followedBy(reqUserId)],
+      include: [ProfileInclude.followedBy(reqUserId), ProfileInclude.ambassador],
     });
     if (!profile) throw UserErrors.noUserFound;
 
@@ -57,7 +62,7 @@ export class ProfileService extends BaseService<ProfileInstance> {
       offset: this.offset(page),
       limit: this.USERS_PER_PAGE,
       order: [["fullName", "asc"]],
-      include: [ProfileInclude.followedBy(reqUserId)],
+      include: [ProfileInclude.followedBy(reqUserId),ProfileInclude.ambassador],
     });
 
     return profiles.map((p) => new ProfileService(p));
@@ -82,4 +87,14 @@ export class ProfileInclude {
     required: false,
     as: "followers",
   });
+
+  // From Feature: Ambassador
+  static get ambassador(): Includeable {
+    return {
+      model: Ambassador,
+      as: "ambassador",
+      include: [{ model: Institute, as: "institute" }],
+      required: false,
+    };
+  }
 }

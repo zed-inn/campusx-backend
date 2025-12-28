@@ -95,7 +95,7 @@ export class ForumInclude {
     return {
       model: Profile,
       as: "writer",
-      include: [ProfileInclude.followedBy(userId)],
+      include: [ProfileInclude.followedBy(userId), ProfileInclude.ambassador],
     };
   }
 

@@ -100,12 +100,12 @@ class FollowInclude {
   static followerProfile = (id?: Rui): Includeable => ({
     model: Profile,
     as: "followerProfile",
-    include: [ProfileInclude.followedBy(id)],
+    include: [ProfileInclude.followedBy(id), ProfileInclude.ambassador],
   });
 
   static followeeProfile = (id?: Rui): Includeable => ({
     model: Profile,
     as: "followeeProfile",
-    include: [ProfileInclude.followedBy(id)],
+    include: [ProfileInclude.followedBy(id), ProfileInclude.ambassador],
   });
 }

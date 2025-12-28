@@ -9,6 +9,7 @@ import { InsightsDocs } from "@modules/features/insights";
 import { InstituteDiscussionDocs } from "@modules/features/institute-discussion";
 import { InstituteReviewDocs } from "@modules/features/institute-review";
 import { EndpointDetails } from "./readme-types";
+import { AmbassadorDocs } from "@modules/features/ambassador";
 
 const Docs = [
   ProfileDocs,
@@ -20,6 +21,7 @@ const Docs = [
   InsightsDocs,
   InstituteDiscussionDocs,
   InstituteReviewDocs,
+  AmbassadorDocs,
 ];
 
 const ALL_DOCS: EndpointDetails[] = [];

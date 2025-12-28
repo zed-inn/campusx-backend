@@ -9,6 +9,7 @@ import { InstituteDiscussionRouter } from "@modules/features/institute-discussio
 import { InstituteReviewRouter } from "@modules/features/institute-review";
 import { Router } from "express";
 import { DocsRouter } from "./docs/readme.route";
+import { AmbassadorRouter } from "@modules/features/ambassador";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ const routers = [
   FeedbackRouter,
   ProfileEducationRouter,
   DocsRouter,
+  AmbassadorRouter,
 ];
 
 for (const ModuleRouter of routers) router.use("/", ModuleRouter);

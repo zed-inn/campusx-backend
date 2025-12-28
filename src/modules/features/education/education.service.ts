@@ -97,7 +97,7 @@ class EducationInclude {
     return {
       model: Profile,
       as: "user",
-      include: [ProfileInclude.followedBy(userId)],
+      include: [ProfileInclude.followedBy(userId), ProfileInclude.ambassador],
     };
   }
 
