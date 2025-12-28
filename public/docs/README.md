@@ -35,6 +35,12 @@ Gets user's display attributes, like dob, name, etc.
       followersCount: number;
       followingCount: number;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        } | null;
+      };
     };
   };
 }
@@ -66,6 +72,12 @@ Get the profile of currently logged in user
       followersCount: number;
       followingCount: number;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        } | null;
+      };
     };
   };
 }
@@ -109,6 +121,12 @@ Create profile for the user after signing up
       followersCount: number;
       followingCount: number;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        } | null;
+      };
     };
   };
 }
@@ -154,6 +172,12 @@ Does not update if no fields given
       followersCount: number;
       followingCount: number;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        } | null;
+      };
     };
   };
 }
@@ -187,6 +211,12 @@ Get all users.
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -245,6 +275,12 @@ Get followers of a user with their id
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -276,6 +312,12 @@ Get followers of currently logged in user
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -308,6 +350,12 @@ Get follwoings of a user with thier id
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -339,6 +387,12 @@ Get following of currently logged in user
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -541,6 +595,12 @@ Get students list of an institute, whether passed or ongoing
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     }[];
   };
 }
@@ -577,6 +637,12 @@ Login with email and password
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     } | null;
   };
 }
@@ -611,6 +677,12 @@ Login with google from flutter screen
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     } | null;
   };
 }
@@ -697,6 +769,12 @@ Create password after getting and verifying otp
       fullName: string;
       avatarUrl: string | null;
       isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
     } | null;
   };
 }
@@ -822,6 +900,38 @@ Get education list of a specific user
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     }[];
   };
@@ -905,6 +1015,38 @@ Add institute and relevant details as your education
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -988,6 +1130,38 @@ Update relevant details of your education
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -1066,6 +1240,38 @@ Remove an education
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -1144,6 +1350,38 @@ Get forums of a specified user
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     }[];
   };
@@ -1194,6 +1432,38 @@ Get latest forums, will be upgraded to recommended forums
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     }[];
   };
@@ -1244,6 +1514,38 @@ Get forums of the currently logged in user
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     }[];
   };
@@ -1297,6 +1599,38 @@ Creates a forum
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -1351,6 +1685,38 @@ Updates a forum
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -1401,6 +1767,38 @@ Deletes a forum
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
     };
   };
@@ -1523,6 +1921,38 @@ Get comments on a forum, or replies on a comment of a forum
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       parentComment: {
         id: string;
@@ -1540,6 +1970,38 @@ Get comments on a forum, or replies on a comment of a forum
           followersCount: number;
           followingCount: number;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              createDate: number;
+              updateDate: number;
+              id: string;
+              aisheCode: string | null;
+              name: string;
+              nameNormalized: string;
+              shortName: string | null;
+              about: string | null;
+              district: string | null;
+              state: string | null;
+              country: string | null;
+              address: string | null;
+              pinCode: number | null;
+              yearOfEstablishment: number | null;
+              website: string | null;
+              location: string | null;
+              category: string | null;
+              administrativeMinistry: string | null;
+              standaloneType: string | null;
+              management: string | null;
+              collegeType: string | null;
+              universityName: string | null;
+              universityType: string | null;
+              phone: string | null;
+              landline: string | null;
+              imageUrl: string | null;
+              rating: number;
+              reviewsCount: number;
+            };
+          } | null;
         };
       };
     }[];
@@ -1592,6 +2054,38 @@ Comment on a forum, or reply on a comment
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       parentComment: {
         id: string;
@@ -1609,6 +2103,38 @@ Comment on a forum, or reply on a comment
           followersCount: number;
           followingCount: number;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              createDate: number;
+              updateDate: number;
+              id: string;
+              aisheCode: string | null;
+              name: string;
+              nameNormalized: string;
+              shortName: string | null;
+              about: string | null;
+              district: string | null;
+              state: string | null;
+              country: string | null;
+              address: string | null;
+              pinCode: number | null;
+              yearOfEstablishment: number | null;
+              website: string | null;
+              location: string | null;
+              category: string | null;
+              administrativeMinistry: string | null;
+              standaloneType: string | null;
+              management: string | null;
+              collegeType: string | null;
+              universityName: string | null;
+              universityType: string | null;
+              phone: string | null;
+              landline: string | null;
+              imageUrl: string | null;
+              rating: number;
+              reviewsCount: number;
+            };
+          } | null;
         };
       };
     };
@@ -1660,6 +2186,38 @@ Update your comment/reply on a forum/comment
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       parentComment: {
         id: string;
@@ -1677,6 +2235,38 @@ Update your comment/reply on a forum/comment
           followersCount: number;
           followingCount: number;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              createDate: number;
+              updateDate: number;
+              id: string;
+              aisheCode: string | null;
+              name: string;
+              nameNormalized: string;
+              shortName: string | null;
+              about: string | null;
+              district: string | null;
+              state: string | null;
+              country: string | null;
+              address: string | null;
+              pinCode: number | null;
+              yearOfEstablishment: number | null;
+              website: string | null;
+              location: string | null;
+              category: string | null;
+              administrativeMinistry: string | null;
+              standaloneType: string | null;
+              management: string | null;
+              collegeType: string | null;
+              universityName: string | null;
+              universityType: string | null;
+              phone: string | null;
+              landline: string | null;
+              imageUrl: string | null;
+              rating: number;
+              reviewsCount: number;
+            };
+          } | null;
         };
       };
     };
@@ -1726,6 +2316,38 @@ Deletes your comment/reply on a forum/comment
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       parentComment: {
         id: string;
@@ -1743,6 +2365,38 @@ Deletes your comment/reply on a forum/comment
           followersCount: number;
           followingCount: number;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              createDate: number;
+              updateDate: number;
+              id: string;
+              aisheCode: string | null;
+              name: string;
+              nameNormalized: string;
+              shortName: string | null;
+              about: string | null;
+              district: string | null;
+              state: string | null;
+              country: string | null;
+              address: string | null;
+              pinCode: number | null;
+              yearOfEstablishment: number | null;
+              website: string | null;
+              location: string | null;
+              category: string | null;
+              administrativeMinistry: string | null;
+              standaloneType: string | null;
+              management: string | null;
+              collegeType: string | null;
+              universityName: string | null;
+              universityType: string | null;
+              phone: string | null;
+              landline: string | null;
+              imageUrl: string | null;
+              rating: number;
+              reviewsCount: number;
+            };
+          } | null;
         };
       };
     };
@@ -1858,6 +2512,38 @@ Get messages of an institute discussion
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         name: string;
@@ -1871,6 +2557,12 @@ Get messages of an institute discussion
           fullName: string;
           avatarUrl: string | null;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              id: string;
+              name: string;
+            };
+          } | null;
         };
       };
     }[];
@@ -1920,6 +2612,38 @@ Message in an insitute discussion
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         name: string;
@@ -1933,6 +2657,12 @@ Message in an insitute discussion
           fullName: string;
           avatarUrl: string | null;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              id: string;
+              name: string;
+            };
+          } | null;
         };
       };
     };
@@ -1981,6 +2711,38 @@ Udpate your message in an insitute discussion
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         name: string;
@@ -1994,6 +2756,12 @@ Udpate your message in an insitute discussion
           fullName: string;
           avatarUrl: string | null;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              id: string;
+              name: string;
+            };
+          } | null;
         };
       };
     };
@@ -2041,6 +2809,38 @@ Deletes your message in an insitute discussion
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         name: string;
@@ -2054,6 +2854,12 @@ Deletes your message in an insitute discussion
           fullName: string;
           avatarUrl: string | null;
           isFollowed: boolean;
+          ambassador: {
+            institute: {
+              id: string;
+              name: string;
+            };
+          } | null;
         };
       };
     };
@@ -2149,6 +2955,38 @@ Get reviews for an insitute
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         id: string;
@@ -2200,6 +3038,38 @@ Review an institute with a rating and some content
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         id: string;
@@ -2251,6 +3121,38 @@ Update a review you have written
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         id: string;
@@ -2300,6 +3202,38 @@ Deletes a review you have written
         followersCount: number;
         followingCount: number;
         isFollowed: boolean;
+        ambassador: {
+          institute: {
+            createDate: number;
+            updateDate: number;
+            id: string;
+            aisheCode: string | null;
+            name: string;
+            nameNormalized: string;
+            shortName: string | null;
+            about: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            address: string | null;
+            pinCode: number | null;
+            yearOfEstablishment: number | null;
+            website: string | null;
+            location: string | null;
+            category: string | null;
+            administrativeMinistry: string | null;
+            standaloneType: string | null;
+            management: string | null;
+            collegeType: string | null;
+            universityName: string | null;
+            universityType: string | null;
+            phone: string | null;
+            landline: string | null;
+            imageUrl: string | null;
+            rating: number;
+            reviewsCount: number;
+          };
+        } | null;
       };
       institute: {
         id: string;
@@ -2307,6 +3241,110 @@ Deletes a review you have written
       };
     };
   };
+}
+```
+
+---
+
+## Ambassador
+
+### Get institute's ambassadors
+
+**GET** `/ambassador`
+
+Get users that are ambassadors of an institute
+
+**Query Parameters :**
+```ts
+{
+  id: string; // Institute Id
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    ambassadors: {
+      id: string;
+      username: string | null;
+      fullName: string;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassador: {
+        institute: {
+          id: string;
+          name: string;
+        };
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Request for ambassador position
+
+**POST** `/ambassador`
+
+Request for an ambassador position
+
+**Body :**
+```ts
+{
+  id: string; // Institute Id
+  reason: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Update ambassador request
+
+**PUT** `/ambassador`
+
+Udpate the request given for ambassador position
+
+**Body :**
+```ts
+{
+  id: string; // Institute Id
+  reason: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Withdraw Request
+
+**POST** `/ambassador`
+
+Delete the request for an ambassador position
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
 }
 ```
 
