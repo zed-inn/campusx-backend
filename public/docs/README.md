@@ -2357,7 +2357,7 @@ Get users that are ambassadors of an institute
           name: string;
         };
       } | null;
-    };
+    }[];
   };
 }
 ```

@@ -16,7 +16,7 @@ export const AmbassadorDocs: EndpointDetails[] = [
     response: {
       message: "Ambassadors.",
       data: z.object({
-        ambassadors: ProfileResMin,
+        ambassadors: z.array(ProfileResMin),
       }),
     },
   },
