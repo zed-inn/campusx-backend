@@ -39,7 +39,10 @@ export class ProfileService extends BaseService<ProfileInstance> {
 
   static getById = async (id: string, reqUserId?: Rui) => {
     const profile = await Profile.findByPk(id, {
-      include: [ProfileInclude.followedBy(reqUserId),ProfileInclude.ambassador],
+      include: [
+        ProfileInclude.followedBy(reqUserId),
+        ProfileInclude.ambassador,
+      ],
     });
     if (!profile) throw UserErrors.noUserFound;
 
@@ -49,7 +52,10 @@ export class ProfileService extends BaseService<ProfileInstance> {
   static getByUsername = async (username: string, reqUserId?: Rui) => {
     const profile = await Profile.findOne({
       where: { username },
-      include: [ProfileInclude.followedBy(reqUserId), ProfileInclude.ambassador],
+      include: [
+        ProfileInclude.followedBy(reqUserId),
+        ProfileInclude.ambassador,
+      ],
     });
     if (!profile) throw UserErrors.noUserFound;
 
@@ -62,7 +68,10 @@ export class ProfileService extends BaseService<ProfileInstance> {
       offset: this.offset(page),
       limit: this.USERS_PER_PAGE,
       order: [["fullName", "asc"]],
-      include: [ProfileInclude.followedBy(reqUserId),ProfileInclude.ambassador],
+      include: [
+        ProfileInclude.followedBy(reqUserId),
+        ProfileInclude.ambassador,
+      ],
     });
 
     return profiles.map((p) => new ProfileService(p));
@@ -93,6 +102,7 @@ export class ProfileInclude {
     return {
       model: Ambassador,
       as: "ambassador",
+      where: { status: "ACCEPTED" },
       include: [{ model: Institute, as: "institute" }],
       required: false,
     };
