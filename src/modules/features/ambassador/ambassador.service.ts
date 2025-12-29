@@ -13,6 +13,7 @@ import { AmbassadorAttributes } from "./ambassador.interface";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { AMBASSADOR_CONFIG } from "./ambassador.config";
 import { Institute, InstituteService } from "@modules/core/institutes";
+import { EducationService } from "../education";
 
 export class AmbassadorService extends BaseService<AmbassadorInstance> {
   static AMBASSADORS_PER_PAGE = 30;
@@ -21,13 +22,31 @@ export class AmbassadorService extends BaseService<AmbassadorInstance> {
   override get data() {
     const ambassador = super.data;
     ambassador.user = ProfileService.parse(ambassador.user);
-    ambassador.institute = InstituteService.parse(ambassador.institute)
+    ambassador.institute = InstituteService.parse(ambassador.institute);
 
     return AmbassadorSchema.parse(ambassador);
   }
 
   static create = async (data: AmbassadorCreateDto, userId: string) => {
     return await db.transaction(async () => {
+      let isInInstitute = false;
+      {
+        let wheels: EducationService[] = [];
+        let page = 1;
+        do {
+          wheels = await EducationService.getByUserId(userId, page);
+          if (
+            wheels.map((w) => w.data.instituteId).includes(data.instituteId)
+          ) {
+            isInInstitute = true;
+            break;
+          }
+          page += 1;
+        } while (wheels.length);
+      }
+
+      if (!isInInstitute) throw AmbassadorErrors.noRequestAllowed;
+
       const a = await Ambassador.create({ ...data, id: userId });
 
       return this.getById(a.dataValues.id);
