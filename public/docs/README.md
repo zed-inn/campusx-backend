@@ -853,11 +853,12 @@ Get education list of a specific user
       endMonth: number | null;
       endYear: number | null;
       id: string;
-      isCompleted: boolean;
       startMonth: number;
       startYear: number;
       updateDate: number;
-      Institute: {
+      description: string | null;
+      userId: string;
+      institute: {
         id: string;
         name: string;
         aisheCode: string | null;
@@ -870,19 +871,6 @@ Get education list of a specific user
         website: string | null;
         imageUrl: string | null;
         category: string | null;
-      };
-      user: {
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
     }[];
   };
@@ -905,7 +893,7 @@ Add institute and relevant details as your education
   startMonth: number;
   endYear: number | null;
   endMonth: number | null;
-  isCompleted: boolean;
+  description: string | null;
 }
 ```
 
@@ -919,11 +907,12 @@ Add institute and relevant details as your education
       endMonth: number | null;
       endYear: number | null;
       id: string;
-      isCompleted: boolean;
       startMonth: number;
       startYear: number;
       updateDate: number;
-      Institute: {
+      description: string | null;
+      userId: string;
+      institute: {
         id: string;
         name: string;
         aisheCode: string | null;
@@ -936,19 +925,6 @@ Add institute and relevant details as your education
         website: string | null;
         imageUrl: string | null;
         category: string | null;
-      };
-      user: {
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
     };
   };
@@ -971,7 +947,7 @@ Update relevant details of your education
   startMonth?: number;
   endYear?: number | null;
   endMonth?: number | null;
-  isCompleted?: boolean;
+  description?: string | null;
 }
 ```
 
@@ -985,11 +961,12 @@ Update relevant details of your education
       endMonth: number | null;
       endYear: number | null;
       id: string;
-      isCompleted: boolean;
       startMonth: number;
       startYear: number;
       updateDate: number;
-      Institute: {
+      description: string | null;
+      userId: string;
+      institute: {
         id: string;
         name: string;
         aisheCode: string | null;
@@ -1002,19 +979,6 @@ Update relevant details of your education
         website: string | null;
         imageUrl: string | null;
         category: string | null;
-      };
-      user: {
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
     };
   };
@@ -1046,11 +1010,12 @@ Remove an education
       endMonth: number | null;
       endYear: number | null;
       id: string;
-      isCompleted: boolean;
       startMonth: number;
       startYear: number;
       updateDate: number;
-      Institute: {
+      description: string | null;
+      userId: string;
+      institute: {
         id: string;
         name: string;
         aisheCode: string | null;
@@ -1063,19 +1028,6 @@ Remove an education
         website: string | null;
         imageUrl: string | null;
         category: string | null;
-      };
-      user: {
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
     };
   };
@@ -2409,7 +2361,7 @@ Request for an ambassador position
 ```ts
 {
   id: string; // Institute Id
-  reason: string | null;
+  reasonToBecome: string | null;
 }
 ```
 
@@ -2433,7 +2385,7 @@ Udpate the request given for ambassador position
 ```ts
 {
   id: string; // Institute Id
-  reason: string | null;
+  reasonToBecome: string | null;
 }
 ```
 

@@ -5,6 +5,7 @@ export const EducationInterface = modelSchema({
   id: z.uuidv4("Invalid Education Id"),
   userId: z.uuidv4("Invalid User Id"),
   instituteId: z.uuidv4("Invalid Institute Id"),
+  description: z.string("Invalid Description").nullable(),
   startYear: z.int("Invalid Start Year").positive("Invalid Start Year"),
   startMonth: z
     .int("Invalid Start Month")
@@ -21,7 +22,6 @@ export const EducationInterface = modelSchema({
     .max(12, { error: "Invalid End Month" })
     .nullable()
     .default(null),
-  isCompleted: z.boolean("Invalid Complete Status").default(true),
 });
 
 export type EducationAttributes = z.infer<typeof EducationInterface.dbSchema>;

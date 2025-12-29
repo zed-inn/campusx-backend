@@ -9,7 +9,7 @@ export const EducationUpdateSchema = EducationSchema.pick({
     startMonth: true,
     endYear: true,
     endMonth: true,
-    isCompleted: true,
+    description: true,
   }).partial().shape,
 });
 

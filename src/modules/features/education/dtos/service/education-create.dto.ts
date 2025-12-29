@@ -7,7 +7,7 @@ export const EducationCreateSchema = EducationSchema.pick({
   startMonth: true,
   endYear: true,
   endMonth: true,
-  isCompleted: true,
+  description: true,
 });
 
 export type EducationCreateDto = z.infer<typeof EducationCreateSchema>;

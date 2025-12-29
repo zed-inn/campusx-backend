@@ -24,6 +24,7 @@ export const Education = defineModel<
     allowNull: false,
     references: { model: Institute, key: "id" },
   },
+  description: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   startYear: { type: DataTypes.INTEGER, allowNull: false },
   startMonth: {
     type: DataTypes.INTEGER,
@@ -36,11 +37,6 @@ export const Education = defineModel<
     allowNull: true,
     defaultValue: true,
     validate: { min: 1, max: 12 },
-  },
-  isCompleted: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
   },
 });
 
