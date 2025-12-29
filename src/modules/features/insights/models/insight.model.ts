@@ -22,7 +22,6 @@ export const Insight = defineModel<
   categoryId: {
     type: DataTypes.UUID,
     allowNull: true,
-    defaultValue: null,
     references: { model: Category, key: "id" },
   },
   status: {

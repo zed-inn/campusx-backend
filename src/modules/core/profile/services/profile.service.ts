@@ -3,7 +3,7 @@ import { Profile, ProfileInstance } from "../models/profile.model";
 import { ProfileCreateDto } from "../dtos/service/profile-create.dto";
 import { ProfileUpdateDto } from "../dtos/service/profile-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
-import { Includeable, Op } from "sequelize";
+import { Includeable, literal, Op } from "sequelize";
 import { Follow } from "../models/follow.model";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { Rui } from "@shared/dtos/req-user.dto";
@@ -12,6 +12,7 @@ import { ProfileSchema } from "../dtos/service/profile-schema.dto";
 import { BaseService } from "@shared/services/base.service";
 import { Ambassador } from "@modules/features/ambassador";
 import { Institute, InstituteService } from "@modules/core/institutes";
+import { ProfileSearchDto } from "../dtos/service/profile-search.dto";
 
 export class ProfileService extends BaseService<ProfileInstance> {
   protected static USERS_PER_PAGE = 30;
@@ -77,6 +78,21 @@ export class ProfileService extends BaseService<ProfileInstance> {
     return profiles.map((p) => new ProfileService(p));
   };
 
+  static getBySearch = async (data: ProfileSearchDto, reqUserId?: Rui) => {
+    const searchData = removeUndefined(data);
+
+    const profiles = await Profile.findAll({
+      where: { ...searchData },
+      order: literal("RANDOM()"),
+      include: [
+        ProfileInclude.followedBy(reqUserId),
+        ProfileInclude.ambassador,
+      ],
+    });
+
+    return profiles.map((p) => new ProfileService(p));
+  };
+
   static update = async (data: ProfileUpdateDto, userId: string) => {
     const service = await ProfileService.getById(userId);
 
@@ -101,7 +117,7 @@ export class ProfileInclude {
   static get ambassador(): Includeable {
     return {
       model: Ambassador,
-      as: "ambassador",
+      foreignKey: "id",
       where: { status: "ACCEPTED" },
       include: [{ model: Institute, as: "institute" }],
       required: false,

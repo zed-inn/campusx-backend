@@ -31,11 +31,11 @@ export const Education = defineModel<
     allowNull: false,
     validate: { min: 1, max: 12 },
   },
-  endYear: { type: DataTypes.INTEGER, allowNull: true, defaultValue: true },
+  endYear: { type: DataTypes.INTEGER, allowNull: true, defaultValue: null },
   endMonth: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    defaultValue: true,
+    defaultValue: null,
     validate: { min: 1, max: 12 },
   },
 });

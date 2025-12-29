@@ -28,7 +28,6 @@ export const Comment = defineModel<
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,
-    defaultValue: null,
     references: { model: "ForumComments", key: "id" },
   },
   body: { type: DataTypes.STRING, allowNull: false },

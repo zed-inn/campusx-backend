@@ -23,7 +23,6 @@ export const Profile = defineModel<
   username: {
     type: DataTypes.STRING(PROFILE_CONFIG.USERNAME.MAX),
     allowNull: true,
-    defaultValue: null,
     unique: true,
     validate: {
       len: {

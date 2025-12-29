@@ -39,6 +39,13 @@ export class ProfileController {
     return ApiResponse.success(res, "Profile fetched.", { profile });
   });
 
+  static searchUsers = catchAsync(async (req: Request, res: Response) => {
+    const user = AuthPayloadSchema.parse(req.user);
+    // const query = createSchema({name: })
+
+    // TODO: search users endpoint
+  });
+
   static createProfile = catchAsync(
     async (req: Request<{}, {}, ProfileCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
