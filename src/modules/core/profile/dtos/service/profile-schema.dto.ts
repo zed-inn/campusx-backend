@@ -10,7 +10,8 @@ export const ProfileSchema = ProfileInterface.dbSchema.extend({
     .object({
       institute: InstituteSchema,
     })
-    .nullable(),
+    .nullish()
+    .default(null),
 });
 
 export type ProfileSchemaDto = z.infer<typeof ProfileSchema>;

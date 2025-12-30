@@ -66,7 +66,7 @@ export class LoginService {
 
 class LoginUtils {
   static createPayload = async (user: UserService["data"]) => {
-    const authPayload: AuthPayloadType = { id: user.id };
+    const authPayload: AuthPayloadType = { id: user.id, role: user.role };
     const authToken = await TokenService.issueToken(authPayload);
 
     let profile: ProfileService["data"] | null = null;

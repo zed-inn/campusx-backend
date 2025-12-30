@@ -9,7 +9,7 @@ import { SignupDto } from "./dtos/service/signup-final.dto";
 import { AuthResponseSchema } from "./dtos/controller/auth-response.dto";
 import { LoginGoogleDto } from "./dtos/service/login-google.dto";
 import { OtpService } from "./services/otp.service";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { UserService } from "../user";
 
 export class AuthController {
@@ -32,14 +32,16 @@ export class AuthController {
   );
 
   static getOtp = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ email: "email" }).parse(req.body);
+    const q = s.create({ email: s.fields.email }).parse(req.body);
     OtpService.sendOtp(q.email);
 
     return ApiResponse.success(res, "Otp sent.");
   });
 
   static verifyOtp = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ email: "email", otp: "string" }).parse(req.body);
+    const q = s
+      .create({ email: s.fields.email, otp: s.fields.string })
+      .parse(req.body);
     const otpToken = await OtpService.verifyOtp(q.email, q.otp);
 
     return ApiResponse.success(res, "Otp verified.", { otpToken });
@@ -69,7 +71,7 @@ export class AuthController {
   );
 
   static logout = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ authToken: "string" }).parse(req);
+    const q = s.create({ authToken: s.fields.string }).parse(req);
     await TokenService.revokeToken(q.authToken);
 
     return ApiResponse.success(res, "Logged out.");

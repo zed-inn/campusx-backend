@@ -55,9 +55,13 @@ export const Profile = defineModel<
     defaultValue: null,
   },
   dob: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: true,
     defaultValue: null,
+    get() {
+      const rawValue = this.getDataValue("dob");
+      return rawValue ? parseInt(rawValue as string, 10) : null;
+    },
     validate: { min: PROFILE_CONFIG.DOB.MIN, max: PROFILE_CONFIG.DOB.MAX },
   },
   followersCount: { ...STATS },

@@ -16,9 +16,12 @@ export const ProfileResponseMaxSchema = ProfileSchema.pick({
   updateDate: true,
   username: true,
 }).extend({
-  ambassador: z.object({
-    institute: InstituteResMin.pick({ id: true, name: true }).nullable(),
-  }),
+  ambassador: z
+    .object({
+      institute: InstituteResMin.pick({ id: true, name: true }),
+    })
+    .nullish()
+    .default(null),
 });
 
 export const ProfileResponseMinSchema = ProfileSchema.pick({
@@ -32,7 +35,8 @@ export const ProfileResponseMinSchema = ProfileSchema.pick({
     .object({
       institute: InstituteResMin.pick({ id: true, name: true }),
     })
-    .nullable(),
+    .nullish()
+    .default(null),
 });
 
 export type ProfileResponseMinDto = z.infer<typeof ProfileResponseMinSchema>;

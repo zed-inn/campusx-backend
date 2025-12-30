@@ -1,7 +1,7 @@
 import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
 import { DiscussionCreateDto } from "./dtos/service/discussion-create.dto";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { DiscussionService } from "./services/discussion.service";
 import { DiscussionResponseSchema } from "./dtos/controller/discussion-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
@@ -11,7 +11,9 @@ import { DiscussionUpdateDto } from "./dtos/service/discussion-update.dto";
 
 export class DiscussionController {
   static getMessages = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ page: "page", id: "id" }).parse(req.query);
+    const q = s
+      .create({ id: s.fields.id, page: s.fields.page })
+      .parse(req.query);
 
     const services = await DiscussionService.getByInstituteId(
       q.id,
@@ -49,7 +51,7 @@ export class DiscussionController {
 
   static deleteMessage = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     const service = await DiscussionService.delete(q.id, user.id);
     const message = DiscussionResponseSchema.parse(service.data);
@@ -59,7 +61,7 @@ export class DiscussionController {
 
   static likeMessage = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     await LikeService.like(q.id, user.id);
 
@@ -70,7 +72,7 @@ export class DiscussionController {
 
   static unlikeMessage = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     await LikeService.unlike(q.id, user.id);
 

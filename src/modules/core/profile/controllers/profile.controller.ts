@@ -5,7 +5,7 @@ import { ProfileService } from "../services/profile.service";
 import { ProfileCreateDto } from "../dtos/service/profile-create.dto";
 import { ProfileUpdateDto } from "../dtos/service/profile-update.dto";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import {
   ProfileResponseMaxSchema as ResMax,
   ProfileResponseMinSchema as ResMin,
@@ -13,7 +13,7 @@ import {
 
 export class ProfileController {
   static getProfile = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id}).parse(req.query);
 
     const service = await ProfileService.getById(q.id, req.user?.id);
     const profile = ResMax.parse(service.data);
@@ -22,7 +22,7 @@ export class ProfileController {
   });
 
   static getUsers = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page}).parse(req.query);
 
     const services = await ProfileService.getAll(q.page, req.user?.id);
     const users = services.map((s) => ResMin.parse(s.data));
@@ -41,7 +41,7 @@ export class ProfileController {
 
   static searchUsers = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    // const query = createSchema({name: })
+    // const query = ]({name: })
 
     // TODO: search users endpoint
   });

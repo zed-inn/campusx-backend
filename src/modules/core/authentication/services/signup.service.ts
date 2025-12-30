@@ -10,7 +10,7 @@ export class SignupService {
     const user = (await UserService.createWithPassword({ email, password }))
       .data;
 
-    const authPayload: AuthPayloadType = { id: user.id };
+    const authPayload: AuthPayloadType = { id: user.id, role: user.role };
     const authToken = await TokenService.issueToken(authPayload);
 
     return { authToken, user: null };

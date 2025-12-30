@@ -1,6 +1,6 @@
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { AmbassadorService } from "./ambassador.service";
 import { ProfileResMin } from "@modules/core/profile";
@@ -10,7 +10,9 @@ import { AmbassadorResponseSchema } from "./dtos/controller/ambassador-response.
 export class AmbassadorController {
   static getInstituteAmbassadors = catchAsync(
     async (req: Request, res: Response) => {
-      const q = createSchema({ id: "id", page: "page" }).parse(req.query);
+      const q = s
+        .create({ id: s.fields.id, page: s.fields.page })
+        .parse(req.query);
 
       const services = await AmbassadorService.getByInstituteId(
         q.id,
@@ -35,9 +37,9 @@ export class AmbassadorController {
   static requestForAmbassadorPosition = catchAsync(
     async (req: Request, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
-      const q = createSchema({ reasonToBecome: "stringNull", id: "id" }).parse(
-        req.body
-      );
+      const q = s
+        .create({ reasonToBecome: s.fields.stringNull, id: s.fields.id })
+        .parse(req.body);
 
       await AmbassadorService.create(
         { instituteId: q.id, reasonToBecome: q.reasonToBecome },
@@ -50,9 +52,9 @@ export class AmbassadorController {
 
   static updateRequest = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ reasonToBecome: "stringNull", id: "id" }).parse(
-      req.body
-    );
+    const q = s
+      .create({ reasonToBecome: s.fields.stringNull, id: s.fields.id })
+      .parse(req.body);
 
     await AmbassadorService.update(
       { instituteId: q.id, reasonToBecome: q.reasonToBecome },

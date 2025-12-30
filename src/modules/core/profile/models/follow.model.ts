@@ -7,6 +7,7 @@ import db from "@config/database";
 import { DataTypes } from "sequelize";
 import { Profile } from "./profile.model";
 import { FOLLOW_CONFIG } from "../profile.config";
+import { AppError } from "@shared/errors/app-error";
 
 export const Follow = defineModel<FollowAttributes, FollowCreationAttributes>(
   db,
@@ -48,3 +49,9 @@ Follow.belongsTo(Profile, { foreignKey: "followerId", as: "followerProfile" });
 
 Profile.hasMany(Follow, { foreignKey: "followeeId", as: "followers" });
 Follow.belongsTo(Profile, { foreignKey: "followeeId", as: "followeeProfile" });
+
+// Hooks
+Follow.beforeValidate((follow) => {
+  if (follow.dataValues.followeeId === follow.dataValues.followerId)
+    throw new AppError("You can't follow yourself", 406);
+});

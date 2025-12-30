@@ -5,6 +5,7 @@ import { PRIMARY_ID } from "@shared/utils/db-types";
 import { defineModel } from "@shared/utils/define-model";
 import { env } from "@config/env";
 import { generateReferralCode } from "@shared/utils/generate-code";
+import { USER_CONFIG } from "./user.config";
 
 export const User = defineModel<UserAttributes, UserCreationAttributes>(
   db,
@@ -34,8 +35,15 @@ export const User = defineModel<UserAttributes, UserCreationAttributes>(
         },
       },
     },
+    role: {
+      type: DataTypes.STRING,
+      values: Object.values(USER_CONFIG.ROLE),
+      defaultValue: USER_CONFIG.ROLE.STUDENT,
+    },
   }
 );
+
+export type UserInstance = InstanceType<typeof User>;
 
 // Hooks
 User.beforeValidate(async (user: any) => {

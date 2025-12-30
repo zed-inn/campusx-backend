@@ -1,5 +1,5 @@
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { ReviewService } from "./review.service";
 import { ReviewResponseSchema } from "./dtos/controller/review-response.dto";
@@ -11,7 +11,9 @@ import { ReviewUpdateDto } from "./dtos/service/review-update.dto";
 export class ReviewController {
   static getInstituteReviews = catchAsync(
     async (req: Request, res: Response) => {
-      const q = createSchema({ page: "page", id: "id" }).parse(req.query);
+      const q = s
+        .create({ id: s.fields.id, page: s.fields.page })
+        .parse(req.query);
 
       const services = await ReviewService.getByInstituteId(
         q.id,
@@ -48,7 +50,7 @@ export class ReviewController {
 
   static deleteReview = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     const service = await ReviewService.delete(q.id, user.id);
     const review = ReviewResponseSchema.parse(service.data);

@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { catchAsync } from "@shared/utils/catch-async";
 import { ApiResponse } from "@shared/utils/api-response";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { LikeService } from "../services/like.service";
 
 export class LikeController {
   static likeForum = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     await LikeService.likeForum(q.id, user.id);
 
@@ -19,7 +19,7 @@ export class LikeController {
 
   static unlikeForum = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     await LikeService.unlikeForum(q.id, user.id);
 

@@ -24,11 +24,13 @@ export class ProfileService extends BaseService<ProfileInstance> {
   }
 
   static parse = (profile: any) => {
-    profile.isFollowed =
-      Array.isArray(profile.followers) && profile.followers.length;
+    profile.isFollowed = Boolean(
+      Array.isArray(profile.followers) && profile.followers.length
+    );
     profile.ambassador = profile.ambassador
       ? { institute: InstituteService.parse(profile.ambassador.institute) }
       : null;
+    console.log(profile);
     return ProfileSchema.parse(profile);
   };
 
@@ -117,7 +119,7 @@ export class ProfileInclude {
   static get ambassador(): Includeable {
     return {
       model: Ambassador,
-      foreignKey: "id",
+      as: "ambassador",
       where: { status: "ACCEPTED" },
       include: [{ model: Institute, as: "institute" }],
       required: false,

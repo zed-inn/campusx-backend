@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { CommentService } from "../services/comment.service";
@@ -10,11 +10,13 @@ import { CommentUpdateDto } from "../dtos/service/comment-update.dto";
 
 export class CommentController {
   static getForumComments = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({
-      forumId: "id",
-      commentId: "idNull",
-      page: "page",
-    }).parse(req.query);
+    const q = s
+      .create({
+        forumId: s.fields.id,
+        commentId: s.fields.idNull,
+        page: s.fields.page,
+      })
+      .parse(req.query);
 
     const services = await CommentService.getByForumId(
       q.forumId,
@@ -53,7 +55,7 @@ export class CommentController {
 
   static deleteComment = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     const service = await CommentService.delete(q.id, user.id);
     const comment = CommentResponseSchema.parse(service.data);

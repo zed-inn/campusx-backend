@@ -15,11 +15,13 @@ const envSchema = z.object({
   POSTGRESQL_DATABASE: z.string(),
   POSTGRESQL_USERNAME: z.string(),
   POSTGRESQL_PASSWORD: z.string(),
-  GOOGLE_EMAIL: z.email(),
-  GOOGLE_APP_PASSWORD: z.string().length(16),
   JWT_SECRET: z.string(),
   BCRYPT_PASSWORD_HASH_SALT: z.coerce.number().default(10),
   REFERRAL_CODE_LENGTH: z.coerce.number().default(8),
+  NODEMAILER_HOST: z.string(),
+  NODEMAILER_PORT: z.coerce.number(),
+  NODEMAILER_USER: z.string(),
+  NODEMAILER_PASS: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -1,6 +1,7 @@
 import { env } from "@config/env";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
+import { USER_CONFIG } from "./user.config";
 
 export const UserInterface = modelSchema(
   {
@@ -13,6 +14,9 @@ export const UserInterface = modelSchema(
       .length(env.REFERRAL_CODE_LENGTH, {
         error: "Invalid Referral Code",
       }),
+    role: z
+      .enum(Object.values(USER_CONFIG.ROLE))
+      .default(USER_CONFIG.ROLE.STUDENT),
   },
   {
     password: z

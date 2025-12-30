@@ -6,6 +6,7 @@ import { User } from "./user.model";
 import { UserErrors } from "./user.errors";
 import { UserSchema } from "./dtos/service/user-schema.dto";
 import { BaseService } from "@shared/services/base.service";
+import { USER_CONFIG } from "./user.config";
 
 export class UserService extends BaseService<InstanceType<typeof User>> {
   override get data() {
@@ -15,13 +16,17 @@ export class UserService extends BaseService<InstanceType<typeof User>> {
 
   static createWithPassword = async (data: UserCreateDto) => {
     const passwordHash = await UserUtils.hashPassword(data.password);
-    const user = await User.create({ email: data.email, passwordHash });
+    const user = await User.create({
+      email: data.email,
+      passwordHash,
+      role: USER_CONFIG.ROLE.STUDENT,
+    });
 
     return new UserService(user);
   };
 
   static createWithoutPassword = async (email: string) => {
-    const user = await User.create({ email });
+    const user = await User.create({ email, role: USER_CONFIG.ROLE.STUDENT });
 
     return new UserService(user);
   };
@@ -49,7 +54,7 @@ export class UserService extends BaseService<InstanceType<typeof User>> {
   };
 }
 
-class UserUtils {
+export class UserUtils {
   static hashPassword = async (password: string) =>
     await bcrypt.hash(password, env.BCRYPT_PASSWORD_HASH_SALT);
 }

@@ -77,6 +77,13 @@ export type InstituteInstance = InstanceType<typeof Institute>;
 
 // Hooks
 Institute.beforeValidate(async (institute: any) => {
+  institute.nameNormalized = "";
   if (institute.name)
-    institute.nameNormalized = Sanitize.normalizeString(institute.name);
+    institute.nameNormalized += Sanitize.normalizeString(institute.name);
+  if (institute.district)
+    institute.nameNormalized += Sanitize.normalizeString(institute.district);
+  if (institute.state)
+    institute.state += Sanitize.normalizeString(institute.state);
+  if (institute.address)
+    institute.address += Sanitize.normalizeString(institute.address);
 });

@@ -3,15 +3,17 @@ import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
 import { FollowService } from "../services/follow.service";
 import { ApiResponse } from "@shared/utils/api-response";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { ProfileResponseMinSchema as ResMin } from "../dtos/controller/profile-response.dto";
 
 export class FollowController {
   static getFollowers = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ userId: "id", page: "page" }).parse(req.query);
+    const q = s
+      .create({ id: s.fields.id, page: s.fields.page })
+      .parse(req.query);
 
     const services = await FollowService.getFollowersById(
-      q.userId,
+      q.id,
       q.page,
       req.user?.id
     );
@@ -22,7 +24,7 @@ export class FollowController {
 
   static getMyFollowers = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page }).parse(req.query);
 
     const services = await FollowService.getFollowersById(user.id, q.page);
     const followers = services.map((s) => ResMin.parse(s.data.followerProfile));
@@ -31,7 +33,9 @@ export class FollowController {
   });
 
   static getFollowing = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ id: "id", page: "page" }).parse(req.query);
+    const q = s
+      .create({ id: s.fields.id, page: s.fields.page })
+      .parse(req.query);
 
     const services = await FollowService.getFollowingsById(
       q.id,
@@ -47,7 +51,7 @@ export class FollowController {
 
   static getMyFollowing = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page }).parse(req.query);
 
     const services = await FollowService.getFollowingsById(user.id, q.page);
     const followings = services.map((s) =>
@@ -59,7 +63,7 @@ export class FollowController {
 
   static followUser = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.body);
+    const q = s.create({ id: s.fields.id }).parse(req.body);
 
     await FollowService.follow(q.id, user.id);
 
@@ -68,7 +72,7 @@ export class FollowController {
 
   static unfollowUser = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.body);
+    const q = s.create({ id: s.fields.id }).parse(req.body);
 
     await FollowService.unfollow(q.id, user.id);
 

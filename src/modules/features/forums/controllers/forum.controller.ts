@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { ForumService } from "../services/forum.service";
@@ -10,7 +10,7 @@ import { ForumUpdateDto } from "../dtos/service/forum-update.dto";
 
 export class ForumController {
   static getForums = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page }).parse(req.query);
 
     const services = await ForumService.getLatest(q.page, req.user?.id);
     const forums = services.map((s) => ForumResponseSchema.parse(s.data));
@@ -19,7 +19,9 @@ export class ForumController {
   });
 
   static getUserForums = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ id: "id", page: "page" }).parse(req.query);
+    const q = s
+      .create({ id: s.fields.id, page: s.fields.page })
+      .parse(req.query);
 
     const services = await ForumService.getByUserId(q.id, q.page, req.user?.id);
     const forums = services.map((s) => ForumResponseSchema.parse(s.data));
@@ -29,7 +31,7 @@ export class ForumController {
 
   static getMyForums = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page }).parse(req.query);
 
     const services = await ForumService.getByUserId(user.id, q.page);
     const forums = services.map((s) => ForumResponseSchema.parse(s.data));
@@ -61,7 +63,7 @@ export class ForumController {
 
   static deleteForum = catchAsync(async (req: Request, res: Response) => {
     const user = AuthPayloadSchema.parse(req.user);
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({ id: s.fields.id }).parse(req.query);
 
     const service = await ForumService.delete(q.id, user.id);
     const forum = ForumResponseSchema.parse(service.data);

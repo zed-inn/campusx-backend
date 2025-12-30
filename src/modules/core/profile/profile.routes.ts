@@ -36,12 +36,7 @@ router.put(
   ProfileController.updateProfile
 );
 
-router.get(
-  "/followers",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  FollowController.getFollowers
-);
+router.get("/followers", FollowController.getFollowers);
 
 router.get(
   "/followers/me",
@@ -50,12 +45,7 @@ router.get(
   FollowController.getMyFollowers
 );
 
-router.get(
-  "/following",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  FollowController.getFollowing
-);
+router.get("/following", FollowController.getFollowing);
 
 router.get(
   "/following/me",

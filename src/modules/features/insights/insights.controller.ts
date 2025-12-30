@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { ApiResponse } from "@shared/utils/api-response";
 import { CategoryService } from "./services/category.service";
 import { InsightService } from "./services/insight.service";
@@ -9,7 +9,7 @@ import { InsightResponseSchema } from "./dtos/controller/insight-response.dto";
 
 export class InsightsController {
   static getCategories = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({ page: s.fields.page }).parse(req.query);
 
     const services = await CategoryService.getAll(q.page);
     const categories = services.map((s) => s.data.name);
@@ -19,9 +19,9 @@ export class InsightsController {
 
   static getPublishedInsights = catchAsync(
     async (req: Request, res: Response) => {
-      const q = createSchema({ page: "page", category: "stringNull" }).parse(
-        req.query
-      );
+      const q = s
+        .create({ category: s.fields.stringNull, page: s.fields.page })
+        .parse(req.query);
 
       const services = await InsightService.getByCatAndStatus(
         q.category,

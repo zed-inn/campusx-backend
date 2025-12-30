@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { catchAsync } from "@shared/utils/catch-async";
-import { createSchema } from "@shared/utils/create-schema";
+import { s } from "@shared/utils/create-schema";
 import { ApiResponse } from "@shared/utils/api-response";
 import { InstituteService } from "./institute.service";
 import {
@@ -10,7 +10,7 @@ import {
 
 export class InstituteController {
   static getInstitute = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ id: "id" }).parse(req.query);
+    const q = s.create({id: s.fields.id}).parse(req.query);
     const service = await InstituteService.getById(q.id);
     const institute = ResMax.parse(service.data);
 
@@ -18,7 +18,7 @@ export class InstituteController {
   });
 
   static getAllInstitutes = catchAsync(async (req: Request, res: Response) => {
-    const q = createSchema({ page: "page" }).parse(req.query);
+    const q = s.create({page: s.fields.page}).parse(req.query);
     const services = await InstituteService.getAll(q.page);
     const institutes = services.map((i) => ResMin.parse(i.data));
 

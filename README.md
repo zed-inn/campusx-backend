@@ -39,8 +39,8 @@ Gets user's display attributes, like dob, name, etc.
         institute: {
           id: string;
           name: string;
-        } | null;
-      };
+        };
+      } | null;
     };
   };
 }
@@ -76,8 +76,8 @@ Get the profile of currently logged in user
         institute: {
           id: string;
           name: string;
-        } | null;
-      };
+        };
+      } | null;
     };
   };
 }
@@ -125,8 +125,8 @@ Create profile for the user after signing up
         institute: {
           id: string;
           name: string;
-        } | null;
-      };
+        };
+      } | null;
     };
   };
 }
@@ -176,8 +176,8 @@ Does not update if no fields given
         institute: {
           id: string;
           name: string;
-        } | null;
-      };
+        };
+      } | null;
     };
   };
 }
