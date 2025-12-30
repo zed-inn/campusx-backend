@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.use(authenticate);
+app.use(authenticate.req);
 
 app.use("/", AppRouter);
 

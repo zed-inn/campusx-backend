@@ -143,3 +143,7 @@ firebase.config.json
 
 # Institute Raw Data (Sheets)
 src/modules/core/institutes/preprocessing/data/sheets
+
+# Codebase Dump
+codebase_dump.txt
+bundler.js
