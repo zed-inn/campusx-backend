@@ -11,9 +11,7 @@ export const getDataJsons = async () => {
   const lists = await listDir(OLD_DATA_DIR);
   const jsons: Record<string, any> = {};
   for (const f of lists) {
-    const fText = await (
-      await fs.readFile(path.join(OLD_DATA_DIR, f))
-    ).toString();
+    const fText = (await fs.readFile(path.join(OLD_DATA_DIR, f))).toString();
     const key = f.replace("data", "").replace(".json", "");
     jsons[key] = JSON.parse(fText);
   }
