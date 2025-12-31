@@ -3,6 +3,6 @@ git pull origin main
 echo "Pull complete"
 
 echo "Restarting application"
-npm i
+npm run build
 forever restart -s dist/server.js
 exit
