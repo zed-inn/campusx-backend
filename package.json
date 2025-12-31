@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "nodemon",
-    "build": "npm run clean && tsc && tsc-alias",
+    "build": "npm install && npm run clean && tsc && tsc-alias",
     "start": "node dist/server.js"
   },
   "repository": {
