@@ -31,7 +31,7 @@ export class CategoryService extends BaseService<
     const categories = await Category.findAll({
       offset: this.OFFSET(page),
       limit: CATEGORIES_PER_PAGE,
-      order: ["createDate", "desc"],
+      order: [["createDate", "desc"]],
     });
 
     return categories.map((c) => new CategoryService(c));

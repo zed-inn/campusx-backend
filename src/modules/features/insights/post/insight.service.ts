@@ -1,9 +1,5 @@
 import { CategoryService } from "../category/category.service";
-import {
-  Insight,
-  InsightAttributes,
-  InsightInstance,
-} from "./insight.model";
+import { Insight, InsightAttributes, InsightInstance } from "./insight.model";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
 import { InsightsErrors } from "../insights.errors";
@@ -36,7 +32,10 @@ export class InsightService extends BaseService<
     const categoryIds = services.map((s) => s.data.id);
 
     const insights = await Insight.findAll({
-      where: { categoryId: categoryIds, status: STATUS.Published },
+      where: {
+        ...(categoryIds.length ? { categoryId: categoryIds } : {}),
+        status: STATUS.Published,
+      },
       offset: this.OFFSET(page),
       limit: INSIGHTS_PER_PAGE,
       order: [["createDate", "desc"]],
