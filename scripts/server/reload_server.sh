@@ -4,5 +4,5 @@ echo "Pull complete"
 
 echo "Restarting application"
 npm i
-forever restart -s dist/app.js
+forever restart -s dist/server.js
 exit

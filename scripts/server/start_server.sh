@@ -1,5 +1,5 @@
 echo "Pulling new code"
 git pull
 
-forever start -s dist/app.js
+forever start -s dist/server.js
 echo "Application started"
