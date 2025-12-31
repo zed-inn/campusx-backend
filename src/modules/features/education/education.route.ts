@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { EducationController } from "./education.controller";
-import { EducationCreateSchema } from "./dtos/service/education-create.dto";
-import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
+import { EducationCreateSchema } from "./dtos/education-create.dto";
+import { EducationUpdateSchema } from "./dtos/education-update.dto";
 import { mount } from "@shared/utils/mount-router";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";
@@ -35,4 +35,4 @@ router.delete(
   EducationController.removeEducation
 );
 
-export const ProfileEducationRouter = mount("/education", router);
+export const EducationRouter = mount("/education", router);

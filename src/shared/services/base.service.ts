@@ -1,14 +1,19 @@
 import { AppError } from "@shared/errors/app-error";
 import { Model } from "sequelize";
+import { Type } from "typescript";
+import { z } from "zod";
 
-export abstract class BaseService<M extends Model> {
+export abstract class BaseService<
+  M extends Model,
+  I extends Record<string, unknown>
+> {
   public model: M;
 
   constructor(model: M) {
     this.model = model;
   }
 
-  get data(): any {
+  get data(): I {
     return this.model.get({ plain: true });
   }
 

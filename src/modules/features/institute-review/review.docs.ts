@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { ReviewResponseSchema } from "./dtos/controller/review-response.dto";
-import { ReviewCreateSchema } from "./dtos/service/review-create.dto";
-import { ReviewUpdateSchema } from "./dtos/service/review-update.dto";
+import { ReviewCreateSchema } from "./dtos/review-create.dto";
+import { ReviewUpdateSchema } from "./dtos/review-update.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { ReviewResponseSchema } from "./dtos/review-response.dto";
 
 export const ReviewDocs: EndpointDetails[] = [
   {

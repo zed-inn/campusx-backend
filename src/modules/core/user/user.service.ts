@@ -1,32 +1,26 @@
 import bcrypt from "bcryptjs";
 import { env } from "@config/env";
-import { UserCreateDto } from "./dtos/service/user-create.dto";
-import { UpdatePasswordDto } from "./dtos/service/update-password.dto";
-import { User } from "./user.model";
+import { CreateProtectedDto, CreateSimpleDto } from "./dtos/user-create.dto";
+import { UpdatePasswordDto } from "./dtos/user-update.dto";
+import { User, UserAttributes, UserInstance } from "./user.model";
 import { UserErrors } from "./user.errors";
-import { UserSchema } from "./dtos/service/user-schema.dto";
 import { BaseService } from "@shared/services/base.service";
-import { USER_CONFIG } from "./user.config";
 
-export class UserService extends BaseService<InstanceType<typeof User>> {
-  override get data() {
-    const user = super.data;
-    return UserSchema.parse(user);
-  }
+export class UserService extends BaseService<UserInstance, UserAttributes> {
+  static createWithPassword = async (data: CreateProtectedDto) => {
+    const { password, ...createData } = data;
 
-  static createWithPassword = async (data: UserCreateDto) => {
-    const passwordHash = await UserUtils.hashPassword(data.password);
+    const passwordHash = await UserUtils.hashPassword(password);
     const user = await User.create({
-      email: data.email,
+      ...createData,
       passwordHash,
-      role: USER_CONFIG.ROLE.STUDENT,
     });
 
     return new UserService(user);
   };
 
-  static createWithoutPassword = async (email: string) => {
-    const user = await User.create({ email, role: USER_CONFIG.ROLE.STUDENT });
+  static createWithoutPassword = async (data: CreateSimpleDto) => {
+    const user = await User.create({ ...data });
 
     return new UserService(user);
   };
@@ -46,8 +40,10 @@ export class UserService extends BaseService<InstanceType<typeof User>> {
   };
 
   static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
-    const user = (await UserService.getByEmail(data.email)).model;
     const passwordHash = await UserUtils.hashPassword(data.password);
+    const service = await UserService.getByEmail(data.email);
+
+    const user = service.model;
     await user.update({ passwordHash });
 
     return new UserService(user);

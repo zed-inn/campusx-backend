@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { ForumResponseSchema } from "./dtos/controller/forum-response.dto";
-import { ForumCreateSchema } from "./dtos/service/forum-create.dto";
-import { ForumUpdateSchema } from "./dtos/service/forum-update.dto";
-import { CommentResponseSchema } from "./dtos/controller/comment-response.dto";
-import { CommentCreateSchema } from "./dtos/service/comment-create.dto";
-import { CommentUpdateSchema } from "./dtos/service/comment-update.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { ForumResponseSchema } from "./posts/dtos/forum-response.dto";
+import { ForumCreateSchema } from "./posts/dtos/forum-create.dto";
+import { ForumUpdateSchema } from "./posts/dtos/forum-update.dto";
+import { CommentResponseSchema } from "./comments/dtos/comment-response.dto";
+import { CommentCreateSchema } from "./comments/dtos/comment-create.dto";
+import { CommentUpdateSchema } from "./comments/dtos/comment-update.dto";
 
 export const ForumDocs: EndpointDetails[] = [
   {

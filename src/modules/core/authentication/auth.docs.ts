@@ -1,9 +1,10 @@
-import { z } from "zod";
-import { LoginBasicSchema } from "./dtos/service/login-basic.dto";
-import { AuthResponseSchema } from "./dtos/controller/auth-response.dto";
-import { LoginGoogleSchema } from "./dtos/service/login-google.dto";
-import { SignupSchema } from "./dtos/service/signup-final.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { z } from "zod";
+import { LoginBasicSchema } from "./login/dtos/login-basic.dto";
+import { AuthResponseSchema } from "./dtos/auth-response.dto";
+import { LoginGoogleSchema } from "./login/dtos/login-google.dto";
+import { VerifyOtpSchema } from "./otp/dtos/verify-otp.dto";
+import { CreatePasswordSchema } from "./signup/dtos/create-password.dto";
 
 export const AuthDocs: EndpointDetails[] = [
   {
@@ -49,10 +50,7 @@ export const AuthDocs: EndpointDetails[] = [
     method: "POST",
     endpoint: "/auth/otp/verify",
     description: "Verify the 'sent' Otp to the given mail in previous step",
-    body: z.object({
-      email: z.email(),
-      otp: z.string(),
-    }),
+    body: VerifyOtpSchema,
     response: {
       message: "Otp verified.",
       data: z.object({
@@ -66,7 +64,7 @@ export const AuthDocs: EndpointDetails[] = [
     method: "POST",
     endpoint: "/auth/signup/create-password",
     description: "Create password after getting and verifying otp",
-    body: SignupSchema,
+    body: CreatePasswordSchema,
     response: {
       message: "Signed up.",
       data: AuthResponseSchema,
@@ -78,7 +76,7 @@ export const AuthDocs: EndpointDetails[] = [
     method: "POST",
     endpoint: "/auth/forgot-password/reset-password",
     description: "Reset password after getting and verifying otp",
-    body: SignupSchema,
+    body: CreatePasswordSchema,
     response: {
       message: "Password resetted.",
     },

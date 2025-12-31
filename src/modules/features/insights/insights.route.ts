@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { InsightsController } from "./insights.controller";
+import { InsightsController } from "./post/insights.controller";
 import { mount } from "@shared/utils/mount-router";
 
 const router = Router();

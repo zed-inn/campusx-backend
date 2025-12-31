@@ -23,23 +23,32 @@ Gets user's display attributes, like dob, name, etc.
   message: string;
   data: {
     profile: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
       about: string | null;
       avatarUrl: string | null;
-      createDate: number;
+      gender: string | null;
       dob: number | null;
       followersCount: number;
       followingCount: number;
-      fullName: string;
-      gender: string | null;
-      id: string;
       isFollowed: boolean;
-      updateDate: number;
-      username: string | null;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
+      isAmbassador: boolean;
+      ambassadorInstitute: {
+        id: string;
+        name: string;
+        aisheCode: string | null;
+        shortName: string | null;
+        about: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+        website: string | null;
+        imageUrl: string | null;
+        category: string | null;
       } | null;
     };
   };
@@ -60,23 +69,32 @@ Get the profile of currently logged in user
   message: string;
   data: {
     profile: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
       about: string | null;
       avatarUrl: string | null;
-      createDate: number;
+      gender: string | null;
       dob: number | null;
       followersCount: number;
       followingCount: number;
-      fullName: string;
-      gender: string | null;
-      id: string;
       isFollowed: boolean;
-      updateDate: number;
-      username: string | null;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
+      isAmbassador: boolean;
+      ambassadorInstitute: {
+        id: string;
+        name: string;
+        aisheCode: string | null;
+        shortName: string | null;
+        about: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+        website: string | null;
+        imageUrl: string | null;
+        category: string | null;
       } | null;
     };
   };
@@ -109,23 +127,32 @@ Create profile for the user after signing up
   message: string;
   data: {
     profile: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
       about: string | null;
       avatarUrl: string | null;
-      createDate: number;
+      gender: string | null;
       dob: number | null;
       followersCount: number;
       followingCount: number;
-      fullName: string;
-      gender: string | null;
-      id: string;
       isFollowed: boolean;
-      updateDate: number;
-      username: string | null;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
+      isAmbassador: boolean;
+      ambassadorInstitute: {
+        id: string;
+        name: string;
+        aisheCode: string | null;
+        shortName: string | null;
+        about: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+        website: string | null;
+        imageUrl: string | null;
+        category: string | null;
       } | null;
     };
   };
@@ -160,23 +187,32 @@ Does not update if no fields given
   message: string;
   data: {
     profile: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
       about: string | null;
       avatarUrl: string | null;
-      createDate: number;
+      gender: string | null;
       dob: number | null;
       followersCount: number;
       followingCount: number;
-      fullName: string;
-      gender: string | null;
-      id: string;
       isFollowed: boolean;
-      updateDate: number;
-      username: string | null;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
+      isAmbassador: boolean;
+      ambassadorInstitute: {
+        id: string;
+        name: string;
+        aisheCode: string | null;
+        shortName: string | null;
+        about: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+        website: string | null;
+        imageUrl: string | null;
+        category: string | null;
       } | null;
     };
   };
@@ -206,17 +242,11 @@ Get all users.
   message: string;
   data: {
     users: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -270,17 +300,11 @@ Get followers of a user with their id
   message: string;
   data: {
     followers: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -307,17 +331,11 @@ Get followers of currently logged in user
   message: string;
   data: {
     followers: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -345,17 +363,11 @@ Get follwoings of a user with thier id
   message: string;
   data: {
     followers: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -382,17 +394,11 @@ Get following of currently logged in user
   message: string;
   data: {
     followers: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -590,17 +596,11 @@ Get students list of an institute, whether passed or ongoing
   message: string;
   data: {
     students: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -632,17 +632,11 @@ Login with email and password
   data: {
     authToken: string;
     user: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     } | null;
   };
 }
@@ -672,17 +666,11 @@ Login with google from flutter screen
   data: {
     authToken: string;
     user: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     } | null;
   };
 }
@@ -764,17 +752,11 @@ Create password after getting and verifying otp
   data: {
     authToken: string;
     user: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     } | null;
   };
 }
@@ -912,20 +894,6 @@ Add institute and relevant details as your education
       updateDate: number;
       description: string | null;
       userId: string;
-      institute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      };
     };
   };
 }
@@ -943,6 +911,7 @@ Update relevant details of your education
 ```ts
 {
   id: string;
+  instituteId?: string;
   startYear?: number;
   startMonth?: number;
   endYear?: number | null;
@@ -966,20 +935,6 @@ Update relevant details of your education
       updateDate: number;
       description: string | null;
       userId: string;
-      institute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      };
     };
   };
 }
@@ -1015,20 +970,6 @@ Remove an education
       updateDate: number;
       description: string | null;
       userId: string;
-      institute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      };
     };
   };
 }
@@ -1092,20 +1033,14 @@ Get forums of a specified user
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     }[];
   };
 }
@@ -1141,20 +1076,14 @@ Get latest forums, will be upgraded to recommended forums
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     }[];
   };
 }
@@ -1190,20 +1119,14 @@ Get forums of the currently logged in user
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     }[];
   };
 }
@@ -1242,20 +1165,14 @@ Creates a forum
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     };
   };
 }
@@ -1295,20 +1212,14 @@ Updates a forum
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     };
   };
 }
@@ -1344,20 +1255,14 @@ Deletes a forum
       imageUrl: string | null;
       localId: string | null;
       title: string;
-      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
+      isLiked: boolean;
     };
   };
 }
@@ -1467,33 +1372,21 @@ Get comments on a forum, or replies on a comment of a forum
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     }[];
@@ -1534,33 +1427,21 @@ Comment on a forum, or reply on a comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -1580,8 +1461,8 @@ Update your comment/reply on a forum/comment
 ```ts
 {
   id: string;
-  localId: string | null;
-  body: string;
+  localId?: string | null;
+  body?: string;
 }
 ```
 
@@ -1600,33 +1481,21 @@ Update your comment/reply on a forum/comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -1664,33 +1533,21 @@ Deletes your comment/reply on a forum/comment
       repliesCount: number;
       replyingTo: string | null;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -1789,41 +1646,27 @@ Get messages of an institute discussion
     messages: {
       createDate: number;
       id: string;
-      isLiked: boolean;
       message: string;
       replyingTo: string | null;
       updateDate: number;
+      instituteId: string;
+      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        name: string;
       };
       parentMessage: {
         id: string;
         message: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     }[];
@@ -1856,41 +1699,27 @@ Message in an insitute discussion
     message: {
       createDate: number;
       id: string;
-      isLiked: boolean;
       message: string;
       replyingTo: string | null;
       updateDate: number;
+      instituteId: string;
+      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        name: string;
       };
       parentMessage: {
         id: string;
         message: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -1922,41 +1751,27 @@ Udpate your message in an insitute discussion
     message: {
       createDate: number;
       id: string;
-      isLiked: boolean;
       message: string;
       replyingTo: string | null;
       updateDate: number;
+      instituteId: string;
+      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        name: string;
       };
       parentMessage: {
         id: string;
         message: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -1987,41 +1802,27 @@ Deletes your message in an insitute discussion
     message: {
       createDate: number;
       id: string;
-      isLiked: boolean;
       message: string;
       replyingTo: string | null;
       updateDate: number;
+      instituteId: string;
+      isLiked: boolean;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        name: string;
       };
       parentMessage: {
         id: string;
         message: string;
         writer: {
+          isFollowed: boolean;
           id: string;
           username: string | null;
           fullName: string;
           avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassador: {
-            institute: {
-              id: string;
-              name: string;
-            };
-          } | null;
         };
       };
     };
@@ -2105,21 +1906,11 @@ Get reviews for an insitute
       body: string;
       rating: number;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        id: string;
-        name: string;
       };
     }[];
   };
@@ -2155,21 +1946,11 @@ Review an institute with a rating and some content
       body: string;
       rating: number;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        id: string;
-        name: string;
       };
     };
   };
@@ -2205,21 +1986,11 @@ Update a review you have written
       body: string;
       rating: number;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        id: string;
-        name: string;
       };
     };
   };
@@ -2253,21 +2024,11 @@ Deletes a review you have written
       body: string;
       rating: number;
       writer: {
+        isFollowed: boolean;
         id: string;
         username: string | null;
         fullName: string;
         avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassador: {
-          institute: {
-            id: string;
-            name: string;
-          };
-        } | null;
-      };
-      institute: {
-        id: string;
-        name: string;
       };
     };
   };
@@ -2280,7 +2041,7 @@ Deletes a review you have written
 
 ### Get request info
 
-**GET** `/ambassador`  **( Login Required )**
+**GET** `/ambassador/request`  **( Login Required )**
 
 Get ambassador request info, like status (PENDING, REJECTED or ACCEPTED), and institute info
 
@@ -2290,8 +2051,11 @@ Get ambassador request info, like status (PENDING, REJECTED or ACCEPTED), and in
   message: string;
   data: {
     request: {
+      id: string;
+      createDate: number;
+      updateDate: number;
       status: string;
-      reasonToBecome: string | null;
+      reason: string | null;
       institute: {
         id: string;
         name: string;
@@ -2315,7 +2079,7 @@ Get ambassador request info, like status (PENDING, REJECTED or ACCEPTED), and in
 
 ### Get institute's ambassadors
 
-**GET** `/ambassador`
+**GET** `/ambassador/institute`
 
 Get users that are ambassadors of an institute
 
@@ -2333,17 +2097,11 @@ Get users that are ambassadors of an institute
   message: string;
   data: {
     ambassadors: {
+      isFollowed: boolean;
       id: string;
       username: string | null;
       fullName: string;
       avatarUrl: string | null;
-      isFollowed: boolean;
-      ambassador: {
-        institute: {
-          id: string;
-          name: string;
-        };
-      } | null;
     }[];
   };
 }
@@ -2353,7 +2111,7 @@ Get users that are ambassadors of an institute
 
 ### Request for ambassador position
 
-**POST** `/ambassador`  **( Login Required )**
+**POST** `/ambassador/request`  **( Login Required )**
 
 Request for an ambassador position
 
@@ -2361,7 +2119,7 @@ Request for an ambassador position
 ```ts
 {
   id: string; // Institute Id
-  reasonToBecome: string | null;
+  reason: string | null;
 }
 ```
 
@@ -2377,7 +2135,7 @@ Request for an ambassador position
 
 ### Update ambassador request
 
-**PUT** `/ambassador`  **( Login Required )**
+**PUT** `/ambassador/request`  **( Login Required )**
 
 Udpate the request given for ambassador position
 
@@ -2385,7 +2143,7 @@ Udpate the request given for ambassador position
 ```ts
 {
   id: string; // Institute Id
-  reasonToBecome: string | null;
+  reason: string | null;
 }
 ```
 
@@ -2401,7 +2159,7 @@ Udpate the request given for ambassador position
 
 ### Withdraw Request
 
-**DELETE** `/ambassador`  **( Login Required )**
+**DELETE** `/ambassador/request`  **( Login Required )**
 
 Delete the request for an ambassador position
 
@@ -2410,6 +2168,118 @@ Delete the request for an ambassador position
 {
   message: string;
   data?: any;
+}
+```
+
+---
+
+## Chat
+
+### Get Chats
+
+**GET** `/chat/all`  **( Login Required )**
+
+Get chats in order of latest activity
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    chats: {
+      id: string;
+      localId: string | null;
+      createDate: number;
+      updateDate: number;
+      friendProfile: {
+        isFollowed: boolean;
+        id: string;
+        username: string | null;
+        fullName: string;
+        avatarUrl: string | null;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+## Chat Message
+
+### Get Messages
+
+**GET** `/chat/messages`  **( Login Required )**
+
+Get latest messages of a specific chat
+
+**Query Parameters :**
+```ts
+{
+  id: string; // Chat Id
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    messages: {
+      chatId: string;
+      createDate: number;
+      id: string;
+      localId: string | null;
+      message: string;
+      senderId: string;
+      status: string;
+      updateDate: number;
+      isDeletedByMe: boolean;
+    }[];
+  };
+}
+```
+
+---
+
+### Get initial messages
+
+**GET** `/chat/messages/initial`  **( Login Required )**
+
+Get initial latest message of all chats
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    messages: {
+      chatId: string;
+      createDate: number;
+      id: string;
+      localId: string | null;
+      message: string;
+      senderId: string;
+      status: string;
+      updateDate: number;
+      isDeletedByMe: boolean;
+    }[];
+  };
 }
 ```
 

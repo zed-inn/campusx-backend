@@ -1,9 +1,9 @@
 import { z } from "zod";
-import {
-  InstituteResponseMaxSchema as ResMax,
-  InstituteResponseMinSchema as ResMin,
-} from "./dtos/controller/institute-response.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import {
+  ResponseFullSchema,
+  ResponseSmallSchema,
+} from "./dtos/institute-response.dto";
 
 export const InstituteDocs: EndpointDetails[] = [
   {
@@ -18,7 +18,7 @@ export const InstituteDocs: EndpointDetails[] = [
     response: {
       message: "Institute fetched.",
       data: z.object({
-        institute: ResMax,
+        institute: ResponseFullSchema,
       }),
     },
   },
@@ -34,7 +34,7 @@ export const InstituteDocs: EndpointDetails[] = [
     response: {
       message: "Institutes fetched.",
       data: z.object({
-        institutes: z.array(ResMin),
+        institutes: z.array(ResponseSmallSchema),
       }),
     },
   },
@@ -47,7 +47,7 @@ export const InstituteDocs: EndpointDetails[] = [
     response: {
       message: "Institutes fetched.",
       data: z.object({
-        institutes: z.array(ResMin),
+        institutes: z.array(ResponseSmallSchema),
       }),
     },
   },

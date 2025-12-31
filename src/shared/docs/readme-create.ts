@@ -1,5 +1,4 @@
 import { generateReadme } from "./generate-readme";
-import { ProfileDocs } from "@modules/core/profile";
 import { InstituteDocs } from "@modules/core/institutes";
 import { AuthDocs } from "@modules/core/authentication";
 import { ProfileEducationDocs } from "@modules/features/education";
@@ -10,6 +9,8 @@ import { InstituteDiscussionDocs } from "@modules/features/institute-discussion"
 import { InstituteReviewDocs } from "@modules/features/institute-review";
 import { EndpointDetails } from "./readme-types";
 import { AmbassadorDocs } from "@modules/features/ambassador";
+import { ProfileDocs } from "@modules/core/user-profile/profile.docs";
+import { ChatDocs } from "@modules/features/chats/chat.docs";
 
 const Docs = [
   ProfileDocs,
@@ -22,6 +23,7 @@ const Docs = [
   InstituteDiscussionDocs,
   InstituteReviewDocs,
   AmbassadorDocs,
+  ChatDocs,
 ];
 
 const ALL_DOCS: EndpointDetails[] = [];

@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { DiscussionResponseSchema } from "./dtos/controller/discussion-response.dto";
-import { DiscussionCreateSchema } from "./dtos/service/discussion-create.dto";
-import { DiscussionUpdateSchema } from "./dtos/service/discussion-update.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { DiscussionResponseSchema } from "./message/dtos/discussion-response.dto";
+import { DiscussionCreateSchema } from "./message/dtos/discussion-create.dto";
+import { DiscussionUpdateSchema } from "./message/dtos/discussion-update.dto";
 
 export const DiscussionDocs: EndpointDetails[] = [
   {

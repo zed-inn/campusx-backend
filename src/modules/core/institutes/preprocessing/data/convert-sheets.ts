@@ -3,9 +3,9 @@ import { FILES } from "./sheet-schema";
 import path from "path";
 import fs from "fs/promises";
 import {
-  InstituteCreateDto,
-  InstituteCreateSchema,
-} from "../../dtos/service/institute-create.dto";
+  CreateBySheetDto,
+  CreateBySheetSchema,
+} from "../../dtos/institute-create.dto";
 
 const capitalize = (x: string) =>
   x.length > 0 ? x[0]?.toUpperCase() + x.slice(1).toLowerCase() : x;
@@ -21,8 +21,8 @@ const fixName = (x: string) =>
 
 const DATA_DIR = path.join(__dirname, "./sheets");
 
-const DataSchema = InstituteCreateSchema;
-type DataType = InstituteCreateDto;
+const DataSchema = CreateBySheetSchema;
+type DataType = CreateBySheetDto;
 
 const getDataJson = async (
   files: { name: string; type: string; schema: Schema }[]

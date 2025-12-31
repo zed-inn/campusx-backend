@@ -1,6 +1,6 @@
 import { AuthRouter } from "@modules/core/authentication";
 import { InstituteRouter } from "@modules/core/institutes";
-import { ProfileRouter } from "@modules/core/profile";
+import { ProfileRouter } from "@modules/core/user-profile";
 import { ProfileEducationRouter } from "@modules/features/education";
 import { FeedbackRouter } from "@modules/features/feedback";
 import { ForumRouter } from "@modules/features/forums";

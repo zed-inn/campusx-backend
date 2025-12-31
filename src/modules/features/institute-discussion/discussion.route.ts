@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { DiscussionController } from "./discussion.controller";
-import { DiscussionCreateSchema } from "./dtos/service/discussion-create.dto";
 import { mount } from "@shared/utils/mount-router";
-import { DiscussionUpdateSchema } from "./dtos/service/discussion-update.dto";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";
+import { DiscussionCreateSchema } from "./message/dtos/discussion-create.dto";
+import { DiscussionUpdateSchema } from "./message/dtos/discussion-update.dto";
 
 const router = Router();
 

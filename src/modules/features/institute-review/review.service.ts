@@ -1,28 +1,24 @@
-import { Institute, InstituteService } from "@modules/core/institutes";
-import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
+import { InstituteService } from "@modules/core/institutes";
+import { Profile, ProfileAttributes } from "@modules/core/user-profile";
 import { Includeable } from "sequelize";
-import { Review, ReviewInstance } from "./review.model";
-import { ReviewCreateDto } from "./dtos/service/review-create.dto";
+import { Review, ReviewAttributes, ReviewInstance } from "./review.model";
+import { ReviewCreateDto } from "./dtos/review-create.dto";
 import db from "@config/database";
-import { ReviewUpdateDto } from "./dtos/service/review-update.dto";
+import { ReviewUpdateDto } from "./dtos/review-update.dto";
 import { removeUndefined } from "@shared/utils/clean-object";
-import { ReviewAttributes } from "./review.interface";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { ReviewSchema } from "./dtos/service/review-schema.dto";
-import { Rui } from "@shared/dtos/req-user.dto";
 import { ReviewErrors } from "./review.errors";
+import { REVIEWS_PER_PAGE } from "@config/constants/items-per-page";
 
-export class ReviewService extends BaseService<ReviewInstance> {
-  static REVIEWS_PER_PAGE = 30;
-  static OFFSET = createOffsetFn(this.REVIEWS_PER_PAGE);
+export class ReviewService extends BaseService<
+  ReviewInstance,
+  ReviewAttributes
+> {
+  static OFFSET = createOffsetFn(REVIEWS_PER_PAGE);
 
   override get data() {
-    const review = super.data;
-    review.writer = ProfileService.parse(review.writer);
-    review.institute = InstituteService.parse(review.institute);
-
-    return ReviewSchema.parse(review);
+    return super.data as ReviewAttributes & { writer: ProfileAttributes };
   }
 
   static create = async (userId: string, data: ReviewCreateDto) => {
@@ -47,38 +43,34 @@ export class ReviewService extends BaseService<ReviewInstance> {
     });
   };
 
-  static getById = async (id: string, reqUserId?: Rui) => {
+  static getById = async (id: string) => {
     const review = await Review.findByPk(id, {
-      include: [ReviewInclude.institute, ReviewInclude.writer(reqUserId)],
+      include: [ReviewInclude.writer],
     });
     if (!review) throw ReviewErrors.noReviewFound;
 
     return new ReviewService(review);
   };
 
-  static getByInstituteId = async (
-    id: string,
-    page: number,
-    reqUserId?: Rui
-  ) => {
+  static getByInstituteId = async (id: string, page: number) => {
     const reviews = await Review.findAll({
       where: { instituteId: id },
       offset: this.OFFSET(page),
-      limit: this.REVIEWS_PER_PAGE,
+      limit: REVIEWS_PER_PAGE,
       order: [["createDate", "desc"]],
-      include: [ReviewInclude.institute, ReviewInclude.writer(reqUserId)],
+      include: [ReviewInclude.writer],
     });
 
     return reviews.map((r) => new ReviewService(r));
   };
 
-  static getByUserId = async (id: string, page: number, reqUserId?: Rui) => {
+  static getByUserId = async (id: string, page: number) => {
     const reviews = await Review.findAll({
       where: { userId: id },
       offset: this.OFFSET(page),
-      limit: this.REVIEWS_PER_PAGE,
+      limit: REVIEWS_PER_PAGE,
       order: [["createDate", "desc"]],
-      include: [ReviewInclude.institute, ReviewInclude.writer(reqUserId)],
+      include: [ReviewInclude.writer],
     });
 
     return reviews.map((r) => new ReviewService(r));
@@ -129,40 +121,33 @@ export class ReviewService extends BaseService<ReviewInstance> {
       const service = await ReviewService.getById(id);
       service.checkOwnership(userId);
 
+      const serviceInst = await InstituteService.getById(
+        service.data.instituteId
+      );
+      const institute = serviceInst.model;
+      const instData = serviceInst.data;
+
       const review = service.model;
       const reviewData = service.data;
       await review.destroy();
 
       const newRating = ReviewUtils.subtractFromRating(
-        reviewData.institute.rating,
-        reviewData.institute.reviewsCount,
+        instData.rating,
+        instData.reviewsCount,
         reviewData.rating
       );
 
-      await Institute.update(
-        {
-          rating: newRating,
-          reviewsCount: reviewData.institute.reviewsCount - 1,
-        },
-        { where: { id: reviewData.instituteId } }
-      );
-
-      return new ReviewService(review);
+      await institute.update({
+        rating: newRating,
+        reviewsCount: instData.reviewsCount - 1,
+      });
     });
   };
 }
 
 class ReviewInclude {
-  static writer(userId?: Rui): Includeable {
-    return {
-      model: Profile,
-      as: "writer",
-      include: [ProfileInclude.followedBy(userId), ProfileInclude.ambassador],
-    };
-  }
-
-  static get institute(): Includeable {
-    return { model: Institute, as: "institute" };
+  static get writer(): Includeable {
+    return { model: Profile, as: "writer" };
   }
 }
 

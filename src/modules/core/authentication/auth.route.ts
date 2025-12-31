@@ -1,41 +1,45 @@
 import { Router } from "express";
-import { AuthController } from "./auth.controller";
-import { LoginBasicSchema } from "./dtos/service/login-basic.dto";
-import { SignupSchema } from "./dtos/service/signup-final.dto";
 import { mount } from "@shared/utils/mount-router";
-import { LoginGoogleSchema } from "./dtos/service/login-google.dto";
 import { ValidateReq } from "@shared/middlewares/validate-request";
+import { LoginBasicSchema } from "./login/dtos/login-basic.dto";
+import { LoginController } from "./login/login.controller";
+import { LoginGoogleSchema } from "./login/dtos/login-google.dto";
+import { OtpController } from "./otp/otp.controller";
+import { CreatePasswordSchema } from "./signup/dtos/create-password.dto";
+import { ForgotPasswordController } from "./forgot-password/forgot-password.controller";
+import { SignupController } from "./signup/signup.controller";
+import { LogoutController } from "./logout/logout.controller";
 
 const router = Router();
 
 router.post(
   "/login/basic",
   ValidateReq.body(LoginBasicSchema),
-  AuthController.loginWithPassword
+  LoginController.loginWithPassword
 );
 
 router.post(
   "/login/google",
   ValidateReq.body(LoginGoogleSchema),
-  AuthController.loginWithGoogle
+  LoginController.loginWithGoogle
 );
 
-router.post("/otp/get", AuthController.getOtp);
+router.post("/otp/get", OtpController.getOtp);
 
-router.post("/otp/verify", AuthController.verifyOtp);
+router.post("/otp/verify", OtpController.verifyOtp);
 
 router.post(
   "/signup/create-password",
-  ValidateReq.body(SignupSchema),
-  AuthController.createPassword
+  ValidateReq.body(CreatePasswordSchema),
+  SignupController.createPassword
 );
 
 router.post(
   "/forgot-password/reset-password",
-  ValidateReq.body(SignupSchema),
-  AuthController.resetPassword
+  ValidateReq.body(CreatePasswordSchema),
+  ForgotPasswordController.resetPassword
 );
 
-router.get("/logout", AuthController.logout);
+router.get("/logout", LogoutController.logout);
 
 export const AuthRouter = mount("/auth", router);

@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { ForumController } from "../controllers/forum.controller";
-import { LikeController } from "../controllers/like.controller";
+import { ForumController } from "../posts/posts.controller";
+import { LikeController } from "../reactions/like.controller";
 import { CommentRouter } from "./comment.route";
-import { ForumCreateSchema } from "../dtos/service/forum-create.dto";
-import { ForumUpdateSchema } from "../dtos/service/forum-update.dto";
-import { ReportController } from "../controllers/report.controller";
+import { ReportController } from "../report/report.controller";
 import { mount } from "@shared/utils/mount-router";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";
+import { ForumCreateSchema } from "../posts/dtos/forum-create.dto";
+import { ForumUpdateSchema } from "../posts/dtos/forum-update.dto";
 
 const router = Router();
 

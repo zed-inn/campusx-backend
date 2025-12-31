@@ -146,4 +146,9 @@ src/modules/core/institutes/preprocessing/data/sheets
 
 # Codebase Dump
 codebase_dump.txt
+codebase_tree.txt
 bundler.js
+bundler.py
+
+# Migration data
+**/*/migration/data

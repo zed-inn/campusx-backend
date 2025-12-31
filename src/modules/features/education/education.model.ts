@@ -1,13 +1,42 @@
 import { defineModel } from "@shared/utils/define-model";
-import {
-  EducationAttributes,
-  EducationCreationAttributes,
-} from "./education.interface";
+
 import db from "@config/database";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/user-profile";
 import { Institute } from "@modules/core/institutes";
+
+import { z } from "zod";
+import { modelSchema } from "@shared/utils/model-schema";
+
+export const EducationModel = modelSchema({
+  id: z.uuidv4("Invalid Education Id"),
+  userId: z.uuidv4("Invalid User Id"),
+  instituteId: z.uuidv4("Invalid Institute Id"),
+  description: z.string("Invalid Description").nullable(),
+  startYear: z.int("Invalid Start Year").positive("Invalid Start Year"),
+  startMonth: z
+    .int("Invalid Start Month")
+    .min(1, { error: "Invalid Start Month" })
+    .max(12, { error: "Invalid Start Month" }),
+  endYear: z
+    .int("Invalid End Year")
+    .positive("Invalid End Year")
+    .nullable()
+    .default(null),
+  endMonth: z
+    .int("Invalid End Month")
+    .min(1, { error: "Invalid End Month" })
+    .max(12, { error: "Invalid End Month" })
+    .nullable()
+    .default(null),
+});
+
+export type EducationAttributes = z.infer<typeof EducationModel.dbSchema>;
+export type EducationCreationAttributes = Omit<
+  z.infer<typeof EducationModel.dbFields>,
+  "id"
+>;
 
 export const Education = defineModel<
   EducationAttributes,
@@ -40,8 +69,6 @@ export const Education = defineModel<
   },
 });
 
-export type EducationInstance = InstanceType<typeof Education>;
-
 // Associations
 Profile.hasMany(Education, {
   foreignKey: "userId",
@@ -55,3 +82,5 @@ Institute.hasMany(Education, {
   onDelete: "CASCADE",
 });
 Education.belongsTo(Institute, { foreignKey: "instituteId", as: "institute" });
+
+export type EducationInstance = InstanceType<typeof Education>;

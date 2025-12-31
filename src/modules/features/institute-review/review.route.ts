@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ReviewController } from "./review.controller";
-import { ReviewCreateSchema } from "./dtos/service/review-create.dto";
-import { ReviewUpdateSchema } from "./dtos/service/review-update.dto";
+import { ReviewCreateSchema } from "./dtos/review-create.dto";
+import { ReviewUpdateSchema } from "./dtos/review-update.dto";
 import { mount } from "@shared/utils/mount-router";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";

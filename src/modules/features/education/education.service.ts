@@ -1,28 +1,22 @@
-import { Institute, InstituteService } from "@modules/core/institutes";
-import { Includeable } from "sequelize";
-import { Education, EducationInstance } from "./education.model";
-import { Profile, ProfileInclude, ProfileService } from "@modules/core/profile";
-import { EducationCreateDto } from "./dtos/service/education-create.dto";
+import {
+  Education,
+  EducationAttributes,
+  EducationInstance,
+} from "./education.model";
 import { removeUndefined } from "@shared/utils/clean-object";
-import { EducationAttributes } from "./education.interface";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
 import { EducationErrors } from "./education.errros";
-import { Rui } from "@shared/dtos/req-user.dto";
-import { EducationSchema } from "./dtos/service/education-schema.dto";
-import { EducationUpdateDto } from "./dtos/service/education-update.dto";
+import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
+import { hasKeys } from "@shared/utils/object-length";
+import { EducationCreateDto } from "./dtos/education-create.dto";
+import { EducationUpdateDto } from "./dtos/education-update.dto";
 
-export class EducationService extends BaseService<EducationInstance> {
-  static EDUCATIONS_PER_PAGE = 30;
-  static OFFSET = createOffsetFn(this.EDUCATIONS_PER_PAGE);
-
-  override get data() {
-    const edu = super.data;
-    edu.user = ProfileService.parse(edu.user);
-    edu.institute = InstituteService.parse(edu.institute);
-
-    return EducationSchema.parse(edu);
-  }
+export class EducationService extends BaseService<
+  EducationInstance,
+  EducationAttributes
+> {
+  static OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
 
   static create = async (data: EducationCreateDto, userId: string) => {
     const education = await Education.create({ ...data, userId });
@@ -30,38 +24,37 @@ export class EducationService extends BaseService<EducationInstance> {
     return this.getById(education.dataValues.id);
   };
 
-  static getById = async (id: string, reqUserId?: Rui) => {
-    const education = await Education.findByPk(id, {
-      include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
+  static userInInstitute = async (userId: string, instituteId: string) => {
+    const education = await Education.findOne({
+      where: { userId, instituteId },
     });
+    return education ? true : false;
+  };
+
+  static getById = async (id: string) => {
+    const education = await Education.findByPk(id);
     if (!education) throw EducationErrors.noEducationFound;
 
     return new EducationService(education);
   };
 
-  static getByUserId = async (id: string, page: number, reqUserId?: Rui) => {
+  static getByUserId = async (id: string, page: number) => {
     const educations = await Education.findAll({
       where: { userId: id },
       offset: this.OFFSET(page),
-      limit: this.EDUCATIONS_PER_PAGE,
+      limit: INSTITUTES_PER_PAGE,
       order: [["endYear", "desc"]],
-      include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
     });
 
     return educations.map((e) => new EducationService(e));
   };
 
-  static getByInstituteId = async (
-    id: string,
-    page: number,
-    reqUserId?: Rui
-  ) => {
+  static getByInstituteId = async (id: string, page: number) => {
     const educations = await Education.findAll({
       where: { instituteId: id },
       offset: this.OFFSET(page),
-      limit: this.EDUCATIONS_PER_PAGE,
+      limit: INSTITUTES_PER_PAGE,
       order: [["endYear", "desc"]],
-      include: [EducationInclude.institute, EducationInclude.user(reqUserId)],
     });
 
     return educations.map((e) => new EducationService(e));
@@ -75,7 +68,7 @@ export class EducationService extends BaseService<EducationInstance> {
 
     const education = service.model;
     const cleanData = removeUndefined(updateData);
-    if (Object.keys(cleanData).length)
+    if (hasKeys(cleanData))
       await education.update(cleanData as Partial<EducationAttributes>);
 
     return new EducationService(education);
@@ -90,18 +83,4 @@ export class EducationService extends BaseService<EducationInstance> {
 
     return new EducationService(education);
   };
-}
-
-class EducationInclude {
-  static user(userId?: Rui): Includeable {
-    return {
-      model: Profile,
-      as: "user",
-      include: [ProfileInclude.followedBy(userId), ProfileInclude.ambassador],
-    };
-  }
-
-  static get institute(): Includeable {
-    return { model: Institute, as: "institute" };
-  }
 }

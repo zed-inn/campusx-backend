@@ -1,13 +1,30 @@
 import { defineModel } from "@shared/utils/define-model";
-import {
-  FeedbackAttributes,
-  FeedbackCreationAttributes,
-} from "./feedback.interface";
+
 import db from "@config/database";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
-import { Profile } from "@modules/core/profile";
-import { FEEDBACK_CONFIG } from "./feedback.config";
+import { Profile } from "@modules/core/user-profile";
+import { STATUS } from "./feedback.constants";
+
+import { z } from "zod";
+import { modelSchema } from "@shared/utils/model-schema";
+
+export const FeedbackModel = modelSchema({
+  id: z.uuidv4("Invalid Feedback Id"),
+  userId: z.uuidv4("Invalid User Id").nullable().default(null),
+  message: z.string("Invalid Message"),
+  status: z
+    .enum(STATUS._, {
+      error: "Invalid Status",
+    })
+    .default(STATUS.PENDING),
+});
+
+export type FeedbackAttributes = z.infer<typeof FeedbackModel.dbSchema>;
+export type FeedbackCreationAttributes = Omit<
+  z.infer<typeof FeedbackModel.dbFields>,
+  "id"
+>;
 
 export const Feedback = defineModel<
   FeedbackAttributes,
@@ -22,12 +39,11 @@ export const Feedback = defineModel<
   message: { type: DataTypes.STRING, allowNull: false },
   status: {
     type: DataTypes.STRING,
-    defaultValue: FEEDBACK_CONFIG.STATUS.PENDING,
+    values: STATUS._,
+    defaultValue: STATUS.PENDING,
     allowNull: false,
   },
 });
-
-export type FeedbackInstance = InstanceType<typeof Feedback>;
 
 // Associations
 Profile.hasMany(Feedback, {
@@ -36,3 +52,5 @@ Profile.hasMany(Feedback, {
   as: "feedbacks",
 });
 Feedback.belongsTo(Profile, { foreignKey: "userId", as: "writer" });
+
+export type FeedbackInstance = InstanceType<typeof Feedback>;

@@ -1,9 +1,12 @@
 import { z } from "zod";
-import { EducationResponseSchema } from "./dtos/controller/education-response.dto";
-import { EducationCreateSchema } from "./dtos/service/education-create.dto";
-import { EducationUpdateSchema } from "./dtos/service/education-update.dto";
-import { ProfileResMin } from "@modules/core/profile";
+import { EducationCreateSchema } from "./dtos/education-create.dto";
+import { EducationUpdateSchema } from "./dtos/education-update.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
+import {
+  ResponseFullSchema,
+  ResponseShortSchema,
+} from "./dtos/education-response.dto";
+import { ProfileResponseShort } from "@modules/core/user-profile";
 
 export const EducationDocs: EndpointDetails[] = [
   {
@@ -19,7 +22,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "User's education.",
       data: z.object({
-        educations: z.array(EducationResponseSchema),
+        educations: z.array(ResponseFullSchema),
       }),
     },
   },
@@ -36,7 +39,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "Institute's students.",
       data: z.object({
-        students: z.array(ProfileResMin),
+        students: z.array(ProfileResponseShort),
       }),
     },
   },
@@ -51,7 +54,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "Education added.",
       data: z.object({
-        education: EducationResponseSchema,
+        education: ResponseShortSchema,
       }),
     },
   },
@@ -66,7 +69,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "Education updated.",
       data: z.object({
-        education: EducationResponseSchema,
+        education: ResponseShortSchema,
       }),
     },
   },
@@ -83,7 +86,7 @@ export const EducationDocs: EndpointDetails[] = [
     response: {
       message: "Education removed.",
       data: z.object({
-        education: EducationResponseSchema,
+        education: ResponseShortSchema,
       }),
     },
   },

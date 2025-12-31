@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { CommentController } from "../controllers/comment.controller";
-import { CommentCreateSchema } from "../dtos/service/comment-create.dto";
-import { CommentUpdateSchema } from "../dtos/service/comment-update.dto";
+import { CommentController } from "../comments/comment.controller";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";
+import { CommentCreateSchema } from "../comments/dtos/comment-create.dto";
+import { CommentUpdateSchema } from "../comments/dtos/comment-update.dto";
 
 const router = Router();
 

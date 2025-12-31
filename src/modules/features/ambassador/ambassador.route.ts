@@ -5,24 +5,31 @@ import { RestrictTo } from "@shared/middlewares/auth-restrict";
 
 const router = Router();
 
-router.get("/", AmbassadorController.getInstituteAmbassadors);
+router.get(
+  "/request",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  AmbassadorController.getCurrentRequest
+);
+
+router.get("/institute", AmbassadorController.getInstituteAmbassadors);
 
 router.post(
-  "/",
+  "/request",
   RestrictTo.loggedInUser,
   RestrictTo.profiledUser,
   AmbassadorController.requestForAmbassadorPosition
 );
 
 router.put(
-  "/",
+  "/request",
   RestrictTo.loggedInUser,
   RestrictTo.profiledUser,
   AmbassadorController.updateRequest
 );
 
 router.delete(
-  "/",
+  "/request",
   RestrictTo.loggedInUser,
   RestrictTo.profiledUser,
   AmbassadorController.deleteRequest

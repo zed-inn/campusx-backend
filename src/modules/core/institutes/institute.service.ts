@@ -1,20 +1,19 @@
-import { Institute, InstituteInstance } from "./institute.model";
+import {
+  Institute,
+  InstituteAttributes,
+  InstituteInstance,
+} from "./institute.model";
 import { literal } from "sequelize";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
 import { InstituteErrors } from "./institute.errors";
-import { InstituteSchema } from "./dtos/service/institute-schema.dto";
+import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
 
-export class InstituteService extends BaseService<InstituteInstance> {
-  protected static INSTITUTES_PER_PAGE = 30;
-  protected static OFFSET = createOffsetFn(this.INSTITUTES_PER_PAGE);
-
-  override get data() {
-    const institute = super.data;
-    return InstituteService.parse(institute);
-  }
-
-  static parse = (institute: any) => InstituteSchema.parse(institute);
+export class InstituteService extends BaseService<
+  InstituteInstance,
+  InstituteAttributes
+> {
+  protected static OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
 
   static getById = async (id: string) => {
     const institute = await Institute.findByPk(id);
@@ -23,10 +22,16 @@ export class InstituteService extends BaseService<InstituteInstance> {
     return new InstituteService(institute);
   };
 
+  static getByIds = async (ids: string[]) => {
+    const institutes = await Institute.findAll({ where: { id: ids } });
+
+    return institutes.map((i) => new InstituteService(i));
+  };
+
   static getAll = async (page: number) => {
     const institutes = await Institute.findAll({
       offset: this.OFFSET(page),
-      limit: this.INSTITUTES_PER_PAGE,
+      limit: INSTITUTES_PER_PAGE,
       order: [["updateDate", "desc"]],
     });
 
@@ -35,7 +40,7 @@ export class InstituteService extends BaseService<InstituteInstance> {
 
   static getRandom = async () => {
     const institutes = await Institute.findAll({
-      limit: this.INSTITUTES_PER_PAGE,
+      limit: INSTITUTES_PER_PAGE,
       order: literal("RANDOM()"),
     });
 
