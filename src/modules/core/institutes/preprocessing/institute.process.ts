@@ -1,8 +1,8 @@
 import fs from "fs/promises";
 import path from "path";
-import { InstituteCreateSchema } from "../dtos/service/institute-create.dto";
 import { Institute } from "../institute.model";
 import { connectDB } from "@config/database";
+import { CreateBySheetSchema } from "../dtos/institute-create.dto";
 
 const run = async () => {
   await connectDB();
@@ -13,7 +13,7 @@ const run = async () => {
 
   try {
     const parsedData = (JSON.parse(data) as any[]).map((x) =>
-      InstituteCreateSchema.parse(x)
+      CreateBySheetSchema.parse(x)
     );
 
     let i = 0;
