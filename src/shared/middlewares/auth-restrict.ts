@@ -1,4 +1,4 @@
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { AppError } from "@shared/errors/app-error";
 import { catchAsync } from "@shared/utils/catch-async";

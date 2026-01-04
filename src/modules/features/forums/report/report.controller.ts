@@ -1,19 +1,23 @@
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { catchAsync } from "@shared/utils/catch-async";
-import { s } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { ApiResponse } from "@shared/utils/api-response";
 import { ReportService } from "./report.service";
+import { ReportCreateDto } from "./dtos/report-create.dto";
 
 export class ReportController {
-  static reportForum = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-    const q = s
-      .create({ id: s.fields.id, reason: s.fields.string })
-      .parse(req.body);
+  static reportPost = catchAsync(
+    async (req: Request<{}, {}, ReportCreateDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.body;
 
-    await ReportService.create(q.id, q.reason, user.id);
+      await ReportService.create({
+        postId: q.forumId,
+        reason: q.reason,
+        userId: user.id,
+      });
 
-    return ApiResponse.success(res, "Reported.");
-  });
+      return ApiResponse.success(res, "Reported.");
+    }
+  );
 }

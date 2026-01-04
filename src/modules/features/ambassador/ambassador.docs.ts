@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { EndpointDetails } from "@shared/docs/readme-types";
-import { ProfileResponseShort } from "@modules/core/user-profile";
+import { ProfileResponseShort } from "@modules/core/profile";
 import { ResponseFullSchema } from "./dtos/ambassador-response.dto";
 
 export const AmbassadorDocs: EndpointDetails[] = [

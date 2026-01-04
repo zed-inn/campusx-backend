@@ -6,50 +6,37 @@ import {
 import { removeUndefined } from "@shared/utils/clean-object";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
-import { EducationErrors } from "./education.errros";
 import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
 import { hasKeys } from "@shared/utils/object-length";
-import { EducationCreateDto } from "./dtos/education-create.dto";
-import { EducationUpdateDto } from "./dtos/education-update.dto";
+import {
+  EducationCreateDto,
+  EducationUpdateDto,
+} from "./dtos/education-action.dto";
+import db from "@config/database";
 
-export class EducationService extends BaseService<
-  EducationInstance,
-  EducationAttributes
-> {
-  static OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
+class _EducationService extends BaseService<EducationInstance> {
+  protected OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
 
-  static create = async (data: EducationCreateDto, userId: string) => {
-    const education = await Education.create({ ...data, userId });
+  constructor() {
+    super(Education);
+  }
 
-    return this.getById(education.dataValues.id);
+  add = async (data: EducationCreateDto, userId: string) => {
+    return await this.create({ ...data, userId });
   };
 
-  static userInInstitute = async (userId: string, instituteId: string) => {
-    const education = await Education.findOne({
-      where: { userId, instituteId },
-    });
-    return education ? true : false;
-  };
-
-  static getById = async (id: string) => {
-    const education = await Education.findByPk(id);
-    if (!education) throw EducationErrors.noEducationFound;
-
-    return new EducationService(education);
-  };
-
-  static getByUserId = async (id: string, page: number) => {
+  getByUserId = async (userId: string, page: number) => {
     const educations = await Education.findAll({
-      where: { userId: id },
+      where: { userId },
       offset: this.OFFSET(page),
       limit: INSTITUTES_PER_PAGE,
       order: [["endYear", "desc"]],
     });
 
-    return educations.map((e) => new EducationService(e));
+    return educations.map((e) => e.plain);
   };
 
-  static getByInstituteId = async (id: string, page: number) => {
+  getUserIdsByInstituteId = async (id: string, page: number) => {
     const educations = await Education.findAll({
       where: { instituteId: id },
       offset: this.OFFSET(page),
@@ -57,30 +44,30 @@ export class EducationService extends BaseService<
       order: [["endYear", "desc"]],
     });
 
-    return educations.map((e) => new EducationService(e));
+    return educations.map((e: any) => e.userId as string);
   };
 
-  static update = async (data: EducationUpdateDto, userId: string) => {
+  isUserEnrolled = async (userId: string, instituteId: string) => {
+    const education = await Education.findOne({
+      where: { userId, instituteId },
+    });
+    return education ? true : false;
+  };
+
+  update = async (data: EducationUpdateDto, userId: string) => {
     const { id, ...updateData } = data;
 
-    const service = await this.getById(id);
-    service.checkOwnership(userId);
+    return await db.transaction(async () => {
+      const edu = await this.getById(id);
+      this.checkOwnership(edu, userId);
 
-    const education = service.model;
-    const cleanData = removeUndefined(updateData);
-    if (hasKeys(cleanData))
-      await education.update(cleanData as Partial<EducationAttributes>);
+      const cleanData = removeUndefined(updateData);
+      if (hasKeys(cleanData))
+        await edu.update(cleanData as Partial<EducationAttributes>);
 
-    return new EducationService(education);
-  };
-
-  static delete = async (id: string, userId: string) => {
-    const service = await this.getById(id);
-    service.checkOwnership(userId);
-
-    const education = service.model;
-    await education.destroy();
-
-    return new EducationService(education);
+      return edu;
+    });
   };
 }
+
+export const EducationService = new _EducationService();

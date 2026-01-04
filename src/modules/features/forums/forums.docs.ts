@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { EndpointDetails } from "@shared/docs/readme-types";
-import { ForumResponseSchema } from "./posts/dtos/forum-response.dto";
-import { ForumCreateSchema } from "./posts/dtos/forum-create.dto";
-import { ForumUpdateSchema } from "./posts/dtos/forum-update.dto";
+import { ForumResponseSchema } from "./post/dtos/post-response.dto";
+import { ForumCreateSchema } from "./post/dtos/forum-create.dto";
+import { ForumUpdateSchema } from "./post/dtos/forum-update.dto";
 import { CommentResponseSchema } from "./comments/dtos/comment-response.dto";
 import { CommentCreateSchema } from "./comments/dtos/comment-create.dto";
 import { CommentUpdateSchema } from "./comments/dtos/comment-update.dto";

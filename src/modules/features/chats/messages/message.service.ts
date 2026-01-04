@@ -1,10 +1,6 @@
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import {
-  Message,
-  MessageAttributes,
-  MessageInstance,
-} from "./message.model";
+import { Message, MessageAttributes, MessageInstance } from "./message.model";
 import { ChatErrors } from "../chat.errors";
 import db from "@config/database";
 import { MESSAGES_PER_PAGE } from "@config/constants/items-per-page";
@@ -12,13 +8,14 @@ import { MESSAGE_STATUS } from "./message.constants";
 import { AppError } from "@shared/errors/app-error";
 import { ChatService } from "../chat/chat.service";
 
-export class MessageService extends BaseService<
-  MessageInstance,
-  MessageAttributes
-> {
+export class MessageService extends BaseService<MessageInstance> {
   static OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
 
-  static create = async (
+  constructor() {
+    super(Message);
+  }
+
+  static createOne = async (
     localId: string,
     message: string,
     user: { sender: string; reciever: string | null },
@@ -27,7 +24,7 @@ export class MessageService extends BaseService<
     if (!user && !chatId) throw new AppError("Chat or user are required", 400);
 
     return await db.transaction(async () => {
-      let chat: ChatService | null = null;
+      let chatId: s
       if (chatId) {
         chat = await ChatService.getById(chatId);
         if (
@@ -57,14 +54,8 @@ export class MessageService extends BaseService<
     });
   };
 
-  static getById = async (id: string) => {
-    const message = await Message.findByPk(id);
-    if (!message) throw ChatErrors.noMessageFound;
 
-    return new MessageService(message);
-  };
-
-  static getByChatId = async (id: string, page: number, userId: string) => {
+  static getChatMessages = async (id: string, page: number, userId: string) => {
     const service = await ChatService.getById(id);
     service.checkOwnership(userId, ["userOne", "userTwo"]);
 

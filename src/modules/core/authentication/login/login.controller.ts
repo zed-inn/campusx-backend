@@ -1,15 +1,24 @@
 import { catchAsync } from "@shared/utils/catch-async";
-import { AuthResponseSchema } from "../dtos/auth-response.dto";
-import { LoginService } from "./login.service";
-import { LoginBasicDto } from "./dtos/login-basic.dto";
-import { LoginGoogleDto } from "./dtos/login-google.dto";
 import { Request, Response } from "express";
 import { ApiResponse } from "@shared/utils/api-response";
+import { LoginBasicDto, LoginGoogleDto } from "./dtos/login.dto";
+import { LoginService } from "./login.service";
+import { AppError } from "@shared/errors/app-error";
+import { AuthResponseSchema } from "../dtos/auth-response.dto";
 
 export class LoginController {
   static loginWithPassword = catchAsync(
     async (req: Request<{}, {}, LoginBasicDto>, res: Response) => {
-      const authData = await LoginService.loginBasic(req.body);
+      const q = req.body;
+
+      if (!q.username && !q.email) throw new AppError("Invalid Request", 400);
+
+      const authData = q.email
+        ? await LoginService.loginBasicWithEmail(q.email, q.password)
+        : await LoginService.loginBasicWithUsername(
+            q.username ?? "",
+            q.password
+          );
       const authPayload = AuthResponseSchema.parse(authData);
 
       return ApiResponse.success(res, "Logged in.", authPayload);

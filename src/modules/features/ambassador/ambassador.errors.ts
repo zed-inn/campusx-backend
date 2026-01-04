@@ -19,4 +19,8 @@ export class AmbassadorErrors {
       406
     );
   }
+
+  static get userNotEnrolled() {
+    return new AppError("You are not enrolled in that institute.", 406);
+  }
 }

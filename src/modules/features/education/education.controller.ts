@@ -1,64 +1,74 @@
 import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
-import { EducationCreateDto } from "./dtos/education-create.dto";
-import { s } from "@shared/utils/create-schema";
 import { EducationService } from "./education.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { EducationUpdateDto } from "./dtos/education-update.dto";
 import {
-  InstituteAttributes,
-  InstituteService,
-} from "@modules/core/institutes";
+  EducationGetMineDto,
+  EducationGetStudentsDto,
+  EducationGetUserDto,
+} from "./dtos/education-get.dto";
+import { EducationAggregator } from "./education.aggregator";
+import { EducationSchema } from "./dtos/education-response.dto";
 import {
-  ProfileResponseShort,
+  ProfileAggregator,
   ProfileService,
-  ProfileUtils,
-} from "@modules/core/user-profile";
+  ShortUserSchema,
+} from "@modules/core/profile";
 import {
-  ResponseFullSchema,
-  ResponseShortSchema,
-} from "./dtos/education-response.dto";
+  EducationCreateDto,
+  EducationDeleteDto,
+  EducationUpdateDto,
+} from "./dtos/education-action.dto";
 
 export class EducationController {
-  static getUserEducation = catchAsync(async (req: Request, res: Response) => {
-    const q = s
-      .create({ id: s.fields.id, page: s.fields.page })
-      .parse(req.query);
+  static getUserEducation = catchAsync(
+    async (req: Request<{}, {}, {}, EducationGetUserDto>, res: Response) => {
+      const q = req.query;
 
-    const services = await EducationService.getByUserId(q.id, q.page);
-    const instituteIds = services.map((s) => s.data.instituteId);
-    const institutes: Record<string, InstituteAttributes> = {};
-    const instuteService = await InstituteService.getByIds(instituteIds);
-    instuteService.map((s) => (institutes[s.data.id] = s.data));
+      const iEducations = await EducationService.getByUserId(q.userId, q.page);
+      const tEducations = await EducationAggregator.transform(iEducations);
+      const pEducations = tEducations.map((e) => EducationSchema.parse(e));
 
-    const educations = services.map((s) =>
-      ResponseFullSchema.parse({
-        ...s,
-        institute: institutes[s.data.instituteId],
-      })
-    );
+      return ApiResponse.success(res, "User's education.", {
+        educations: pEducations,
+      });
+    }
+  );
 
-    return ApiResponse.success(res, "User's education.", { educations });
-  });
+  static getMyEducation = catchAsync(
+    async (req: Request<{}, {}, {}, EducationGetMineDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.query;
+
+      const iEducations = await EducationService.getByUserId(user.id, q.page);
+      const tEducations = await EducationAggregator.transform(iEducations);
+      const pEducations = tEducations.map((e) => EducationSchema.parse(e));
+
+      return ApiResponse.success(res, "Your education.", {
+        educations: pEducations,
+      });
+    }
+  );
 
   static getInstituteStudents = catchAsync(
-    async (req: Request, res: Response) => {
-      const q = s
-        .create({ id: s.fields.id, page: s.fields.page })
-        .parse(req.query);
+    async (
+      req: Request<{}, {}, {}, EducationGetStudentsDto>,
+      res: Response
+    ) => {
+      const q = req.query;
 
-      const services = await EducationService.getByInstituteId(q.id, q.page);
-      const userIds = services.map((s) => s.data.userId);
-      const users = await ProfileService.getByIds(userIds);
-      const joined = await ProfileUtils.joinIsFollowed(
-        users.map((u) => u.data),
-        req.user?.id
+      const userIds = await EducationService.getUserIdsByInstituteId(
+        q.instituteId,
+        q.page
       );
+      const iUsers = await ProfileService.getByIds(userIds);
+      const tUsers = await ProfileAggregator.transform(iUsers, req.user?.id);
+      const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
 
-      const students = joined.map((s) => ProfileResponseShort.parse(s));
-
-      return ApiResponse.success(res, "Institute's students.", { students });
+      return ApiResponse.success(res, "Institute's students.", {
+        students: pUsers,
+      });
     }
   );
 
@@ -66,10 +76,15 @@ export class EducationController {
     async (req: Request<{}, {}, EducationCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const service = await EducationService.create(req.body, user.id);
-      const education = ResponseShortSchema.parse(service.data);
+      const iEducation = await EducationService.add(req.body, user.id);
+      const tEducation = await EducationAggregator.transform([
+        iEducation.plain,
+      ]);
+      const pEducation = EducationSchema.parse(tEducation);
 
-      return ApiResponse.success(res, "Education added.", { education });
+      return ApiResponse.success(res, "Education added.", {
+        education: pEducation,
+      });
     }
   );
 
@@ -77,20 +92,32 @@ export class EducationController {
     async (req: Request<{}, {}, EducationUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const service = await EducationService.update(req.body, user.id);
-      const education = ResponseShortSchema.parse(service.data);
+      const iEducation = await EducationService.update(req.body, user.id);
+      const tEducation = await EducationAggregator.transform([
+        iEducation.plain,
+      ]);
+      const pEducation = EducationSchema.parse(tEducation);
 
-      return ApiResponse.success(res, "Education updated.", { education });
+      return ApiResponse.success(res, "Education updated.", {
+        education: pEducation,
+      });
     }
   );
 
-  static removeEducation = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-    const q = s.create({ id: s.fields.id }).parse(req.query);
+  static removeEducation = catchAsync(
+    async (req: Request<{}, {}, {}, EducationDeleteDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.query;
 
-    const service = await EducationService.delete(q.id, user.id);
-    const education = ResponseShortSchema.parse(service.data);
+      const education = await EducationService.deleteByOwnerById(
+        q.educationId,
+        user.id
+      );
 
-    return ApiResponse.success(res, "Education removed.", { education });
-  });
+      return ApiResponse.success(res, "Education removed.", {
+        id: education.id,
+        localId: education.localId,
+      });
+    }
+  );
 }

@@ -2,15 +2,16 @@ import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
 import { PRIMARY_ID } from "@shared/utils/db-types";
-import { CATEGORY_LENGTH } from "../post/insight.constants";
 import { defineModel } from "@shared/utils/define-model";
 import { modelSchema } from "@shared/utils/model-schema";
+import { CATEGORY } from "./category.constants";
 
 export const CategoryModel = modelSchema({
   id: z.uuidv4("Invalid Category Id"),
   name: z
     .string("Invalid Category Name")
-    .min(CATEGORY_LENGTH.MIN, { error: "Category name is too short." }),
+    .min(CATEGORY.NAME.LENGTH.MIN, { error: "Category name is too short" })
+    .min(CATEGORY.NAME.LENGTH.MAX, { error: "Category name is too long" }),
 });
 
 export type CategoryAttributes = z.infer<typeof CategoryModel.dbSchema>;
@@ -31,8 +32,8 @@ export const Category = defineModel<
     unique: true,
     validate: {
       len: {
-        args: [CATEGORY_LENGTH.MIN, Infinity],
-        msg: `Category name must be atleast ${CATEGORY_LENGTH.MIN} characters.`,
+        args: [CATEGORY.NAME.LENGTH.MIN, CATEGORY.NAME.LENGTH.MAX],
+        msg: `Category name must be between ${CATEGORY.NAME.LENGTH.MIN}-${CATEGORY.NAME.LENGTH.MAX} characters.`,
       },
     },
   },

@@ -3,47 +3,54 @@ import {
   InstituteAttributes,
   InstituteInstance,
 } from "./institute.model";
-import { literal } from "sequelize";
+import { Op } from "sequelize";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { BaseService } from "@shared/services/base.service";
-import { InstituteErrors } from "./institute.errors";
 import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
+import { InstituteGetPageDto } from "./dtos/institute-get.dto";
 
-export class InstituteService extends BaseService<
-  InstituteInstance,
-  InstituteAttributes
-> {
-  protected static OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
+class _InstituteService extends BaseService<InstituteInstance> {
+  protected OFFSET = createOffsetFn(INSTITUTES_PER_PAGE);
 
-  static getById = async (id: string) => {
-    const institute = await Institute.findByPk(id);
-    if (!institute) throw InstituteErrors.noInstituteFound;
+  constructor() {
+    super(Institute);
+  }
 
-    return new InstituteService(institute);
-  };
+  filterByPage = async (data: InstituteGetPageDto) => {
+    const { page, ...filters } = data;
 
-  static getByIds = async (ids: string[]) => {
-    const institutes = await Institute.findAll({ where: { id: ids } });
-
-    return institutes.map((i) => new InstituteService(i));
-  };
-
-  static getAll = async (page: number) => {
     const institutes = await Institute.findAll({
+      where: {
+        ...(filters.name
+          ? { nameNormalized: { [Op.iLike]: `%${filters.name}%` } }
+          : {}),
+        ...(filters.district ? { district: filters.district } : {}),
+        ...(filters.state ? { state: filters.state } : {}),
+      },
       offset: this.OFFSET(page),
       limit: INSTITUTES_PER_PAGE,
       order: [["updateDate", "desc"]],
     });
 
-    return institutes.map((i) => new InstituteService(i));
+    return institutes.map((i) => i.plain);
   };
 
-  static getRandom = async () => {
-    const institutes = await Institute.findAll({
-      limit: INSTITUTES_PER_PAGE,
-      order: literal("RANDOM()"),
+  getTwoFieldMap = async (
+    field1: keyof InstituteAttributes,
+    field2: keyof InstituteAttributes
+  ) => {
+    const fieldMap = await Institute.findAll({
+      attributes: [field1, field2],
+      group: [field1, field2],
+      raw: true,
+      order: [
+        [field1, "ASC"],
+        [field2, "ASC"],
+      ],
     });
 
-    return institutes.map((i) => new InstituteService(i));
+    return fieldMap as unknown as Record<string, string>[];
   };
 }
+
+export const InstituteService = new _InstituteService();

@@ -10,7 +10,7 @@ export const PRIMARY_ID: ModelAttributeColumnOptions = {
 
 export const STATS: ModelAttributeColumnOptions = {
   type: DataTypes.INTEGER,
-  allowNull: true,
+  allowNull: false,
   validate: { min: 0 },
   defaultValue: 0,
 };

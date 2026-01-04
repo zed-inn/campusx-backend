@@ -1,20 +1,24 @@
 import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
-import { Forum } from "../posts/posts.model";
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 import { defineModel } from "@shared/utils/define-model";
 import { modelSchema } from "@shared/utils/model-schema";
 import { PRIMARY_ID, STATS } from "@shared/utils/db-types";
+import { Post } from "../post/post.model";
+import { COMMENT } from "./comment.constants";
 
 export const CommentModel = modelSchema({
   id: z.uuidv4("Invalid Comment Id"),
-  localId: z.string("Invalid Local Id").nullable().default(null),
+  localId: z.string("Invalid Local Id").nullable(),
   userId: z.uuidv4("Invalid User Id"),
-  forumId: z.uuidv4("Invalid Forum Id"),
-  replyingTo: z.uuidv4("Invalid Parent Comment Id").nullable().default(null),
-  body: z.string("Invalid Body"),
-  repliesCount: z.number().nonnegative().default(0),
+  postId: z.uuidv4("Invalid Post Id"),
+  replyingTo: z.uuidv4("Invalid Parent Comment Id").nullable(),
+  body: z
+    .string("Invalid Body")
+    .min(COMMENT.BODY.LENGTH.MIN, { error: "Body is required" })
+    .max(COMMENT.BODY.LENGTH.MAX, { error: "Body is too long" }),
+  repliesCount: z.number().nonnegative(),
 });
 
 export type CommentAttributes = z.infer<typeof CommentModel.dbSchema>;
@@ -34,27 +38,36 @@ export const Comment = defineModel<
     allowNull: false,
     references: { model: Profile, key: "id" },
   },
-  forumId: {
+  postId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: { model: Forum, key: "id" },
+    references: { model: Post, key: "id" },
   },
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,
     references: { model: "ForumComments", key: "id" },
   },
-  body: { type: DataTypes.TEXT, allowNull: false },
+  body: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    validate: {
+      len: {
+        args: [COMMENT.BODY.LENGTH.MIN, COMMENT.BODY.LENGTH.MAX],
+        msg: `Body should be in a length of ${COMMENT.BODY.LENGTH.MIN}-${COMMENT.BODY.LENGTH.MAX} characters`,
+      },
+    },
+  },
   repliesCount: { ...STATS },
 });
 
 // Associations
-Forum.hasMany(Comment, {
-  foreignKey: "forumId",
+Post.hasMany(Comment, {
+  foreignKey: "postId",
   onDelete: "CASCADE",
   as: "comments",
 });
-Comment.belongsTo(Forum, { foreignKey: "forumId", as: "forum" });
+Comment.belongsTo(Post, { foreignKey: "postId", as: "post" });
 
 Profile.hasMany(Comment, {
   foreignKey: "userId",
@@ -69,9 +82,9 @@ Comment.hasMany(Comment, {
 Comment.belongsTo(Comment, { foreignKey: "replyingTo", as: "parentComment" });
 
 // Hooks
-Comment.beforeDestroy(async (comment) => {
+Comment.beforeDestroy(async (comment: any) => {
   const repliedComments = await Comment.findAll({
-    where: { replyingTo: comment.dataValues.id },
+    where: { replyingTo: comment.id },
   });
 
   for (const c of repliedComments) {

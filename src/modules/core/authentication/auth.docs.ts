@@ -3,8 +3,8 @@ import { z } from "zod";
 import { LoginBasicSchema } from "./login/dtos/login-basic.dto";
 import { AuthResponseSchema } from "./dtos/auth-response.dto";
 import { LoginGoogleSchema } from "./login/dtos/login-google.dto";
-import { VerifyOtpSchema } from "./otp/dtos/verify-otp.dto";
-import { CreatePasswordSchema } from "./signup/dtos/create-password.dto";
+import { VerifyOtpSchema } from "./otp/dtos/otp-verify.dto";
+import { CreatePasswordSchema } from "./register/dtos/register.dto";
 
 export const AuthDocs: EndpointDetails[] = [
   {

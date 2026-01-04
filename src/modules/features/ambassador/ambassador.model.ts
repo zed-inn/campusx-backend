@@ -5,7 +5,7 @@ import { Institute } from "@modules/core/institutes";
 import { REQUEST_STATUS } from "./ambassador.constants";
 import { modelSchema } from "@shared/utils/model-schema";
 import { defineModel } from "@shared/utils/define-model";
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 
 export const AmbassadorModel = modelSchema({
   id: z.uuidv4("Invalid Ambassador Id"),

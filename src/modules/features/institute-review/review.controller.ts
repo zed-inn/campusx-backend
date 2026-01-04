@@ -1,33 +1,50 @@
 import { catchAsync } from "@shared/utils/catch-async";
-import { s } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { ReviewService } from "./review.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
-import { ReviewCreateDto } from "./dtos/review-create.dto";
-import { ReviewUpdateDto } from "./dtos/review-update.dto";
-import { ProfileUtils } from "@modules/core/user-profile";
-import { ReviewResponseSchema } from "./dtos/review-response.dto";
+import { ReviewGetMineDto, ReviewGetPageDto } from "./dtos/review-get.dto";
+import { ReviewAggregator } from "./review.aggregator";
+import { ReviewSchema } from "./dtos/review-response.dto";
+import {
+  ReviewCreateDto,
+  ReviewDeleteDto,
+  ReviewUpdateDto,
+} from "./dtos/review-action.dto";
 
 export class ReviewController {
   static getInstituteReviews = catchAsync(
-    async (req: Request, res: Response) => {
-      const q = s
-        .create({ id: s.fields.id, page: s.fields.page })
-        .parse(req.query);
+    async (req: Request<{}, {}, {}, ReviewGetPageDto>, res: Response) => {
+      const q = req.query;
 
-      const services = await ReviewService.getByInstituteId(q.id, q.page);
-      const profiles = services.map((s) => s.data.writer);
-      const joined = await ProfileUtils.joinAll(profiles, req.user?.id);
-      const profileMap: Record<string, any> = {};
-      joined.map((j) => (profileMap[j.id] = j));
-      const joinedReviews = services.map((s) => ({
-        ...s.data,
-        writer: profileMap[s.data.userId],
-      }));
-      const reviews = joinedReviews.map((s) => ReviewResponseSchema.parse(s));
+      const iReviews = await ReviewService.getByInstituteId(
+        q.instituteId,
+        q.page
+      );
+      const tReviews = await ReviewAggregator.transform(iReviews, req.user?.id);
+      const pReviews = tReviews.map((r) => ReviewSchema.parse(r));
 
-      return ApiResponse.success(res, "Reviews fetched.", { reviews });
+      return ApiResponse.success(res, "Reviews fetched.", {
+        reviews: pReviews,
+      });
+    }
+  );
+
+  static getMyReviewOnInstitute = catchAsync(
+    async (req: Request<{}, {}, {}, ReviewGetMineDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.query;
+
+      const iReview = await ReviewService.getMineOverInstitute(
+        q.instituteId,
+        user.id
+      );
+      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const pReview = ReviewSchema.parse(tReview);
+
+      return ApiResponse.success(res, "Review fetched.", {
+        reviews: pReview,
+      });
     }
   );
 
@@ -35,17 +52,11 @@ export class ReviewController {
     async (req: Request<{}, {}, ReviewCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const service = await ReviewService.create(user.id, req.body);
-      const [joined] = await ProfileUtils.joinAll(
-        [service.data.writer],
-        user.id
-      );
-      const review = ReviewResponseSchema.parse({
-        ...service.data,
-        writer: joined,
-      });
+      const iReview = await ReviewService.createNew(req.body, user.id);
+      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const pReview = ReviewSchema.parse(tReview);
 
-      return ApiResponse.success(res, "Reviewed.", { review });
+      return ApiResponse.success(res, "Reviewed.", { review: pReview });
     }
   );
 
@@ -53,26 +64,25 @@ export class ReviewController {
     async (req: Request<{}, {}, ReviewUpdateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
 
-      const service = await ReviewService.update(req.body, user.id);
-      const [joined] = await ProfileUtils.joinAll(
-        [service.data.writer],
-        user.id
-      );
-      const review = ReviewResponseSchema.parse({
-        ...service.data,
-        writer: joined,
-      });
+      const iReview = await ReviewService.update(req.body, user.id);
+      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const pReview = ReviewSchema.parse(tReview);
 
-      return ApiResponse.success(res, "Review updated.", { review });
+      return ApiResponse.success(res, "Review updated.", { review: pReview });
     }
   );
 
-  static deleteReview = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-    const q = s.create({ id: s.fields.id }).parse(req.query);
+  static deleteReview = catchAsync(
+    async (req: Request<{}, {}, {}, ReviewDeleteDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.query;
 
-    await ReviewService.delete(q.id, user.id);
+      const review = await ReviewService.delete(q.reviewId, user.id);
 
-    return ApiResponse.success(res, "Review deleted.");
-  });
+      return ApiResponse.success(res, "Review deleted.", {
+        id: review.id,
+        localId: review.localId,
+      });
+    }
+  );
 }

@@ -1,16 +1,40 @@
 import { Router } from "express";
 import { EducationController } from "./education.controller";
-import { EducationCreateSchema } from "./dtos/education-create.dto";
-import { EducationUpdateSchema } from "./dtos/education-update.dto";
 import { mount } from "@shared/utils/mount-router";
 import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { ValidateReq } from "@shared/middlewares/validate-request";
+import {
+  EducationGetMineSchema,
+  EducationGetStudentsSchema,
+  EducationGetUserSchema,
+} from "./dtos/education-get.dto";
+import {
+  EducationCreateSchema,
+  EducationDeleteSchema,
+  EducationUpdateSchema,
+} from "./dtos/education-action.dto";
 
 const router = Router();
 
-router.get("/", EducationController.getUserEducation);
+router.get(
+  "/",
+  ValidateReq.query(EducationGetUserSchema),
+  EducationController.getUserEducation
+);
 
-router.get("/students", EducationController.getInstituteStudents);
+router.get(
+  "/me",
+  RestrictTo.loggedInUser,
+  RestrictTo.profiledUser,
+  ValidateReq.query(EducationGetMineSchema),
+  EducationController.getUserEducation
+);
+
+router.get(
+  "/students",
+  ValidateReq.query(EducationGetStudentsSchema),
+  EducationController.getInstituteStudents
+);
 
 router.post(
   "/",
@@ -32,6 +56,7 @@ router.delete(
   "/",
   RestrictTo.loggedInUser,
   RestrictTo.profiledUser,
+  ValidateReq.query(EducationDeleteSchema),
   EducationController.removeEducation
 );
 

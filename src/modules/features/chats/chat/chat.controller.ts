@@ -3,7 +3,7 @@ import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
 import { s } from "@shared/utils/create-schema";
 import { ChatService } from "./chat.service";
-import { ProfileUtils } from "@modules/core/user-profile";
+import { ProfileUtils } from "@modules/core/profile";
 import { ChatResponseSchema } from "./dtos/chat-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 

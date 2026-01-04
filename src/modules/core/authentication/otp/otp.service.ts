@@ -3,20 +3,15 @@ import client from "@config/cache";
 import { BUSINESS } from "@config/constants/business";
 import { EmailService } from "@shared/services/email.service";
 import { AuthErrors } from "../auth.errors";
-import {
-  OTP_LENGTH,
-  OTP_REPLACEMENT,
-  OTP_TOKEN_VALIDITY_MINUTES,
-  OTP_VALIDITY_MINUTES,
-} from "./otp.constants";
-import { VerifyOtpDto } from "./dtos/verify-otp.dto";
+import { OtpVerifyDto } from "./dtos/otp-verify.dto";
+import { OTP, OTP_TOKEN } from "./otp.constants";
 
 export class OtpService {
   static generateOtp = (): string => {
     return `${uuidv4()}${uuidv4}`
       .replaceAll(/[A-Za-z]/g, "")
       .replaceAll("-", "")
-      .substring(0, OTP_LENGTH);
+      .substring(0, OTP.LENGTH);
   };
 
   static sendOtp = async (email: string) => {
@@ -35,20 +30,20 @@ export class OtpService {
       <p style="font-size: 14px; color: #777; text-align: center;">&copy; 2025 ${BUSINESS.NAME}. All rights reserved.</p>
     </div>`;
 
-    if (OTP_REPLACEMENT)
-      await client.setEx(`otp:${email}`, OTP_VALIDITY_MINUTES * 60, otp);
+    if (OTP.POLICY.REPLACEMENT)
+      await client.setEx(`otp:${email}`, OTP.VALIDITY.MINUTES * 60, otp);
     else {
       let otpValue = await client.get(`otp:${email}`);
       if (otpValue)
         await client.setEx(
           `otp:${email}`,
-          OTP_VALIDITY_MINUTES * 60,
+          OTP.VALIDITY.MINUTES * 60,
           JSON.stringify([...JSON.parse(otpValue), otp])
         );
       else
         await client.setEx(
           `otp:${email}`,
-          OTP_VALIDITY_MINUTES * 60,
+          OTP.VALIDITY.MINUTES * 60,
           JSON.stringify([otp])
         );
     }
@@ -56,17 +51,18 @@ export class OtpService {
     await EmailService.sendEmail({ recipient: email, subject, html });
   };
 
-  static verifyOtp = async (data: VerifyOtpDto) => {
+  static verifyOtp = async (data: OtpVerifyDto) => {
     const key = `otp:${data.email}`;
 
     const otpStored = await client.get(key);
     if (!otpStored) throw AuthErrors.invalidOtp;
-    if (OTP_REPLACEMENT && data.otp !== otpStored) throw AuthErrors.invalidOtp;
-    if (!OTP_REPLACEMENT && !JSON.parse(otpStored).includes(data.otp))
+    if (OTP.POLICY.REPLACEMENT && data.otp !== otpStored)
+      throw AuthErrors.invalidOtp;
+    if (!OTP.POLICY.REPLACEMENT && !JSON.parse(otpStored).includes(data.otp))
       throw AuthErrors.invalidOtp;
 
     const otpToken = `${uuidv4()}:${data.otp}`;
-    await client.setEx(otpToken, OTP_TOKEN_VALIDITY_MINUTES * 60, data.email);
+    await client.setEx(otpToken, OTP_TOKEN.VALIDITY.MINUTES * 60, data.email);
     await client.del(key);
 
     return otpToken;

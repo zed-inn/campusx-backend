@@ -12,4 +12,6 @@ export const CATEGORIES_PER_PAGE = 100;
 
 export const REVIEWS_PER_PAGE = 20;
 
+export const CHATS_PER_PAGE = 30;
+
 export const MESSAGES_PER_PAGE = 50;

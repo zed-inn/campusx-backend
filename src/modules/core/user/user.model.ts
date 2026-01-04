@@ -5,31 +5,24 @@ import { PRIMARY_ID } from "@shared/utils/db-types";
 import { defineModel } from "@shared/utils/define-model";
 import { modelSchema } from "@shared/utils/model-schema";
 import { generateReferralCode } from "@shared/utils/generate-code";
-import { REFERRAL_CODE_LENGTH, USER_ROLES } from "./user.constants";
+import { USER } from "./user.constants";
 
-export const UserModel = modelSchema(
-  {
-    id: z.uuidv4("Invalid User Id"),
-    email: z.email("Invalid Email"),
-    passwordHash: z.string("Invalid Password").nullable().default(null),
-    fcmToken: z.string("Invalid Fcm Token").nullable().default(null),
-    referralCode: z
-      .string("Invalid Referral Code")
-      .min(REFERRAL_CODE_LENGTH.MIN)
-      .max(REFERRAL_CODE_LENGTH.MAX),
-    role: z.enum(USER_ROLES._).default(USER_ROLES.STUDENT),
-  },
-  {
-    password: z
-      .string("Invalid Password")
-      .min(8, { error: "Password cannot be shorter than 8 characters" }),
-  }
-);
+export const UserModel = modelSchema({
+  id: z.uuidv4("Invalid User Id"),
+  email: z.email("Invalid Email"),
+  passwordHash: z.string("Invalid Password Hash").nullable(),
+  fcmToken: z.string("Invalid Fcm Token").nullable(),
+  referralCode: z
+    .string("Invalid Referral Code")
+    .min(USER.REFERRAL_CODE.LENGTH.MIN, { error: "Referral Code is too short" })
+    .max(USER.REFERRAL_CODE.LENGTH.MAX, { error: "Referral Code is too long" }),
+  role: z.enum(USER.ROLES._, { error: "Invalid user role" }),
+});
 
 export type UserAttributes = z.infer<typeof UserModel.dbSchema>;
 export type UserCreationAttributes = Omit<
   z.infer<typeof UserModel.dbFields>,
-  "id" | "referralCode" | "fcmToken"
+  "id" | "referralCode"
 >;
 
 export const User = defineModel<UserAttributes, UserCreationAttributes>(
@@ -43,23 +36,28 @@ export const User = defineModel<UserAttributes, UserCreationAttributes>(
       unique: true,
       validate: { isEmail: true },
     },
-    passwordHash: { type: DataTypes.STRING, allowNull: true },
-    fcmToken: { type: DataTypes.STRING, allowNull: true },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+    fcmToken: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     referralCode: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
         len: {
-          args: [REFERRAL_CODE_LENGTH.MIN, REFERRAL_CODE_LENGTH.MAX],
-          msg: `Referral code is not of valid length.`,
+          args: [USER.REFERRAL_CODE.LENGTH.MIN, USER.REFERRAL_CODE.LENGTH.MAX],
+          msg: "Referral code is not of valid length.",
         },
       },
     },
     role: {
       type: DataTypes.STRING,
-      values: USER_ROLES._,
-      defaultValue: USER_ROLES.STUDENT,
+      allowNull: false,
+      values: USER.ROLES._,
+      defaultValue: USER.ROLES.STUDENT,
     },
   }
 );
@@ -68,9 +66,14 @@ export const User = defineModel<UserAttributes, UserCreationAttributes>(
 User.beforeValidate(async (user: any) => {
   if (user.referralCode) return;
 
-  let referralCode = generateReferralCode(REFERRAL_CODE_LENGTH.MAX);
-  while (await User.count({ where: { referralCode } }))
-    referralCode = generateReferralCode(REFERRAL_CODE_LENGTH.MAX);
+  let attempts = 0;
+  let referralCode = "";
+
+  do {
+    if (attempts++ > 10)
+      throw new Error("Could not generate unique referral code");
+    referralCode = generateReferralCode(USER.REFERRAL_CODE.LENGTH.MAX);
+  } while (await User.count({ where: { referralCode } }));
 
   user.referralCode = referralCode;
 });

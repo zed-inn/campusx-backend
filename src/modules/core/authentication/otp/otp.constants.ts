@@ -1,7 +1,15 @@
-export const OTP_LENGTH = 4;
+export const OTP = {
+  LENGTH: 4,
+  VALIDITY: {
+    MINUTES: 30,
+  },
+  POLICY: {
+    REPLACEMENT: true,
+  },
+};
 
-export const OTP_VALIDITY_MINUTES = 30;
-
-export const OTP_TOKEN_VALIDITY_MINUTES = 600;
-
-export const OTP_REPLACEMENT = true;
+export const OTP_TOKEN = {
+  VALIDITY: {
+    MINUTES: 600,
+  },
+};

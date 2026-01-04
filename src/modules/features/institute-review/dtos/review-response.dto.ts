@@ -1,17 +1,9 @@
 import { z } from "zod";
 import { ReviewModel } from "../review.model";
-import { ProfileResponseShort } from "@modules/core/user-profile";
+import { ShortUserSchema } from "@modules/core/profile";
 
-export const ReviewResponseSchema = ReviewModel.dbSchema
-  .pick({
-    createDate: true,
-    updateDate: true,
-    id: true,
-    body: true,
-    rating: true,
-  })
-  .extend({
-    writer: ProfileResponseShort,
-  });
+export const ReviewSchema = ReviewModel.dbSchema.extend({
+  writer: ShortUserSchema,
+});
 
-export type ReviewResponseDto = z.infer<typeof ReviewResponseSchema>;
+export type ReviewDto = z.infer<typeof ReviewSchema>;

@@ -1,135 +1,98 @@
 import db from "@config/database";
 import { removeUndefined } from "@shared/utils/clean-object";
-import { Comment, CommentAttributes, CommentInstance } from "./comment.model";
-import { Forum } from "../posts/posts.model";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { CommentErrors } from "./comment.errros";
 import { COMMENTS_PER_PAGE } from "@config/constants/items-per-page";
-import { ForumService } from "../posts/posts.service";
-import { CommentCreateDto } from "./dtos/comment-create.dto";
-import { CommentUpdateDto } from "./dtos/comment-update.dto";
 import { hasKeys } from "@shared/utils/object-length";
-import { Profile, ProfileAttributes } from "@modules/core/user-profile";
-import { Includeable } from "sequelize";
+import { Comment, CommentAttributes, CommentInstance } from "./comment.model";
+import { CommentCreateDto, CommentUpdateDto } from "./dtos/comment-action.dto";
+import { PostService } from "../post/post.service";
+import { CommentStatService } from "./stat/stat.service";
+import { CommentGetPostDto } from "./dtos/comment-get.dto";
+import { AppError } from "@shared/errors/app-error";
 
-export class CommentService extends BaseService<
-  CommentInstance,
-  CommentAttributes
-> {
-  static OFFSET = createOffsetFn(COMMENTS_PER_PAGE);
+class _CommentService extends BaseService<CommentInstance> {
+  protected OFFSET = createOffsetFn(COMMENTS_PER_PAGE);
 
-  override get data() {
-    const data = super.data as CommentAttributes & {
-      writer: ProfileAttributes;
-      parentComment: null | (CommentAttributes & { writer: ProfileAttributes });
-    };
-    return data;
+  constructor() {
+    super(Comment);
   }
 
-  static create = async (data: CommentCreateDto, userId: string) => {
+  createCommentOrReply = async (data: CommentCreateDto, userId: string) => {
+    const { forumId: postId, ...createData } = data;
+
     return await db.transaction(async () => {
-      const service = await ForumService.getById(data.forumId);
+      const post = await PostService.getById(postId);
 
-      const forum = service.model;
-      const c = await Comment.create({ ...data, userId });
+      const c = await Comment.create({ ...createData, postId, userId });
 
-      if (!data.replyingTo) await forum.increment({ commentsCount: 1 });
+      if (!data.replyingTo)
+        await CommentStatService.updateCounts(
+          post.dataValues.id,
+          "comments",
+          1
+        );
       else {
-        const service = await CommentService.getById(data.replyingTo);
-        const comment = service.model;
-        if (service.data.forumId !== data.forumId)
-          throw CommentErrors.replyingDifferentNotAllowed;
+        const parentComment = await this.getById(data.replyingTo);
+        if (parentComment.dataValues.postId !== post.dataValues.id)
+          throw new AppError("Invalid Request", 406);
 
-        await comment.increment({ repliesCount: 1 });
+        await parentComment.increment({ repliesCount: 1 });
       }
 
-      return this.getById(c.dataValues.id);
+      return c;
     });
   };
 
-  static getById = async (id: string) => {
-    const comment = await Comment.findByPk(id, {
-      include: [CommentInclude.writer, CommentInclude.parentComment],
-    });
-    if (!comment) throw CommentErrors.noCommentFound;
-
-    return new CommentService(comment);
-  };
-
-  static getByIds = async (ids: string[]) => {
-    const comments = await Comment.findAll({
-      where: { id: ids },
-      include: [CommentInclude.writer, CommentInclude.parentComment],
-    });
-
-    return comments.map((c) => new CommentService(c));
-  };
-
-  static getByForumId = async (
-    id: string,
-    commentId: string | null,
-    page: number
-  ) => {
+  getByForumId = async (data: CommentGetPostDto) => {
     const commentsCount = await Comment.findAll({
-      where: { forumId: id, replyingTo: commentId },
+      where: { postId: data.forumId, replyingTo: data.parentCommentId },
       limit: COMMENTS_PER_PAGE,
-      offset: this.OFFSET(page),
+      offset: this.OFFSET(data.page),
       order: [["createDate", "desc"]],
-      include: [CommentInclude.writer, CommentInclude.parentComment],
     });
 
-    return commentsCount.map((c) => new CommentService(c));
+    return commentsCount.map((c) => c.plain);
   };
 
-  static update = async (data: CommentUpdateDto, userId: string) => {
+  update = async (data: CommentUpdateDto, userId: string) => {
+    const { commentId: id, ...updateData } = data;
+
     return await db.transaction(async () => {
-      const { id, ...updateData } = data;
+      const comment = await this.getById(id);
+      this.checkOwnership(comment, userId);
 
-      const service = await this.getById(id);
-      service.checkOwnership(userId);
-
-      const comment = service.model;
       const cleanData = removeUndefined(updateData);
       if (hasKeys(cleanData))
         await comment.update(cleanData as Partial<CommentAttributes>);
 
-      return this.getById(service.data.id);
+      return comment;
     });
   };
 
-  static delete = async (id: string, userId: string) => {
+  deleteCommentOrReply = async (id: string, userId: string) => {
     return await db.transaction(async () => {
-      const service = await this.getById(id);
-      service.checkOwnership(userId);
+      const comment = await this.getById(id);
+      this.checkOwnership(comment, userId);
 
-      const comment = service.model;
-      if (!service.data.replyingTo)
-        await Forum.decrement(
-          { commentsCount: 1 },
-          { where: { id: service.data.forumId } }
+      const commentData = comment.plain;
+      if (!commentData.replyingTo)
+        await CommentStatService.updateCounts(
+          commentData.postId,
+          "comments",
+          -1
         );
       else
         await Comment.decrement(
           { repliesCount: 1 },
-          { where: { id: service.data.replyingTo } }
+          { where: { id: commentData.replyingTo } }
         );
 
       await comment.destroy();
+
+      return comment.plain;
     });
   };
 }
 
-class CommentInclude {
-  static get writer() {
-    return { model: Profile, as: "writer" };
-  }
-
-  static get parentComment(): Includeable {
-    return {
-      model: Comment,
-      as: "parentComment",
-      include: [this.writer],
-    };
-  }
-}
+export const CommentService = new _CommentService();

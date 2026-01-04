@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { InsightResponseSchema } from "./post/dtos/insight-response.dto";
+import { InsightResponseSchema } from "./post/dtos/post-response.dto";
 import { EndpointDetails } from "@shared/docs/readme-types";
 
 export const InsightsDocs: EndpointDetails[] = [

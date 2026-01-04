@@ -16,4 +16,12 @@ export class ApiResponse {
   ) => {
     return res.status(201).json({ message, ...(data ? { data } : {}) });
   };
+
+  static failure = (
+    res: Response,
+    message: string,
+    data: Record<string, unknown> | null = null
+  ) => {
+    return res.status(400).json({ message, ...(data ? { data } : {}) });
+  };
 }

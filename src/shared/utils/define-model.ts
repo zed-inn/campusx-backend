@@ -6,6 +6,13 @@ import {
   ModelOptions,
 } from "sequelize";
 
+export interface ExtendedModel<
+  Attributes extends object,
+  CreationAttributes extends object
+> extends Model<Attributes, CreationAttributes> {
+  readonly plain: Attributes;
+}
+
 export const defineModel = <
   Attributes extends object,
   CreationAttributes extends object
@@ -14,8 +21,19 @@ export const defineModel = <
   modelName: string,
   attributes: ModelAttributes,
   options?: ModelOptions
-): ModelStatic<Model<Attributes, CreationAttributes>> => {
-  return db.define(modelName, attributes, options) as ModelStatic<
-    Model<Attributes, CreationAttributes>
+) => {
+  const definedModel = db.define(modelName, attributes, options);
+
+  // add a .plain property to get plained object
+  Object.defineProperty(definedModel.prototype, "plain", {
+    get() {
+      return this.get({ plain: true });
+    },
+    configurable: true,
+    enumerable: false,
+  });
+
+  return definedModel as ModelStatic<
+    ExtendedModel<Attributes, CreationAttributes>
   >;
 };

@@ -2,55 +2,46 @@ import bcrypt from "bcryptjs";
 import { env } from "@config/env";
 import { CreateProtectedDto, CreateSimpleDto } from "./dtos/user-create.dto";
 import { UpdatePasswordDto } from "./dtos/user-update.dto";
-import { User, UserAttributes, UserInstance } from "./user.model";
-import { UserErrors } from "./user.errors";
+import { User, UserInstance } from "./user.model";
 import { BaseService } from "@shared/services/base.service";
+import { DB_Errors } from "@shared/errors/db-errors";
 
-export class UserService extends BaseService<UserInstance, UserAttributes> {
-  static createWithPassword = async (data: CreateProtectedDto) => {
+class _UserService extends BaseService<UserInstance> {
+  constructor() {
+    super(User);
+  }
+
+  createWithPassword = async (data: CreateProtectedDto) => {
     const { password, ...createData } = data;
 
     const passwordHash = await UserUtils.hashPassword(password);
-    const user = await User.create({
-      ...createData,
-      passwordHash,
-    });
-
-    return new UserService(user);
+    return await this.create({ ...createData, passwordHash });
   };
 
-  static createWithoutPassword = async (data: CreateSimpleDto) => {
-    const user = await User.create({ ...data });
-
-    return new UserService(user);
+  createWithoutPassword = async (data: CreateSimpleDto) => {
+    return await this.create({ ...data });
   };
 
-  static getById = async (id: string) => {
-    const user = await User.findByPk(id);
-    if (!user) throw UserErrors.noUserFound;
-
-    return new UserService(user);
-  };
-
-  static getByEmail = async (email: string) => {
+  getByEmail = async (email: string) => {
     const user = await User.findOne({ where: { email } });
-    if (!user) throw UserErrors.noUserFound;
+    if (!user) throw DB_Errors.notFound;
 
-    return new UserService(user);
+    return user;
   };
 
-  static updatePasswordByEmail = async (data: UpdatePasswordDto) => {
-    const passwordHash = await UserUtils.hashPassword(data.password);
-    const service = await UserService.getByEmail(data.email);
+  updatePasswordByEmail = async (data: UpdatePasswordDto) => {
+    const user = await this.getByEmail(data.email);
 
-    const user = service.model;
+    const passwordHash = await UserUtils.hashPassword(data.password);
     await user.update({ passwordHash });
 
-    return new UserService(user);
+    return user;
   };
 }
 
-export class UserUtils {
+class UserUtils {
   static hashPassword = async (password: string) =>
     await bcrypt.hash(password, env.BCRYPT_PASSWORD_HASH_SALT);
 }
+
+export const UserService = new _UserService();

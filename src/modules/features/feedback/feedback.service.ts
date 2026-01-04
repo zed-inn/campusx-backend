@@ -1,22 +1,15 @@
-import {
-  Feedback,
-  FeedbackAttributes,
-  FeedbackInstance,
-} from "./feedback.model";
-import { STATUS } from "./feedback.constants";
+import { FeedbackCreateDto } from "./dtos/feedback-create.dto";
+import { Feedback, FeedbackInstance } from "./feedback.model";
 import { BaseService } from "@shared/services/base.service";
 
-export class FeedbackService extends BaseService<
-  FeedbackInstance,
-  FeedbackAttributes
-> {
-  static create = async (message: string, userId: string | null = null) => {
-    const f = await Feedback.create({
-      message,
-      userId,
-      status: STATUS.PENDING,
-    });
+class _FeedbackService extends BaseService<FeedbackInstance> {
+  constructor() {
+    super(Feedback);
+  }
 
-    return new FeedbackService(f);
+  createNew = async (data: FeedbackCreateDto, userId: string | null = null) => {
+    return await this.create({ ...data, userId });
   };
 }
+
+export const FeedbackService = new _FeedbackService();

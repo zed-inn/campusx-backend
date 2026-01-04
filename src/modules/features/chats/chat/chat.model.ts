@@ -4,7 +4,7 @@ import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 
 export const ChatModel = modelSchema({
   id: z.uuidv4("Invalid Chat Id"),

@@ -1,17 +1,22 @@
 import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
-import { Forum } from "../posts/posts.model";
 import { PRIMARY_ID } from "@shared/utils/db-types";
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 import { defineModel } from "@shared/utils/define-model";
 import { modelSchema } from "@shared/utils/model-schema";
+import { Post } from "../post/post.model";
+import { REPORT } from "./report.constants";
 
 export const ReportModel = modelSchema({
   id: z.uuidv4("Invalid Report Id"),
-  forumId: z.uuidv4("Invalid Forum Id"),
+  postId: z.uuidv4("Invalid Post Id"),
   userId: z.uuidv4("Invalid User Id"),
-  reason: z.string("Invalid Reason").min(1, { error: "Reason is required" }),
+  reason: z
+    .string("Invalid Reason")
+    .min(REPORT.REASON.LENGTH.MIN, { error: "Reason is required" })
+    .max(REPORT.REASON.LENGTH.MAX, { error: "Reason is too long" })
+    .nullable(),
 });
 
 export type ReportAttributes = z.infer<typeof ReportModel.dbSchema>;
@@ -25,27 +30,37 @@ export const Report = defineModel<ReportAttributes, ReportCreationAttributes>(
   "ForumReport",
   {
     id: { ...PRIMARY_ID },
-    forumId: {
+    postId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: { model: Forum, key: "id" },
+      references: { model: Post, key: "id" },
     },
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: Profile, key: "id" },
     },
-    reason: { type: DataTypes.TEXT, allowNull: false },
+    reason: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null,
+      validate: {
+        len: {
+          args: [REPORT.REASON.LENGTH.MIN, REPORT.REASON.LENGTH.MAX],
+          msg: `Reason should be in limit of ${REPORT.REASON.LENGTH.MIN}-${REPORT.REASON.LENGTH.MAX} characters.`,
+        },
+      },
+    },
   }
 );
 
 // Associations
-Forum.hasMany(Report, {
+Post.hasMany(Report, {
   foreignKey: "forumId",
   as: "reports",
   onDelete: "CASCADE",
 });
-Report.belongsTo(Forum, { foreignKey: "forumId", as: "forum" });
+Report.belongsTo(Post, { foreignKey: "forumId", as: "post" });
 
 Profile.hasMany(Report, {
   foreignKey: "userId",

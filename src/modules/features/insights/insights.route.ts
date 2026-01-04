@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { InsightsController } from "./post/insights.controller";
 import { mount } from "@shared/utils/mount-router";
+import { CategoryRouter } from "./category/category.route";
+import { PostRouter } from "./post/post.route";
 
 const router = Router();
 
-router.get("/categories", InsightsController.getCategories);
+router.use("/category", CategoryRouter);
 
-router.get("/", InsightsController.getPublishedInsights);
+router.use("/post", PostRouter);
 
 export const InsightsRouter = mount("/insights", router);

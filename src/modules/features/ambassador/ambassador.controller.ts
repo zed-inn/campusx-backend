@@ -6,7 +6,7 @@ import { AmbassadorService } from "./ambassador.service";
 import {
   ProfileResponseShort,
   ProfileService,
-} from "@modules/core/user-profile";
+} from "@modules/core/profile";
 import { ApiResponse } from "@shared/utils/api-response";
 import {
   ResponseFullSchema,

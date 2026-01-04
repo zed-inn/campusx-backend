@@ -13,4 +13,16 @@ export class ValidateReq {
       }
     };
   };
+
+  static query = (schema: ZodObject) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        req.query = schema.parse(req.query) as any;
+
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
+  };
 }

@@ -1,4 +1,4 @@
-import { ProfileResponseShort } from "@modules/core/user-profile";
+import { ProfileResponseShort } from "@modules/core/profile";
 import { ChatModel } from "../chat.model";
 import { z } from "zod";
 

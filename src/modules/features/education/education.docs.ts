@@ -6,7 +6,7 @@ import {
   ResponseFullSchema,
   ResponseShortSchema,
 } from "./dtos/education-response.dto";
-import { ProfileResponseShort } from "@modules/core/user-profile";
+import { ProfileResponseShort } from "@modules/core/profile";
 
 export const EducationDocs: EndpointDetails[] = [
   {

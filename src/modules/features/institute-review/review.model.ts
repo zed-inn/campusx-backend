@@ -3,19 +3,25 @@ import db from "@config/database";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
 import { Institute } from "@modules/core/institutes";
-import { Profile } from "@modules/core/user-profile";
+import { Profile } from "@modules/core/profile";
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
+import { REVIEW } from "./review.constants";
 
 export const ReviewModel = modelSchema({
   id: z.uuidv4("Invalid Review Id"),
+  localId: z.string("Invalid Local Id").nullable(),
   userId: z.uuidv4("Invalid User Id"),
   instituteId: z.uuidv4("Invalid Institute Id"),
   body: z.string("Invalid Body"),
   rating: z
     .int("Invalid Rating")
-    .min(0, { error: "Rating cannot be lower than 1" })
-    .max(5, { error: "Rating cannot be higher than 5" }),
+    .min(REVIEW.RATING.MIN, {
+      error: `Rating cannot be lower than ${REVIEW.RATING.MIN}`,
+    })
+    .max(REVIEW.RATING.MAX, {
+      error: `Rating cannot be higher than ${REVIEW.RATING.MAX}`,
+    }),
 });
 
 export type ReviewAttributes = z.infer<typeof ReviewModel.dbSchema>;
@@ -29,6 +35,7 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
   "InstituteReview",
   {
     id: { ...PRIMARY_ID },
+    localId: { type: DataTypes.STRING, allowNull: false, defaultValue: null },
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -43,7 +50,7 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: { min: 0, max: 5 },
+      validate: { min: REVIEW.RATING.MIN, max: REVIEW.RATING.MAX },
     },
   },
   {

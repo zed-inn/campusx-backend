@@ -5,11 +5,11 @@ import { ProfileEducationDocs } from "@modules/features/education";
 import { FeedbackDocs } from "@modules/features/feedback";
 import { ForumDocs } from "@modules/features/forums";
 import { InsightsDocs } from "@modules/features/insights";
-import { InstituteDiscussionDocs } from "@modules/features/institute-discussion";
+import { InstituteDiscussionDocs } from "@modules/features/institute-community-chat";
 import { InstituteReviewDocs } from "@modules/features/institute-review";
 import { EndpointDetails } from "./readme-types";
 import { AmbassadorDocs } from "@modules/features/ambassador";
-import { ProfileDocs } from "@modules/core/user-profile/profile.docs";
+import { ProfileDocs } from "@modules/core/profile/profile.docs";
 import { ChatDocs } from "@modules/features/chats/chat.docs";
 
 const Docs = [

@@ -1,2 +1,2 @@
-export { ForumDocs } from "./forums.docs";
-export { ForumRouter } from "./routes/forum.route";
+export { ForumRouter } from "./forum.route";
+// export { ForumDocs } from "./forums.docs";

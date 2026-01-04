@@ -10,13 +10,13 @@ import {
   ProfileOld,
   UserOld,
 } from "./old_models";
-import { Profile, ProfileModel } from "@modules/core/user-profile";
-import { Forum, ForumModel } from "@modules/features/forums/posts/posts.model";
+import { Profile, ProfileModel } from "@modules/core/profile";
+import { Forum, ForumModel } from "@modules/features/forums/post/post.model";
 import {
   Comment,
   CommentModel,
 } from "@modules/features/forums/comments/comment.model";
-import { Like, LikeModel } from "@modules/features/forums/reactions/like.model";
+import { Like, LikeModel } from "@modules/features/forums/reactions/reaction.model";
 import {
   Category,
   CategoryModel,
@@ -24,7 +24,7 @@ import {
 import {
   Insight,
   InsightModel,
-} from "@modules/features/insights/post/insight.model";
+} from "@modules/features/insights/post/post.model";
 import db, { connectDB, disconnectDB } from "@config/database";
 import { Chat, ChatModel } from "@modules/features/chats/chat/chat.model";
 import { uuidv4 } from "zod";
