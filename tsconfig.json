@@ -50,5 +50,14 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "src/modules/core/notifications",
+    "src/modules/features/chats",
+    "src/modules/features/ambassador",
+    "src/modules/features/institute-community-chat",
+    "src/shared/migration",
+    "src/shared/docs",
+    "src/**/*/*.docs.ts"
+  ]
 }
