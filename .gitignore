@@ -152,6 +152,3 @@ bundler.py
 
 # Migration data
 **/*/migration/data
-
-# Temporary Data
-**/*/preprocessing/**/*/*.json
