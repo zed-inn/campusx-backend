@@ -95,5 +95,5 @@ const checkinst = async () => {
   console.log(institutes.length);
 };
 
-// main();
-checkinst();
+main();
+// checkinst();

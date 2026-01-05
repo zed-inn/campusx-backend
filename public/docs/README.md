@@ -1879,6 +1879,133 @@ Add education
 
 ---
 
+## Institute
+
+### Get institute
+
+**get** `/institute/`
+
+Get details of a specific institute
+
+**Query Parameters :**
+```ts
+{
+  instituteId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    institute: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      aisheCode: string | null;
+      name: string;
+      shortName: string | null;
+      about: string | null;
+      district: string | null;
+      state: string | null;
+      country: string | null;
+      address: string | null;
+      pinCode: number | null;
+      yearOfEstablishment: number | null;
+      website: string | null;
+      location: string | null;
+      category: string | null;
+      administrativeMinistry: string | null;
+      standaloneType: string | null;
+      management: string | null;
+      collegeType: string | null;
+      universityName: string | null;
+      universityType: string | null;
+      phone: string | null;
+      landline: string | null;
+      imageUrl: string | null;
+      rating: number;
+      reviewsCount: number;
+    };
+  };
+}
+```
+
+---
+
+### Get institutes
+
+**get** `/institute/filter`
+
+Get short institutes with
+
+**Query Parameters :**
+```ts
+{
+  name?: string;
+  district?: string | null;
+  state?: string | null;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    institutes: {
+      id: string;
+      name: string;
+      shortName: string | null;
+      district: string | null;
+      state: string | null;
+      country: string | null;
+      yearOfEstablishment: number | null;
+    }[];
+  };
+}
+```
+
+---
+
+### Get Map: country-state
+
+**get** `/institute/state`
+
+Get country state map in format {country: state}[]
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    states: any[];
+  };
+}
+```
+
+---
+
+### Get Map: state-district
+
+**get** `/institute/district`
+
+Get state district map in format {state: disctrict}[]
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    states: any[];
+  };
+}
+```
+
+---
+
 ## Institute Reviews
 
 ### Get Institute Reviews

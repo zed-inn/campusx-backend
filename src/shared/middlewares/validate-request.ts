@@ -17,7 +17,15 @@ export class ValidateReq {
   static query = (schema: ZodObject) => {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
-        req.query = schema.parse(req.query) as any;
+        const rawQuery = req.query || {};
+        const parsedQuery = schema.parse(rawQuery);
+
+        Object.defineProperty(req, "query", {
+          value: parsedQuery,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        });
 
         next();
       } catch (error) {

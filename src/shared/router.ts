@@ -1,5 +1,5 @@
 import { AuthRouter } from "@modules/core/authentication";
-// import { InstituteRouter } from "@modules/core/institutes";
+import { InstituteRouter } from "@modules/core/institutes";
 import { ProfileRouter } from "@modules/core/profile";
 import { UserRouter } from "@modules/core/user/user.route";
 import { AmbassadorRouter } from "@modules/features/ambassador";
@@ -24,7 +24,7 @@ const routers: Record<string, DetailedRouter> = {
   "/forums": ForumRouter,
   "/insights": InsightsRouter,
   "/education": EducationRouter,
-  // "/institute": InstituteRouter,
+  "/institute": InstituteRouter,
   "/institute/review": InstituteReviewRouter,
   "/institute/community-chat": InstituteCommunityChatRouter,
   "/feedback": FeedbackRouter,
