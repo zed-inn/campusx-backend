@@ -14,21 +14,13 @@
     // "lib": ["esnext"],
     // "types": ["node"],
     // and npm install -D @types/node
-    "typeRoots": [
-      "./src/shared/types"
-    ],
+    "typeRoots": ["./src/shared/types"],
     // Path Alias
     "baseUrl": "./",
     "paths": {
-      "@modules/*": [
-        "src/modules/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@config/*": [
-        "src/config/*"
-      ]
+      "@modules/*": ["src/modules/*"],
+      "@shared/*": ["src/shared/*"],
+      "@config/*": ["src/config/*"]
     },
     // Other Outputs
     "sourceMap": true,
@@ -53,7 +45,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["src/modules/core/notifications", "src/shared/migration"]
 }
