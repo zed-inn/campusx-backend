@@ -1,9 +1,11 @@
-import { Router } from "express";
 import { FeedbackController } from "./feedback.controller";
-import { mount } from "@shared/utils/mount-router";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Feedback");
 
-router.post("/", FeedbackController.giveFeedback);
+router
+  .describe("Give Feedback", "Give feedback on website or app")
+  .output("Feedback given.")
+  .post("/", FeedbackController.giveFeedback);
 
-export const FeedbackRouter = mount("/feedback", router);
+export const FeedbackRouter = router;

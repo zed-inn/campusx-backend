@@ -1,26 +1,23 @@
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { catchAsync } from "@shared/utils/catch-async";
 import { Request, Response } from "express";
-import { s } from "@shared/utils/create-schema";
 import { ChatService } from "./chat.service";
-import { ProfileUtils } from "@modules/core/profile";
-import { ChatResponseSchema } from "./dtos/chat-response.dto";
 import { ApiResponse } from "@shared/utils/api-response";
+import { ChatGetActiveDto } from "./dtos/chat-get.dto";
+import { ChatAggregator } from "./chat.aggregator";
+import { ChatSchema } from "./dtos/chat-response.dto";
 
 export class ChatController {
-  static getActiveChats = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-    const q = s.create({ page: s.fields.page }).parse(req.query);
+  static getActiveChats = catchAsync(
+    async (req: Request<{}, {}, {}, ChatGetActiveDto>, res: Response) => {
+      const user = AuthPayloadSchema.parse(req.user);
+      const q = req.query;
 
-    const services = await ChatService.getActive(user.id, q.page);
-    const chats = services.map(async (s) => {
-      const t: any = s.data;
-      if (t.userOne === user.id) t.friendProfile = t.userTwoProfile;
-      else t.friendProfile = t.userOneProfile;
-      t.friendProfile = await ProfileUtils.joinAll([t.friendProfile], user.id);
-      return ChatResponseSchema.parse(t);
-    });
+      const iChats = await ChatService.getActiveChatsOfUser(q.userId, q.page);
+      const tChats = await ChatAggregator.transform(iChats, user.id);
+      const pChats = tChats.map((c) => ChatSchema.parse(c));
 
-    return ApiResponse.success(res, "Chats.", { chats });
-  });
+      return ApiResponse.success(res, "Chats.", { chats: pChats });
+    }
+  );
 }

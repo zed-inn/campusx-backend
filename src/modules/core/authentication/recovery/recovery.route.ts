@@ -1,14 +1,16 @@
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
 import { RecoverPasswordSchema } from "./dtos/recovery.dto";
 import { RecoveryController } from "./recovery.controller";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Account Recovery");
 
-router.post(
-  "/basic",
-  ValidateReq.body(RecoverPasswordSchema),
-  RecoveryController.resetPasswordBasic
-);
+router
+  .describe(
+    "Recover password : Basic Account",
+    "Reset password of an account with password after getting and verifying otp"
+  )
+  .body(RecoverPasswordSchema)
+  .output("Password resetted.")
+  .post("/basic", RecoveryController.resetPasswordBasic);
 
 export const RecoveryRouter = router;

@@ -43,7 +43,7 @@ export class ReviewController {
       const pReview = ReviewSchema.parse(tReview);
 
       return ApiResponse.success(res, "Review fetched.", {
-        reviews: pReview,
+        review: pReview,
       });
     }
   );

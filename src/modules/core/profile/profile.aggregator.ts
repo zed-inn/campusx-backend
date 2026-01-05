@@ -1,11 +1,15 @@
 import { ProfileAttributes } from "./profile.model";
 import { UserSchema } from "./dtos/profile-response.dto";
 import { FollowService, FollowStatService } from "@modules/features/follow";
+import {
+  AmbassadorAggregator,
+  AmbassadorService,
+} from "@modules/features/ambassador";
 
 export type IncompleteUser = ProfileAttributes & {
   isFollowed?: boolean;
   stats?: { followers: number; following: number };
-  ambassador?: null | {};
+  ambassadorOf?: null | {};
 };
 
 export class ProfileAggregator {
@@ -42,7 +46,18 @@ export class ProfileAggregator {
   };
 
   static addAmbassadorInstitute = async (users: IncompleteUser[]) => {
-    return users;
+    const userIds = users.map((u) => u.id);
+
+    const iAmbassadors = await AmbassadorService.getByUserIds(userIds);
+    const tAmbassadors = await AmbassadorAggregator.transform(iAmbassadors);
+
+    const ambassadorMap: Record<string, any> = {};
+    tAmbassadors.map((a) => (ambassadorMap[a.userId] = a.institute));
+
+    return users.map((u) => ({
+      ...u,
+      ambassadorOf: ambassadorMap[u.id] ?? null,
+    }));
   };
 
   static transform = async (

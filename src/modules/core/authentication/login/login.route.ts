@@ -1,20 +1,20 @@
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
+import { AuthResponseSchema } from "../dtos/auth-response.dto";
 import { LoginBasicSchema, LoginGoogleSchema } from "./dtos/login.dto";
 import { LoginController } from "./login.controller";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Login");
 
-router.post(
-  "/basic",
-  ValidateReq.body(LoginBasicSchema),
-  LoginController.loginWithPassword
-);
+router
+  .describe("Login Basic", "Login with email and password")
+  .body(LoginBasicSchema)
+  .output(AuthResponseSchema, "Logged in.")
+  .post("/basic", LoginController.loginWithPassword);
 
-router.post(
-  "/google",
-  ValidateReq.body(LoginGoogleSchema),
-  LoginController.loginWithGoogle
-);
+router
+  .describe("Login Google", "Login with google mail")
+  .body(LoginGoogleSchema)
+  .output(AuthResponseSchema, "Logged in.")
+  .post("/google", LoginController.loginWithGoogle);
 
 export const LoginRouter = router;

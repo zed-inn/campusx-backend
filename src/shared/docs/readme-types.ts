@@ -1,14 +1,14 @@
-import { ZodObject, ZodType } from "zod";
+import { ZodObject } from "zod";
 
 export type EndpointDetails = {
   category: string;
   title: string;
   endpoint: string;
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: "get" | "post" | "patch" | "delete" | "put";
   description: string;
-  authTokenReq?: boolean;
-  body?: ZodObject;
+  authTokenReq: boolean;
   query?: ZodObject;
+  body?: ZodObject;
   response: {
     message: string;
     data?: ZodObject;

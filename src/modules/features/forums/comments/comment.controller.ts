@@ -17,7 +17,7 @@ export class CommentController {
     async (req: Request<{}, {}, {}, CommentGetPostDto>, res: Response) => {
       const iComments = await CommentService.getByForumId(req.query);
       const tComments = await CommentAggregator.transform(iComments);
-      const pComments = tComments.map((c) => CommentSchema.parse(tComments));
+      const pComments = tComments.map((c) => CommentSchema.parse(c));
 
       return ApiResponse.success(res, "Comments fetched.", {
         comments: pComments,

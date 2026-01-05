@@ -1,38 +1,21 @@
-import { mount } from "@shared/utils/mount-router";
-import { Router } from "express";
 import { AmbassadorController } from "./ambassador.controller";
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { AmbassadorGetInstituteSchema } from "./dtos/ambassador-get.dto";
+import { RequestRouter } from "./request/request.route";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
+import { array } from "zod";
+import { ShortUserSchema } from "@modules/core/profile";
 
-const router = Router();
+const router = new DetailedRouter("Ambassador");
 
-router.get(
-  "/request",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  AmbassadorController.getCurrentRequest
-);
+router
+  .describe(
+    "Get Institute's Ambassadors",
+    "Get users list of ambassadors for queried institute"
+  )
+  .query(AmbassadorGetInstituteSchema)
+  .output("ambassadors", array(ShortUserSchema), "Ambassadors.")
+  .get("/institute", AmbassadorController.getInstituteAmbassadors);
 
-router.get("/institute", AmbassadorController.getInstituteAmbassadors);
+router.use("/request", RequestRouter);
 
-router.post(
-  "/request",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  AmbassadorController.requestForAmbassadorPosition
-);
-
-router.put(
-  "/request",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  AmbassadorController.updateRequest
-);
-
-router.delete(
-  "/request",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  AmbassadorController.deleteRequest
-);
-
-export const AmbassadorRouter = mount("/ambassador", router);
+export const AmbassadorRouter = router;

@@ -1,8 +1,5 @@
-import { Router } from "express";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { ReviewController } from "./review.controller";
-import { mount } from "@shared/utils/mount-router";
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { ValidateReq } from "@shared/middlewares/validate-request";
 import {
   ReviewGetMineSchema,
   ReviewGetPageSchema,
@@ -12,45 +9,49 @@ import {
   ReviewDeleteSchema,
   ReviewUpdateSchema,
 } from "./dtos/review-action.dto";
+import { array } from "zod";
+import { ReviewSchema } from "./dtos/review-response.dto";
 
-const router = Router();
+const router = new DetailedRouter("Institute Reviews");
 
-router.get(
-  "/",
-  ValidateReq.query(ReviewGetPageSchema),
-  ReviewController.getInstituteReviews
-);
+router
+  .describe(
+    "Get Institute Reviews",
+    "Retrieve a paginated list of reviews for institutes."
+  )
+  .query(ReviewGetPageSchema)
+  .output("reviews", array(ReviewSchema), "Reviews fetched.")
+  .get("/", ReviewController.getInstituteReviews);
 
-router.get(
-  "/me",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(ReviewGetMineSchema),
-  ReviewController.getInstituteReviews
-);
+router
+  .describe(
+    "Get My Review",
+    "Retrieve the current user's review on an institute."
+  )
+  .userProfiled()
+  .query(ReviewGetMineSchema)
+  .output("review", ReviewSchema, "Review fetched.")
+  .get("/me", ReviewController.getInstituteReviews);
 
-router.post(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(ReviewCreateSchema),
-  ReviewController.createReview
-);
+router
+  .describe("Create Review", "Submit a new review for an institute.")
+  .userProfiled()
+  .body(ReviewCreateSchema)
+  .output("review", ReviewSchema, "Reviewed.")
+  .post("/", ReviewController.createReview);
 
-router.patch(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(ReviewUpdateSchema),
-  ReviewController.updateReview
-);
+router
+  .describe("Update Review", "Edit the content of an existing review.")
+  .userProfiled()
+  .body(ReviewUpdateSchema)
+  .output("review", ReviewSchema, "Review updated.")
+  .patch("/", ReviewController.updateReview);
 
-router.delete(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(ReviewDeleteSchema),
-  ReviewController.deleteReview
-);
+router
+  .describe("Delete Review", "Permanently remove a review.")
+  .userProfiled()
+  .query(ReviewDeleteSchema)
+  .output("review", ReviewSchema, "Review deleted.")
+  .delete("/", ReviewController.deleteReview);
 
-export const InstituteReviewRouter = mount("/institute/review", router);
+export const InstituteReviewRouter = router;

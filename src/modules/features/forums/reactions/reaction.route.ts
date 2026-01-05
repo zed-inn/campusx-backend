@@ -1,25 +1,21 @@
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { ReactActionSchema } from "./dtos/reaction.dto";
 import { ReactionController } from "./reaction.controller";
 
-const router = Router();
+const router = new DetailedRouter("Forum Reactions");
 
-router.post(
-  "/like",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(ReactActionSchema),
-  ReactionController.likePost
-);
+router
+  .describe("Like Post", "Add a like reaction to a specific post.")
+  .userProfiled()
+  .body(ReactActionSchema)
+  .output("Liked.")
+  .post("/like", ReactionController.likePost);
 
-router.delete(
-  "/like",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(ReactActionSchema),
-  ReactionController.unlikePost
-);
+router
+  .describe("Unlike Post", "Remove a like reaction from a specific post.")
+  .userProfiled()
+  .query(ReactActionSchema)
+  .output("Unliked.")
+  .delete("/like", ReactionController.unlikePost);
 
 export const ReactionRouter = router;

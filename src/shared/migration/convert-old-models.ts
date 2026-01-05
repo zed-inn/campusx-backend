@@ -16,7 +16,10 @@ import {
   Comment,
   CommentModel,
 } from "@modules/features/forums/comments/comment.model";
-import { Like, LikeModel } from "@modules/features/forums/reactions/reaction.model";
+import {
+  Like,
+  LikeModel,
+} from "@modules/features/forums/reactions/reaction.model";
 import {
   Category,
   CategoryModel,
@@ -31,7 +34,7 @@ import { uuidv4 } from "zod";
 import {
   Message,
   MessageModel,
-} from "@modules/features/chats/messages/message.model";
+} from "@modules/features/chats/message/message.model";
 
 const URL = "https://api.thoughtshub.agency";
 

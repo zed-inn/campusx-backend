@@ -1,17 +1,21 @@
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
 import { OtpGetSchema } from "./dtos/otp-get.dto";
 import { OtpController } from "./otp.controller";
 import { OtpVerifySchema } from "./dtos/otp-verify.dto";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
+import { z } from "zod";
 
-const router = Router();
+const router = new DetailedRouter("OTP");
 
-router.post("/get", ValidateReq.body(OtpGetSchema), OtpController.getOtp);
+router
+  .describe("Get Otp", "Get auto generated otp on email")
+  .body(OtpGetSchema)
+  .output("Otp sent.")
+  .post("/get", OtpController.getOtp);
 
-router.post(
-  "/verify",
-  ValidateReq.body(OtpVerifySchema),
-  OtpController.verifyOtp
-);
+router
+  .describe("Verify Otp", "Verify otp sent on email")
+  .body(OtpVerifySchema)
+  .output("otpToken", z.string(), "Otp verified.")
+  .post("/verify", OtpController.verifyOtp);
 
 export const OtpRouter = router;

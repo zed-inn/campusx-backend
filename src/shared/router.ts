@@ -1,32 +1,42 @@
 import { AuthRouter } from "@modules/core/authentication";
-import { InstituteRouter } from "@modules/core/institutes";
+// import { InstituteRouter } from "@modules/core/institutes";
 import { ProfileRouter } from "@modules/core/profile";
-import { ProfileEducationRouter } from "@modules/features/education";
+import { UserRouter } from "@modules/core/user/user.route";
+import { AmbassadorRouter } from "@modules/features/ambassador";
+import { ChatsRouter } from "@modules/features/chats";
+import { EducationRouter } from "@modules/features/education";
 import { FeedbackRouter } from "@modules/features/feedback";
+import { FollowRouter } from "@modules/features/follow";
 import { ForumRouter } from "@modules/features/forums";
 import { InsightsRouter } from "@modules/features/insights";
-// import { InstituteDiscussionRouter } from "@modules/features/institute-discussion";
+import { InstituteCommunityChatRouter } from "@modules/features/institute-community-chat";
 import { InstituteReviewRouter } from "@modules/features/institute-review";
-import { Router } from "express";
-// import { DocsRouter } from "./docs/readme.route";
-// import { AmbassadorRouter } from "@modules/features/ambassador";
+import { DetailedRouter } from "./infra/http/detailed-router";
+import { generateReadme } from "./docs/generate-readme";
 
-const router = Router();
+const router = new DetailedRouter("CampusX Backend");
 
-const routers = [
-  AuthRouter,
-  ProfileRouter,
-  ForumRouter,
-  InsightsRouter,
-  InstituteRouter,
-  InstituteReviewRouter,
-  // InstituteDiscussionRouter,
-  FeedbackRouter,
-  ProfileEducationRouter,
-  // DocsRouter,
-  // AmbassadorRouter,
-];
+const routers: Record<string, DetailedRouter> = {
+  "/auth": AuthRouter,
+  "/profile": ProfileRouter,
+  "/user": UserRouter,
+  "/follow": FollowRouter,
+  "/forums": ForumRouter,
+  "/insights": InsightsRouter,
+  "/education": EducationRouter,
+  // "/institute": InstituteRouter,
+  "/institute/review": InstituteReviewRouter,
+  "/institute/community-chat": InstituteCommunityChatRouter,
+  "/feedback": FeedbackRouter,
+  "/chats": ChatsRouter,
+  "/ambassador": AmbassadorRouter,
+};
 
-for (const ModuleRouter of routers) router.use("/", ModuleRouter);
+for (const key of Object.keys(routers)) {
+  if (routers[key]) router.use(key, routers[key]);
+}
 
-export const AppRouter = router;
+generateReadme(router.definitions, "./public/docs/README.md");
+generateReadme(router.definitions, "./README.md");
+
+export const AppRouter = router.router;

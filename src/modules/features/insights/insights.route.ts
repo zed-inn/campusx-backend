@@ -1,12 +1,11 @@
-import { Router } from "express";
-import { mount } from "@shared/utils/mount-router";
 import { CategoryRouter } from "./category/category.route";
 import { PostRouter } from "./post/post.route";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Insights");
 
 router.use("/category", CategoryRouter);
 
 router.use("/post", PostRouter);
 
-export const InsightsRouter = mount("/insights", router);
+export const InsightsRouter = router;

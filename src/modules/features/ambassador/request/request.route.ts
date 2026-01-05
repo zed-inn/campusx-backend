@@ -1,0 +1,42 @@
+import { RequestController } from "./request.controller";
+import {
+  RequestCreateSchema,
+  RequestDeleteSchema,
+  RequestUpdateSchema,
+} from "./dtos/request-action.dto";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
+import { RequestSchema } from "./dtos/request-response.dto";
+
+const router = new DetailedRouter("Ambassador Request");
+
+router
+  .describe(
+    "Get Request Status",
+    "Get status request of the current logged in user"
+  )
+  .userProfiled()
+  .output("request", RequestSchema, "Request Status.")
+  .get("/me", RequestController.getMyRequestStatus);
+
+router
+  .describe(
+    "Request for ambassador position",
+    "Request will not happen if already an ambassador or if not a student of applied institute"
+  )
+  .userProfiled()
+  .body(RequestCreateSchema)
+  .post("/", RequestController.requestForPostition);
+
+router
+  .describe("Update Request", "Update request's institute or reason")
+  .userProfiled()
+  .body(RequestUpdateSchema)
+  .patch("/", RequestController.updateRequest);
+
+router
+  .describe("Withdraw Request", "Withdraw your request of ambassador")
+  .userProfiled()
+  .query(RequestDeleteSchema)
+  .delete("/", RequestController.withdrawRequest);
+
+export const RequestRouter = router;

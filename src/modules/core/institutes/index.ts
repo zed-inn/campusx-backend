@@ -5,4 +5,3 @@ export {
   ShortInstituteSchema,
 } from "./dtos/institute-response.dto";
 export { InstituteRouter } from "./institute.route";
-// export { InstituteDocs } from "./institute.docs";

@@ -1,14 +1,18 @@
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { PostGetSchema } from "./dtos/post-get.dto";
 import { PostsController } from "./post.controller";
+import { array } from "zod";
+import { PostSchema } from "./dtos/post-response.dto";
 
-const router = Router();
+const router = new DetailedRouter("Insight Posts");
 
-router.get(
-  "/",
-  ValidateReq.query(PostGetSchema),
-  PostsController.getPublishedPosts
-);
+router
+  .describe(
+    "Get Published Posts",
+    "Retrieve a paginated list of general published posts."
+  )
+  .query(PostGetSchema)
+  .output("insights", array(PostSchema), "Insights fetched.")
+  .get("/", PostsController.getPublishedPosts);
 
 export const PostRouter = router;

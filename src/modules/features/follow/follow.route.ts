@@ -1,55 +1,65 @@
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { mount } from "@shared/utils/mount-router";
-import { Router } from "express";
 import { FollowGetMineSchema, FollowGetSchema } from "./dtos/follow-get.dto";
 import { FollowController } from "./follow.controller";
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
 import { FollowActionSchema } from "./dtos/follow-create.dto";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
+import { array } from "zod";
+import { ShortUserSchema } from "@modules/core/profile";
 
-const router = Router();
+const router = new DetailedRouter("Follow");
 
-router.post(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(FollowActionSchema),
-  FollowController.followUser
-);
+router
+  .describe(
+    "Follow User",
+    "Start following a target user to see their updates."
+  )
+  .userProfiled()
+  .body(FollowActionSchema)
+  .output("Followed.")
+  .post("/", FollowController.followUser);
 
-router.delete(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(FollowActionSchema),
-  FollowController.unfollowUser
-);
+router
+  .describe("Unfollow User", "Stop following a target user.")
+  .userProfiled()
+  .query(FollowActionSchema)
+  .output("Unfollowed")
+  .delete("/", FollowController.unfollowUser);
 
-router.get(
-  "/followers",
-  ValidateReq.query(FollowGetSchema),
-  FollowController.getFollowers
-);
+router
+  .describe(
+    "Get Followers",
+    "Retrieve a paginated list of followers for a specific user."
+  )
+  .query(FollowGetSchema)
+  .output("followers", array(ShortUserSchema), "User's followers.")
+  .get("/followers", FollowController.getFollowers);
 
-router.get(
-  "/followers/me",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(FollowGetMineSchema),
-  FollowController.getMyFollowers
-);
+router
+  .describe(
+    "Get My Followers",
+    "Retrieve a paginated list of the current user's followers."
+  )
+  .userProfiled()
+  .query(FollowGetMineSchema)
+  .output("followers", array(ShortUserSchema), "Your followers.")
+  .get("/followers/me", FollowController.getMyFollowers);
 
-router.get(
-  "/following",
-  ValidateReq.query(FollowGetSchema),
-  FollowController.getFollowing
-);
+router
+  .describe(
+    "Get Following",
+    "Retrieve a list of users that a specific user is following."
+  )
+  .query(FollowGetSchema)
+  .output("following", array(ShortUserSchema), "User's following.")
+  .get("/following", FollowController.getFollowing);
 
-router.get(
-  "/following/me",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(FollowGetMineSchema),
-  FollowController.getMyFollowing
-);
+router
+  .describe(
+    "Get My Following",
+    "Retrieve the list of users the current user is following."
+  )
+  .userProfiled()
+  .query(FollowGetMineSchema)
+  .output("following", array(ShortUserSchema), "Your following.")
+  .get("/following/me", FollowController.getMyFollowing);
 
-export const FollowRouter = mount("/follow", router);
+export const FollowRouter = router;

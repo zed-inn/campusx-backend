@@ -1,6 +1,4 @@
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import {
   CommentCreateSchema,
   CommentDeleteSchema,
@@ -8,37 +6,39 @@ import {
 } from "./dtos/comment-action.dto";
 import { CommentController } from "./comment.controller";
 import { CommentGetPostSchema } from "./dtos/comment-get.dto";
+import { array } from "zod";
+import { CommentSchema } from "./dtos/comment-response.dto";
 
-const router = Router();
+const router = new DetailedRouter("Forum Comments");
 
-router.post(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(CommentCreateSchema),
-  CommentController.createComment
-);
+router
+  .describe("Create Comment", "Add a new comment to a specific post.")
+  .userProfiled()
+  .body(CommentCreateSchema)
+  .output("comment", CommentSchema, "Commented.")
+  .post("/", CommentController.createComment);
 
-router.patch(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(CommentUpdateSchema),
-  CommentController.updateComment
-);
+router
+  .describe("Update Comment", "Edit the content of an existing comment.")
+  .userProfiled()
+  .body(CommentUpdateSchema)
+  .output("comment", CommentSchema, "Comment updated.")
+  .patch("/", CommentController.updateComment);
 
-router.delete(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.query(CommentDeleteSchema),
-  CommentController.deleteComment
-);
+router
+  .describe("Delete Comment", "Permanently remove a comment.")
+  .userProfiled()
+  .query(CommentDeleteSchema)
+  .output("comment", CommentSchema, "Comment deleted.")
+  .delete("/", CommentController.deleteComment);
 
-router.get(
-  "/",
-  ValidateReq.query(CommentGetPostSchema),
-  CommentController.getPostComments
-);
+router
+  .describe(
+    "Get Post Comments",
+    "Retrieve a paginated list of comments for a specific post."
+  )
+  .query(CommentGetPostSchema)
+  .output("comments", array(CommentSchema), "Comments fetched.")
+  .get("/", CommentController.getPostComments);
 
 export const CommentRouter = router;

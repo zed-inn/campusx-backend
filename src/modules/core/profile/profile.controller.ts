@@ -89,7 +89,7 @@ export class ProfileController {
         throw new AppError("Username unavailable", 400);
       } catch {}
 
-      return ApiResponse.success(res, "Username available");
+      return ApiResponse.success(res, "Username available.");
     }
   );
 }

@@ -1,16 +1,9 @@
-import { ProfileResponseShort } from "@modules/core/profile";
+import { ShortUserSchema } from "@modules/core/profile";
 import { ChatModel } from "../chat.model";
 import { z } from "zod";
 
-export const ChatResponseSchema = ChatModel.dbSchema
-  .pick({
-    id: true,
-    localId: true,
-    createDate: true,
-    updateDate: true,
-  })
-  .extend({
-    friendProfile: ProfileResponseShort,
-  });
+export const ChatSchema = ChatModel.dbSchema.extend({
+  friend: ShortUserSchema,
+});
 
-export type ChatResponseDto = z.infer<typeof ChatResponseSchema>;
+export type ChatDto = z.infer<typeof ChatSchema>;

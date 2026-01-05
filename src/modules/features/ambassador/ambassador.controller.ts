@@ -1,86 +1,33 @@
-import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { catchAsync } from "@shared/utils/catch-async";
-import { s } from "@shared/utils/create-schema";
 import { Request, Response } from "express";
 import { AmbassadorService } from "./ambassador.service";
-import {
-  ProfileResponseShort,
-  ProfileService,
-} from "@modules/core/profile";
 import { ApiResponse } from "@shared/utils/api-response";
+import { AmbassadorGetInstituteDto } from "./dtos/ambassador-get.dto";
 import {
-  ResponseFullSchema,
-  ResponseShortSchema,
-} from "./dtos/ambassador-response.dto";
-import { InstituteService } from "@modules/core/institutes";
+  ProfileAggregator,
+  ProfileService,
+  ShortUserSchema,
+} from "@modules/core/profile";
 
 export class AmbassadorController {
   static getInstituteAmbassadors = catchAsync(
-    async (req: Request, res: Response) => {
-      const q = s
-        .create({ id: s.fields.id, page: s.fields.page })
-        .parse(req.query);
+    async (
+      req: Request<{}, {}, {}, AmbassadorGetInstituteDto>,
+      res: Response
+    ) => {
+      const q = req.query;
 
-      const services = await AmbassadorService.getByInstituteId(q.id, q.page);
-      const users = await ProfileService.getByIds(
-        services.map((s) => s.data.id)
+      const ambassadors = await AmbassadorService.getByInstituteId(
+        q.instituteId,
+        q.page
       );
-      const ambassadors = users.map((s) => ProfileResponseShort.parse(s));
+      const userIds = ambassadors.map((a) => a.userId);
 
-      return ApiResponse.success(res, "Ambassadors.", { ambassadors });
+      const iUsers = await ProfileService.getByIds(userIds);
+      const tUsers = await ProfileAggregator.transform(iUsers, req.user?.id);
+      const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
+
+      return ApiResponse.success(res, "Ambassadors.", { ambassadors: pUsers });
     }
   );
-
-  static getCurrentRequest = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-
-    const service = await AmbassadorService.getById(user.id);
-    const institute = await InstituteService.getById(service.data.instituteId);
-    const request = ResponseFullSchema.parse({
-      ...service.data,
-      institute: institute.data,
-    });
-
-    return ApiResponse.success(res, "Request Info.", { request });
-  });
-
-  static requestForAmbassadorPosition = catchAsync(
-    async (req: Request, res: Response) => {
-      const user = AuthPayloadSchema.parse(req.user);
-      const q = s
-        .create({ reason: s.fields.stringNull, id: s.fields.id })
-        .parse(req.body);
-
-      const service = await AmbassadorService.create(
-        { instituteId: q.id, reason: q.reason },
-        user.id
-      );
-      const ambassador = ResponseShortSchema.parse(service.data);
-
-      return ApiResponse.success(res, "Request Filed.", { ambassador });
-    }
-  );
-
-  static updateRequest = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-    const q = s
-      .create({ reason: s.fields.stringNull, id: s.fields.id })
-      .parse(req.body);
-
-    const service = await AmbassadorService.update(
-      { instituteId: q.id, reason: q.reason },
-      user.id
-    );
-    const ambassador = ResponseShortSchema.parse(service.data);
-
-    return ApiResponse.success(res, "Request Updated.", { ambassador });
-  });
-
-  static deleteRequest = catchAsync(async (req: Request, res: Response) => {
-    const user = AuthPayloadSchema.parse(req.user);
-
-    await AmbassadorService.delete(user.id);
-
-    return ApiResponse.success(res, "Request Withdrawn.");
-  });
 }

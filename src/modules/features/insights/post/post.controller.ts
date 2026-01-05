@@ -18,7 +18,7 @@ export class PostsController {
       const tPosts = await PostAggregator.transform(iPosts);
       const pPosts = tPosts.map((p) => PostSchema.parse(p));
 
-      return ApiResponse.success(res, "Posts fetched.", { insights: pPosts });
+      return ApiResponse.success(res, "Insights fetched.", { insights: pPosts });
     }
   );
 }

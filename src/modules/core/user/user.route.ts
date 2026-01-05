@@ -1,11 +1,10 @@
-import { Router } from "express";
 import { ReportRouter } from "./report/report.route";
-import { mount } from "@shared/utils/mount-router";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("User");
 
 router.use("/report", ReportRouter);
 
 // TODO: delete account endpoint and how to do it
 
-export const UserRouter = mount("/user", router);
+export const UserRouter = router;

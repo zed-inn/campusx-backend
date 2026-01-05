@@ -1,27 +1,9 @@
-import { z } from "zod";
+import { ShortInstituteSchema } from "@modules/core/institutes";
 import { AmbassadorModel } from "../ambassador.model";
-import { InstituteResponseSmall } from "@modules/core/institutes";
+import { z } from "zod";
 
-export const ResponseFullSchema = AmbassadorModel.dbSchema
-  .pick({
-    id: true,
-    createDate: true,
-    updateDate: true,
-    status: true,
-    reason: true,
-  })
-  .extend({
-    institute: InstituteResponseSmall,
-  });
-
-export type ResponseFullDto = z.infer<typeof ResponseFullSchema>;
-
-export const ResponseShortSchema = ResponseFullSchema.pick({
-  id: true,
-  createDate: true,
-  updateDate: true,
-  status: true,
-  reason: true,
+export const AmbassadorSchema = AmbassadorModel.dbSchema.extend({
+  institute: ShortInstituteSchema,
 });
 
-export type ResponseShortDto = z.infer<typeof ResponseShortSchema>;
+export type AmbassadorDto = z.infer<typeof AmbassadorSchema>;

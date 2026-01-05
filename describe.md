@@ -425,7 +425,7 @@ localId : string, null,
 userId : uuid, ref to profile,
 instituteId : uuid, ref to institute,
 body : string, 1-2000,
-replyingTo: uuid, null,
+replyingTo:b uuid, null,
 createdAt : string,
 updatedAt : string
 ]
@@ -445,7 +445,7 @@ add user to messages
 ]
 
 - Get institute messages - / [GET] - (instituteId) - (institutemessages)
-- Message - / [POST] [A] - (localId?, instituteId, body) - (institutemessage)
+- Message - / [POST] [A] - (localId?, instituteId, body, replyingTo?) - (institutemessage)
 - Update message - / [PATCH] [A] - (localId?, messageId, body?) - (institutemessage)
 - Delete message - / [DELETE] [A] - (messageId) - (id, localId)
 
@@ -541,7 +541,7 @@ upload image on s3 bucket and get url
 
 - Upload image on server - / [POST] [A] - (file) - (url)
 
-# Chat - /chat
+# Chats - /chat
 
 = chat = (id, userOneId, userTwoId, createdAt, updatedAt, userOne, userTwo)
 = message = (id, chatId, senderId, body, createdAt, updatedAt)
@@ -630,7 +630,6 @@ add institute to ambassador
 ## Ambassador - /
 
 **Model** - Ambassador(Ambassador)[
-id : uuid,
 userId : uuid, ref to profile,
 instituteId : uuid, ref to institute,
 createdAt : string,

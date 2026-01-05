@@ -2,22 +2,19 @@ import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
 import { Institute } from "@modules/core/institutes";
-import { REQUEST_STATUS } from "./ambassador.constants";
 import { modelSchema } from "@shared/utils/model-schema";
 import { defineModel } from "@shared/utils/define-model";
 import { Profile } from "@modules/core/profile";
 
 export const AmbassadorModel = modelSchema({
-  id: z.uuidv4("Invalid Ambassador Id"),
+  userId: z.uuidv4("Invalid User Id"),
   instituteId: z.uuidv4("Invalid Institute Id"),
-  reason: z.string("Invalid Reason").nullable().default(null),
-  status: z.enum(REQUEST_STATUS._).default(REQUEST_STATUS.PENDING),
 });
 
 export type AmbassadorAttributes = z.infer<typeof AmbassadorModel.dbSchema>;
 export type AmbassadorCreationAttributes = Omit<
   z.infer<typeof AmbassadorModel.dbFields>,
-  "status"
+  never
 >;
 
 export const Ambassador = defineModel<
@@ -27,11 +24,9 @@ export const Ambassador = defineModel<
   db,
   "Ambassador",
   {
-    id: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      primaryKey: true,
-      unique: true,
       references: { model: Profile, key: "id" },
     },
     instituteId: {
@@ -39,26 +34,30 @@ export const Ambassador = defineModel<
       allowNull: false,
       references: { model: Institute, key: "id" },
     },
-    reason: { type: DataTypes.STRING, allowNull: true },
-    status: {
-      type: DataTypes.STRING,
-      values: REQUEST_STATUS._,
-      allowNull: false,
-      defaultValue: REQUEST_STATUS.PENDING,
-    },
   },
   {
-    indexes: [{ unique: true, fields: ["id"], name: "one_user" }],
+    indexes: [
+      {
+        unique: true,
+        fields: ["userId", "instituteId"],
+        name: "ambassador_one_user_per_institute",
+      },
+      {
+        unique: true,
+        fields: ["userId"],
+        name: "ambassador_user_only_one",
+      },
+    ],
   }
 );
 
 // Associations
 Profile.hasOne(Ambassador, {
-  foreignKey: "id",
+  foreignKey: "userId",
   onDelete: "CASCADE",
   as: "ambassador",
 });
-Ambassador.belongsTo(Profile, { foreignKey: "id", as: "user" });
+Ambassador.belongsTo(Profile, { foreignKey: "userId", as: "user" });
 
 Institute.hasMany(Ambassador, {
   foreignKey: "instituteId",

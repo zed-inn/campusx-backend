@@ -1,30 +1,11 @@
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { Router } from "express";
-import { ChatController } from "./chat/chat.controller";
-import { MessageController } from "./messages/message.controller";
-import { mount } from "@shared/utils/mount-router";
+import { MessageRouter } from "./message/message.route";
+import { ChatRouter } from "./chat/chat.route";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Chats");
 
-router.get(
-  "/all",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ChatController.getActiveChats
-);
+router.use("/", ChatRouter);
 
-router.get(
-  "/messages",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  MessageController.getMessages
-);
+router.use("/message", MessageRouter);
 
-router.get(
-  "/messages/initial",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  MessageController.getInitialMessages
-);
-
-export const ChatRouter = mount("/chat", router);
+export const ChatsRouter = router;

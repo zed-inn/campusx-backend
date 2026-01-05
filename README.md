@@ -2,689 +2,13 @@
 
 > Auto-generated. Do not edit manually.
 
-## Profile
-
-### Get user's profile
-
-**GET** `/user/profile`
-
-Gets user's display attributes, like dob, name, etc.
-
-**Query Parameters :**
-```ts
-{
-  id: string; // user id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    profile: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      username: string | null;
-      fullName: string;
-      about: string | null;
-      avatarUrl: string | null;
-      gender: string | null;
-      dob: number | null;
-      followersCount: number;
-      followingCount: number;
-      isFollowed: boolean;
-      isAmbassador: boolean;
-      ambassadorInstitute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      } | null;
-    };
-  };
-}
-```
-
----
-
-### Get my profile
-
-**GET** `/user/profile/me`  **( Login Required )**
-
-Get the profile of currently logged in user
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    profile: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      username: string | null;
-      fullName: string;
-      about: string | null;
-      avatarUrl: string | null;
-      gender: string | null;
-      dob: number | null;
-      followersCount: number;
-      followingCount: number;
-      isFollowed: boolean;
-      isAmbassador: boolean;
-      ambassadorInstitute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      } | null;
-    };
-  };
-}
-```
-
----
-
-### Create profile (after signup)
-
-**POST** `/user/profile`  **( Login Required )**
-
-Create profile for the user after signing up
-
-**Body :**
-```ts
-{
-  avatarUrl: string | null;
-  fullName: string;
-  username: string | null;
-  about: string | null;
-  gender: string | null;
-  dob: number | null;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    profile: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      username: string | null;
-      fullName: string;
-      about: string | null;
-      avatarUrl: string | null;
-      gender: string | null;
-      dob: number | null;
-      followersCount: number;
-      followingCount: number;
-      isFollowed: boolean;
-      isAmbassador: boolean;
-      ambassadorInstitute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      } | null;
-    };
-  };
-}
-```
-
----
-
-### Update profile
-
-**PUT** `/user/profile`  **( Login Required )**
-
-Update profile of currently logged in user
-Only updates the fields sent
-Does not update if no fields given
-
-**Body :**
-```ts
-{
-  avatarUrl?: string | null;
-  fullName?: string;
-  username?: string | null;
-  about?: string | null;
-  gender?: string | null;
-  dob?: number | null;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    profile: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      username: string | null;
-      fullName: string;
-      about: string | null;
-      avatarUrl: string | null;
-      gender: string | null;
-      dob: number | null;
-      followersCount: number;
-      followingCount: number;
-      isFollowed: boolean;
-      isAmbassador: boolean;
-      ambassadorInstitute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      } | null;
-    };
-  };
-}
-```
-
----
-
-## User
-
-### Get users
-
-**GET** `/user/all`
-
-Get all users.
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    users: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Report user
-
-**POST** `/user/report`  **( Login Required )**
-
-Report a user with reason
-
-**Body :**
-```ts
-{
-  id: string; // user id
-  reason: string;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-## Follow
-
-### Get user's followers
-
-**GET** `/user/followers`
-
-Get followers of a user with their id
-
-**Query Parameters :**
-```ts
-{
-  id: string; // user id
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    followers: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Get my followers
-
-**GET** `/user/followers/me`  **( Login Required )**
-
-Get followers of currently logged in user
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    followers: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Get user's following
-
-**GET** `/user/following`
-
-Get follwoings of a user with thier id
-
-**Query Parameters :**
-```ts
-{
-  id: string; // user id
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    followers: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Get my following
-
-**GET** `/user/following/me`  **( Login Required )**
-
-Get following of currently logged in user
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    followers: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Follow user
-
-**POST** `/user/follow`  **( Login Required )**
-
-Follow a user
-
-**Body :**
-```ts
-{
-  id: string; // user id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-### Unfollow user
-
-**POST** `/user/unfollow`  **( Login Required )**
-
-Unfollow a user
-
-**Body :**
-```ts
-{
-  id: string; // user id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-## Institute
-
-### Get institute
-
-**GET** `/institute`
-
-Get details about one specific institute
-
-**Query Parameters :**
-```ts
-{
-  id: string; // institute id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    institute: {
-      id: string;
-      about: string | null;
-      address: string | null;
-      administrativeMinistry: string | null;
-      aisheCode: string | null;
-      category: string | null;
-      collegeType: string | null;
-      country: string | null;
-      createDate: number;
-      district: string | null;
-      imageUrl: string | null;
-      landline: string | null;
-      location: string | null;
-      management: string | null;
-      name: string;
-      phone: string | null;
-      pinCode: number | null;
-      rating: number;
-      reviewsCount: number;
-      shortName: string | null;
-      standaloneType: string | null;
-      state: string | null;
-      universityName: string | null;
-      universityType: string | null;
-      updateDate: number;
-      website: string | null;
-      yearOfEstablishment: number | null;
-    };
-  };
-}
-```
-
----
-
-### Get all institutes
-
-**GET** `/institute/all`
-
-Get institutes arranged in descending order per updateDate
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    institutes: {
-      id: string;
-      name: string;
-      aisheCode: string | null;
-      shortName: string | null;
-      about: string | null;
-      district: string | null;
-      state: string | null;
-      country: string | null;
-      yearOfEstablishment: number | null;
-      website: string | null;
-      imageUrl: string | null;
-      category: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Get random institutes
-
-**GET** `/institute/random`
-
-Get random list of institutes
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    institutes: {
-      id: string;
-      name: string;
-      aisheCode: string | null;
-      shortName: string | null;
-      about: string | null;
-      district: string | null;
-      state: string | null;
-      country: string | null;
-      yearOfEstablishment: number | null;
-      website: string | null;
-      imageUrl: string | null;
-      category: string | null;
-    }[];
-  };
-}
-```
-
----
-
-### Get institute students
-
-**GET** `/education/students`
-
-Get students list of an institute, whether passed or ongoing
-
-**Query Parameters :**
-```ts
-{
-  id: string; // institute id
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    students: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    }[];
-  };
-}
-```
-
----
-
-## Login
-
-### Basic: email and password
-
-**POST** `/auth/login/basic`
-
-Login with email and password
-
-**Body :**
-```ts
-{
-  email?: string;
-  username?: string | null;
-  password: string;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    authToken: string;
-    user: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    } | null;
-  };
-}
-```
-
----
-
-### Google
-
-**POST** `/auth/login/google`
-
-Login with google from flutter screen
-
-**Body :**
-```ts
-{
-  email: string;
-  fullName: string;
-  avatarUrl: string | null;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    authToken: string;
-    user: {
-      isFollowed: boolean;
-      id: string;
-      username: string | null;
-      fullName: string;
-      avatarUrl: string | null;
-    } | null;
-  };
-}
-```
-
----
-
 ## OTP
 
-### Get otp
+### Get Otp
 
-**POST** `/auth/otp/get`
+**post** `/auth/otp/get`
 
-Get Otp to desired mail to verify it
+Get auto generated otp on email
 
 **Body :**
 ```ts
@@ -703,11 +27,11 @@ Get Otp to desired mail to verify it
 
 ---
 
-### Verify otp
+### Verify Otp
 
-**POST** `/auth/otp/verify`
+**post** `/auth/otp/verify`
 
-Verify the 'sent' Otp to the given mail in previous step
+Verify otp sent on email
 
 **Body :**
 ```ts
@@ -729,13 +53,119 @@ Verify the 'sent' Otp to the given mail in previous step
 
 ---
 
-## Signup
+## Login
 
-### Create password
+### Login Basic
 
-**POST** `/auth/signup/create-password`
+**post** `/auth/login/basic`
 
-Create password after getting and verifying otp
+Login with email and password
+
+**Body :**
+```ts
+{
+  email?: string;
+  username?: string | null;
+  password: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    authToken: string;
+    user: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    } | null;
+  };
+}
+```
+
+---
+
+### Login Google
+
+**post** `/auth/login/google`
+
+Login with google mail
+
+**Body :**
+```ts
+{
+  fullName: string;
+  avatarUrl: string | null;
+  email: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    authToken: string;
+    user: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    } | null;
+  };
+}
+```
+
+---
+
+## Register/Signup
+
+### Register basic
+
+**post** `/auth/register/basic`
+
+Register using email and password
 
 **Body :**
 ```ts
@@ -752,11 +182,29 @@ Create password after getting and verifying otp
   data: {
     authToken: string;
     user: {
-      isFollowed: boolean;
+      createDate: number;
+      updateDate: number;
       id: string;
       username: string | null;
       fullName: string;
+      about: string | null;
       avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     } | null;
   };
 }
@@ -764,13 +212,65 @@ Create password after getting and verifying otp
 
 ---
 
-## Forgot Password
+### Register Google
 
-### Reset password
+**post** `/auth/register/google`
 
-**POST** `/auth/forgot-password/reset-password`
+Register with google mail
 
-Reset password after getting and verifying otp
+**Body :**
+```ts
+{
+  fullName: string;
+  avatarUrl: string | null;
+  email: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    authToken: string;
+    user: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    } | null;
+  };
+}
+```
+
+---
+
+## Account Recovery
+
+### Recover password : Basic Account
+
+**post** `/auth/recovery/basic`
+
+Reset password of an account with password after getting and verifying otp
 
 **Body :**
 ```ts
@@ -794,10 +294,9 @@ Reset password after getting and verifying otp
 
 ### Logout
 
-**GET** `/auth/logout`
+**get** `/auth/logout/`  **( Login Required )**
 
-Logouts the current logged in user
-Makes the <authToken> lose its authorization
+logout
 
 **Response (200 OK) :**
 ```ts
@@ -809,19 +308,41 @@ Makes the <authToken> lose its authorization
 
 ---
 
-## Education
+## User Profile
 
-### Get user's education
+### Check username
 
-**GET** `/education`
+**get** `/profile/check-username`
 
-Get education list of a specific user
+Check if a username is available or not
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // user id
-  page: number;
+  username: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Get user's profile
+
+**get** `/profile/`
+
+Get a specific user's profile
+
+**Query Parameters :**
+```ts
+{
+  userId: string;
 }
 ```
 
@@ -830,30 +351,122 @@ Get education list of a specific user
 {
   message: string;
   data: {
-    educations: {
+    user: {
       createDate: number;
-      endMonth: number | null;
-      endYear: number | null;
-      id: string;
-      startMonth: number;
-      startYear: number;
       updateDate: number;
-      description: string | null;
-      userId: string;
-      institute: {
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
         id: string;
         name: string;
-        aisheCode: string | null;
         shortName: string | null;
-        about: string | null;
         district: string | null;
         state: string | null;
         country: string | null;
         yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Get my profile
+
+**get** `/profile/me`  **( Login Required )**
+
+Get the profile of the current logged in user
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    user: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
       };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Get users
+
+**get** `/profile/users`
+
+Get short profiles of recommended/random users
+
+**Query Parameters :**
+```ts
+{
+  name?: any;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    users: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     }[];
   };
 }
@@ -861,62 +474,21 @@ Get education list of a specific user
 
 ---
 
-### Add education
+### Create profile
 
-**POST** `/education`  **( Login Required )**
+**post** `/profile/`  **( Login Required )**
 
-Add institute and relevant details as your education
-
-**Body :**
-```ts
-{
-  instituteId: string;
-  startYear: number;
-  startMonth: number;
-  endYear: number | null;
-  endMonth: number | null;
-  description: string | null;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    education: {
-      createDate: number;
-      endMonth: number | null;
-      endYear: number | null;
-      id: string;
-      startMonth: number;
-      startYear: number;
-      updateDate: number;
-      description: string | null;
-      userId: string;
-    };
-  };
-}
-```
-
----
-
-### Update education
-
-**PUT** `/education`  **( Login Required )**
-
-Update relevant details of your education
+Create profile for the current logged in user after registering
 
 **Body :**
 ```ts
 {
-  id: string;
-  instituteId?: string;
-  startYear?: number;
-  startMonth?: number;
-  endYear?: number | null;
-  endMonth?: number | null;
-  description?: string | null;
+  fullName: string;
+  username?: string | null;
+  about?: string | null;
+  avatarUrl?: string | null;
+  gender?: string | null;
+  dob?: number | null;
 }
 ```
 
@@ -925,16 +497,30 @@ Update relevant details of your education
 {
   message: string;
   data: {
-    education: {
+    user: {
       createDate: number;
-      endMonth: number | null;
-      endYear: number | null;
-      id: string;
-      startMonth: number;
-      startYear: number;
       updateDate: number;
-      description: string | null;
-      userId: string;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     };
   };
 }
@@ -942,16 +528,21 @@ Update relevant details of your education
 
 ---
 
-### Remove education
+### Update profile
 
-**DELETE** `/education`  **( Login Required )**
+**patch** `/profile/`  **( Login Required )**
 
-Remove an education
+Update any field of profile, remaining other unaffected
 
-**Query Parameters :**
+**Body :**
 ```ts
 {
-  id: string; // education id
+  fullName?: string;
+  username?: string | null;
+  about?: string | null;
+  avatarUrl?: string | null;
+  gender?: string | null;
+  dob?: number | null;
 }
 ```
 
@@ -960,16 +551,30 @@ Remove an education
 {
   message: string;
   data: {
-    education: {
+    user: {
       createDate: number;
-      endMonth: number | null;
-      endYear: number | null;
-      id: string;
-      startMonth: number;
-      startYear: number;
       updateDate: number;
-      description: string | null;
-      userId: string;
+      id: string;
+      username: string | null;
+      fullName: string;
+      about: string | null;
+      avatarUrl: string | null;
+      gender: string | null;
+      dob: number | null;
+      isFollowed: boolean;
+      stats: {
+        followers: number;
+        following: number;
+      };
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     };
   };
 }
@@ -977,18 +582,19 @@ Remove an education
 
 ---
 
-## Feedback
+## User Report
 
-### Give feedback
+### Report User
 
-**POST** `/feedback`
+**post** `/user/report/`  **( Login Required )**
 
-Give feedback, either by logging in or without
+Reports a user
 
-**Query Parameters :**
+**Body :**
 ```ts
 {
-  message: string;
+  userId: string;
+  reason: string | null;
 }
 ```
 
@@ -1002,18 +608,104 @@ Give feedback, either by logging in or without
 
 ---
 
-## Forum
+## Follow
 
-### Get user's forums
+### Follow User
 
-**GET** `/forums`
+**post** `/follow/`  **( Login Required )**
 
-Get forums of a specified user
+Start following a target user to see their updates.
+
+**Body :**
+```ts
+{
+  userId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Unfollow User
+
+**delete** `/follow/`  **( Login Required )**
+
+Stop following a target user.
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // user id
+  userId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Get Followers
+
+**get** `/follow/followers`
+
+Retrieve a paginated list of followers for a specific user.
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+  userId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    followers: {
+      id: string;
+      fullName: string;
+      username: string | null;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    }[];
+  };
+}
+```
+
+---
+
+### Get My Followers
+
+**get** `/follow/followers/me`  **( Login Required )**
+
+Retrieve a paginated list of the current user's followers.
+
+**Query Parameters :**
+```ts
+{
   page: number;
 }
 ```
@@ -1023,24 +715,21 @@ Get forums of a specified user
 {
   message: string;
   data: {
-    forums: {
+    followers: {
       id: string;
-      body: string | null;
-      commentsCount: number;
-      createDate: number;
-      updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
-      localId: string | null;
-      title: string;
-      writer: {
-        isFollowed: boolean;
+      fullName: string;
+      username: string | null;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      isLiked: boolean;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     }[];
   };
 }
@@ -1048,11 +737,52 @@ Get forums of a specified user
 
 ---
 
-### Get forums (latest)
+### Get Following
 
-**GET** `/forums/latest`
+**get** `/follow/following`
 
-Get latest forums, will be upgraded to recommended forums
+Retrieve a list of users that a specific user is following.
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+  userId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    following: {
+      id: string;
+      fullName: string;
+      username: string | null;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    }[];
+  };
+}
+```
+
+---
+
+### Get My Following
+
+**get** `/follow/following/me`  **( Login Required )**
+
+Retrieve the list of users the current user is following.
 
 **Query Parameters :**
 ```ts
@@ -1066,24 +796,21 @@ Get latest forums, will be upgraded to recommended forums
 {
   message: string;
   data: {
-    forums: {
+    following: {
       id: string;
-      body: string | null;
-      commentsCount: number;
-      createDate: number;
-      updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
-      localId: string | null;
-      title: string;
-      writer: {
-        isFollowed: boolean;
+      fullName: string;
+      username: string | null;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      isLiked: boolean;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     }[];
   };
 }
@@ -1091,54 +818,13 @@ Get latest forums, will be upgraded to recommended forums
 
 ---
 
-### Get my forums
+## Forums
 
-**GET** `/forums/me`  **( Login Required )**
+### Create Post
 
-Get forums of the currently logged in user
+**post** `/forums/post/`  **( Login Required )**
 
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    forums: {
-      id: string;
-      body: string | null;
-      commentsCount: number;
-      createDate: number;
-      updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
-      localId: string | null;
-      title: string;
-      writer: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      isLiked: boolean;
-    }[];
-  };
-}
-```
-
----
-
-### Create forum
-
-**POST** `/forums`  **( Login Required )**
-
-Creates a forum
+Publish a new post to the feed.
 
 **Body :**
 ```ts
@@ -1156,23 +842,35 @@ Creates a forum
   message: string;
   data: {
     forum: {
-      id: string;
-      body: string | null;
-      commentsCount: number;
       createDate: number;
       updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
+      id: string;
       localId: string | null;
+      userId: string;
       title: string;
+      body: string | null;
+      imageUrl: string | null;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
       isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
     };
   };
 }
@@ -1180,20 +878,20 @@ Creates a forum
 
 ---
 
-### Update forum
+### Update Post
 
-**PUT** `/forums`  **( Login Required )**
+**patch** `/forums/post/`  **( Login Required )**
 
-Updates a forum
+Edit the content of an existing post.
 
 **Body :**
 ```ts
 {
-  id: string;
   localId?: string | null;
   title?: string;
   body?: string | null;
   imageUrl?: string | null;
+  forumId: string;
 }
 ```
 
@@ -1203,23 +901,35 @@ Updates a forum
   message: string;
   data: {
     forum: {
-      id: string;
-      body: string | null;
-      commentsCount: number;
       createDate: number;
       updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
+      id: string;
       localId: string | null;
+      userId: string;
       title: string;
+      body: string | null;
+      imageUrl: string | null;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
       isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
     };
   };
 }
@@ -1227,133 +937,459 @@ Updates a forum
 
 ---
 
-### Delete forum
+### Delete Post
 
-**DELETE** `/forums`  **( Login Required )**
+**delete** `/forums/post/`  **( Login Required )**
 
-Deletes a forum
-
-**Query Parameters :**
-```ts
-{
-  id: string; // forum id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    forum: {
-      id: string;
-      body: string | null;
-      commentsCount: number;
-      createDate: number;
-      updateDate: number;
-      likesCount: number;
-      imageUrl: string | null;
-      localId: string | null;
-      title: string;
-      writer: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      isLiked: boolean;
-    };
-  };
-}
-```
-
----
-
-### Like forum
-
-**POST** `/forums/like`  **( Login Required )**
-
-Likes a forum
-
-**Query Parameters :**
-```ts
-{
-  id: string; // forum id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-### Unlike forum
-
-**POST** `/forums/unlike`  **( Login Required )**
-
-Unlikes a forum
-
-**Query Parameters :**
-```ts
-{
-  id: string; // forum id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-### Report forum
-
-**POST** `/forums/report`  **( Login Required )**
-
-Reports a forum by a currently logged in user
-
-**Body :**
-```ts
-{
-  id: string; // forum id
-  reason: string;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-## Forum Comment
-
-### Get comments/replies
-
-**GET** `/forums/comments`
-
-Get comments on a forum, or replies on a comment of a forum
+Permanently remove a post.
 
 **Query Parameters :**
 ```ts
 {
   forumId: string;
-  commentId: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    forum: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      title: string;
+      body: string | null;
+      imageUrl: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
+    };
+  };
+}
+```
+
+---
+
+### Get Latest Posts
+
+**get** `/forums/post/latest`
+
+Retrieve a stream of the most recent posts.
+
+**Query Parameters :**
+```ts
+{
   page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    forums: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      title: string;
+      body: string | null;
+      imageUrl: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+### Get User Posts
+
+**get** `/forums/post/user`
+
+Retrieve posts belonging to a specific user.
+
+**Query Parameters :**
+```ts
+{
+  userId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    forums: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      title: string;
+      body: string | null;
+      imageUrl: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+### Get My Posts
+
+**get** `/forums/post/user/me`  **( Login Required )**
+
+Retrieve the current user's post history.
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    forums: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      title: string;
+      body: string | null;
+      imageUrl: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+## Forum Comments
+
+### Create Comment
+
+**post** `/forums/comment/`  **( Login Required )**
+
+Add a new comment to a specific post.
+
+**Body :**
+```ts
+{
+  localId: string | null;
+  body: string;
+  replyingTo: string | null;
+  forumId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    comment: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      postId: string;
+      replyingTo: string | null;
+      body: string;
+      repliesCount: number;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      parentComment: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: number | null;
+          } | null;
+        };
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Update Comment
+
+**patch** `/forums/comment/`  **( Login Required )**
+
+Edit the content of an existing comment.
+
+**Body :**
+```ts
+{
+  localId: string | null;
+  body: string;
+  commentId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    comment: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      postId: string;
+      replyingTo: string | null;
+      body: string;
+      repliesCount: number;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      parentComment: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: number | null;
+          } | null;
+        };
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Delete Comment
+
+**delete** `/forums/comment/`  **( Login Required )**
+
+Permanently remove a comment.
+
+**Query Parameters :**
+```ts
+{
+  commentId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    comment: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      postId: string;
+      replyingTo: string | null;
+      body: string;
+      repliesCount: number;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      parentComment: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: number | null;
+          } | null;
+        };
+      } | null;
+    };
+  };
+}
+```
+
+---
+
+### Get Post Comments
+
+**get** `/forums/comment/`
+
+Retrieve a paginated list of comments for a specific post.
+
+**Query Parameters :**
+```ts
+{
+  forumId: string;
+  page: number;
+  parentCommentId: string | null;
 }
 ```
 
@@ -1366,29 +1402,48 @@ Get comments on a forum, or replies on a comment of a forum
       createDate: number;
       updateDate: number;
       id: string;
-      body: string;
-      forumId: string;
       localId: string | null;
-      repliesCount: number;
+      userId: string;
+      postId: string;
       replyingTo: string | null;
+      body: string;
+      repliesCount: number;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
       parentComment: {
         id: string;
         body: string;
         writer: {
-          isFollowed: boolean;
           id: string;
-          username: string | null;
           fullName: string;
+          username: string | null;
           avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: number | null;
+          } | null;
         };
-      };
+      } | null;
     }[];
   };
 }
@@ -1396,19 +1451,18 @@ Get comments on a forum, or replies on a comment of a forum
 
 ---
 
-### Comment/reply
+## Forum Reactions
 
-**POST** `/forums/comments`
+### Like Post
 
-Comment on a forum, or reply on a comment
+**post** `/forums/reaction/like`  **( Login Required )**
+
+Add a like reaction to a specific post.
 
 **Body :**
 ```ts
 {
-  localId: string | null;
   forumId: string;
-  body: string;
-  replyingTo: string | null;
 }
 ```
 
@@ -1416,53 +1470,48 @@ Comment on a forum, or reply on a comment
 ```ts
 {
   message: string;
-  data: {
-    comment: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      body: string;
-      forumId: string;
-      localId: string | null;
-      repliesCount: number;
-      replyingTo: string | null;
-      writer: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentComment: {
-        id: string;
-        body: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
-      };
-    };
-  };
+  data?: any;
 }
 ```
 
 ---
 
-### Update comment/reply
+### Unlike Post
 
-**PUT** `/forums/comments`
+**delete** `/forums/reaction/like`  **( Login Required )**
 
-Update your comment/reply on a forum/comment
+Remove a like reaction from a specific post.
+
+**Query Parameters :**
+```ts
+{
+  forumId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+## Forum Report
+
+### Report Post
+
+**post** `/forums/report/`  **( Login Required )**
+
+Flags a forum post for administrative review due to content violations.
 
 **Body :**
 ```ts
 {
-  id: string;
-  localId?: string | null;
-  body?: string;
+  forumId: string;
+  reason: string | null;
 }
 ```
 
@@ -1470,105 +1519,24 @@ Update your comment/reply on a forum/comment
 ```ts
 {
   message: string;
-  data: {
-    comment: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      body: string;
-      forumId: string;
-      localId: string | null;
-      repliesCount: number;
-      replyingTo: string | null;
-      writer: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentComment: {
-        id: string;
-        body: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
-      };
-    };
-  };
+  data?: any;
 }
 ```
 
 ---
 
-### Delete comment/reply
+## Insight Categories
 
-**DELETE** `/forums/comments`
+### Get Categories
 
-Deletes your comment/reply on a forum/comment
+**get** `/insights/category/`
 
-**Query Parameters :**
-```ts
-{
-  id: string; // comment id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    comment: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      body: string;
-      forumId: string;
-      localId: string | null;
-      repliesCount: number;
-      replyingTo: string | null;
-      writer: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentComment: {
-        id: string;
-        body: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
-      };
-    };
-  };
-}
-```
-
----
-
-## Insight
-
-### Get categories
-
-**GET** `/insights/categories`
-
-Get category names of insights
+Retrieve a paginated list of available forum categories.
 
 **Query Parameters :**
 ```ts
 {
-  page: string;
+  page: number;
 }
 ```
 
@@ -1584,56 +1552,18 @@ Get category names of insights
 
 ---
 
-### Get insights
+## Insight Posts
 
-**GET** `/insights`
+### Get Published Posts
 
-Get insights
+**get** `/insights/post/`
 
-**Query Parameters :**
-```ts
-{
-  page: string;
-  category: string;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    insights: {
-      body: string | null;
-      createDate: number;
-      hindiBody: string | null;
-      hindiTitle: string | null;
-      id: string;
-      imageUrl: string | null;
-      title: string | null;
-      updateDate: number;
-      category: {
-        name: string;
-      };
-    }[];
-  };
-}
-```
-
----
-
-## Institute Discussion
-
-### Get messages
-
-**GET** `/institute/messages`
-
-Get messages of an institute discussion
+Retrieve a paginated list of general published posts.
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // institute id
+  categories?: string;
   page: number;
 }
 ```
@@ -1643,31 +1573,66 @@ Get messages of an institute discussion
 {
   message: string;
   data: {
-    messages: {
+    insights: {
       createDate: number;
-      id: string;
-      message: string;
-      replyingTo: string | null;
       updateDate: number;
+      id: string;
+      title: string | null;
+      body: string | null;
+      hindiTitle: string | null;
+      hindiBody: string | null;
+      imageUrl: string | null;
+      categoryId: string | null;
+      status: string;
+      category: string;
+    }[];
+  };
+}
+```
+
+---
+
+## User Education
+
+### Get user's education
+
+**get** `/education/`
+
+Get education for a specific user
+
+**Query Parameters :**
+```ts
+{
+  userId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    educations: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
       instituteId: string;
-      isLiked: boolean;
-      writer: {
-        isFollowed: boolean;
+      description: string | null;
+      startYear: number;
+      startMonth: number | null;
+      endYear: number | null;
+      endMonth: number | null;
+      institute: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentMessage: {
-        id: string;
-        message: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
       };
     }[];
   };
@@ -1676,18 +1641,16 @@ Get messages of an institute discussion
 
 ---
 
-### Create message
+### Get my education
 
-**POST** `/institute/messages`  **( Login Required )**
+**get** `/education/me`  **( Login Required )**
 
-Message in an insitute discussion
+Get education for the current logged in user
 
-**Body :**
+**Query Parameters :**
 ```ts
 {
-  instituteId: string;
-  message: string;
-  replyingTo: string | null;
+  page: number;
 }
 ```
 
@@ -1696,31 +1659,119 @@ Message in an insitute discussion
 {
   message: string;
   data: {
-    message: {
+    educations: {
       createDate: number;
-      id: string;
-      message: string;
-      replyingTo: string | null;
       updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
       instituteId: string;
-      isLiked: boolean;
-      writer: {
-        isFollowed: boolean;
+      description: string | null;
+      startYear: number;
+      startMonth: number | null;
+      endYear: number | null;
+      endMonth: number | null;
+      institute: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
       };
-      parentMessage: {
+    }[];
+  };
+}
+```
+
+---
+
+### Get user's education
+
+**get** `/education/students`
+
+Get education for a specific user
+
+**Query Parameters :**
+```ts
+{
+  instituteId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    students: {
+      id: string;
+      fullName: string;
+      username: string | null;
+      avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
         id: string;
-        message: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
+    }[];
+  };
+}
+```
+
+---
+
+### Add Education
+
+**post** `/education/`  **( Login Required )**
+
+Add education
+
+**Body :**
+```ts
+{
+  localId: string | null;
+  instituteId: string;
+  startYear: number;
+  startMonth: number | null;
+  endYear: number | null;
+  endMonth: number | null;
+  description: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    education: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      description: string | null;
+      startYear: number;
+      startMonth: number | null;
+      endYear: number | null;
+      endMonth: number | null;
+      institute: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
       };
     };
   };
@@ -1729,17 +1780,23 @@ Message in an insitute discussion
 
 ---
 
-### Update message
+### Add Education
 
-**PUT** `/institute/messages`  **( Login Required )**
+**put** `/education/`  **( Login Required )**
 
-Udpate your message in an insitute discussion
+Add education
 
 **Body :**
 ```ts
 {
   id: string;
-  message: string;
+  description: string | null;
+  localId: string | null;
+  instituteId: string;
+  startMonth: number | null;
+  startYear: number;
+  endMonth: number | null;
+  endYear: number | null;
 }
 ```
 
@@ -1748,31 +1805,26 @@ Udpate your message in an insitute discussion
 {
   message: string;
   data: {
-    message: {
+    education: {
       createDate: number;
-      id: string;
-      message: string;
-      replyingTo: string | null;
       updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
       instituteId: string;
-      isLiked: boolean;
-      writer: {
-        isFollowed: boolean;
+      description: string | null;
+      startYear: number;
+      startMonth: number | null;
+      endYear: number | null;
+      endMonth: number | null;
+      institute: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentMessage: {
-        id: string;
-        message: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
       };
     };
   };
@@ -1781,16 +1833,16 @@ Udpate your message in an insitute discussion
 
 ---
 
-### Delete message
+### Add Education
 
-**DELETE** `/institute/messages`  **( Login Required )**
+**delete** `/education/`  **( Login Required )**
 
-Deletes your message in an insitute discussion
+Add education
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // message/discussion id
+  educationId: string;
 }
 ```
 
@@ -1799,31 +1851,26 @@ Deletes your message in an insitute discussion
 {
   message: string;
   data: {
-    message: {
+    education: {
       createDate: number;
-      id: string;
-      message: string;
-      replyingTo: string | null;
       updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
       instituteId: string;
-      isLiked: boolean;
-      writer: {
-        isFollowed: boolean;
+      description: string | null;
+      startYear: number;
+      startMonth: number | null;
+      endYear: number | null;
+      endMonth: number | null;
+      institute: {
         id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-      parentMessage: {
-        id: string;
-        message: string;
-        writer: {
-          isFollowed: boolean;
-          id: string;
-          username: string | null;
-          fullName: string;
-          avatarUrl: string | null;
-        };
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
       };
     };
   };
@@ -1832,64 +1879,18 @@ Deletes your message in an insitute discussion
 
 ---
 
-### Like message
+## Institute Reviews
 
-**POST** `/institute/messages`  **( Login Required )**
+### Get Institute Reviews
 
-Like a message in an insitute discussion
+**get** `/institute/review/`
 
-**Query Parameters :**
-```ts
-{
-  id: string; // message/discussion id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-### Unlike message
-
-**POST** `/institute/messages`  **( Login Required )**
-
-Unlike a liked message in an insitute discussion
+Retrieve a paginated list of reviews for institutes.
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // message/discussion id
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data?: any;
-}
-```
-
----
-
-## Review
-
-### Get reviews
-
-**GET** `/institute/review`
-
-Get reviews for an insitute
-
-**Query Parameters :**
-```ts
-{
-  id: string; // institute id
+  instituteId: string;
   page: number;
 }
 ```
@@ -1903,14 +1904,26 @@ Get reviews for an insitute
       createDate: number;
       updateDate: number;
       id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
       body: string;
       rating: number;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
     }[];
   };
@@ -1919,15 +1932,66 @@ Get reviews for an insitute
 
 ---
 
-### Create review
+### Get My Review
 
-**POST** `/institute/review`  **( Login Required )**
+**get** `/institute/review/me`  **( Login Required )**
 
-Review an institute with a rating and some content
+Retrieve the current user's review on an institute.
+
+**Query Parameters :**
+```ts
+{
+  instituteId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    review: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      body: string;
+      rating: number;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+    };
+  };
+}
+```
+
+---
+
+### Create Review
+
+**post** `/institute/review/`  **( Login Required )**
+
+Submit a new review for an institute.
 
 **Body :**
 ```ts
 {
+  localId: string | null;
   instituteId: string;
   body: string;
   rating: number;
@@ -1943,14 +2007,26 @@ Review an institute with a rating and some content
       createDate: number;
       updateDate: number;
       id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
       body: string;
       rating: number;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
     };
   };
@@ -1959,18 +2035,18 @@ Review an institute with a rating and some content
 
 ---
 
-### Update review
+### Update Review
 
-**PUT** `/institute/review`  **( Login Required )**
+**patch** `/institute/review/`  **( Login Required )**
 
-Update a review you have written
+Edit the content of an existing review.
 
 **Body :**
 ```ts
 {
-  id: string;
   body?: string;
   rating?: number;
+  id: string;
 }
 ```
 
@@ -1983,14 +2059,26 @@ Update a review you have written
       createDate: number;
       updateDate: number;
       id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
       body: string;
       rating: number;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
     };
   };
@@ -1999,16 +2087,16 @@ Update a review you have written
 
 ---
 
-### Delete review
+### Delete Review
 
-**DELETE** `/institute/review`  **( Login Required )**
+**delete** `/institute/review/`  **( Login Required )**
 
-Deletes a review you have written
+Permanently remove a review.
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // review id
+  reviewId: string;
 }
 ```
 
@@ -2021,16 +2109,512 @@ Deletes a review you have written
       createDate: number;
       updateDate: number;
       id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
       body: string;
       rating: number;
       writer: {
-        isFollowed: boolean;
         id: string;
-        username: string | null;
         fullName: string;
+        username: string | null;
         avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
       };
     };
+  };
+}
+```
+
+---
+
+## Institute Community Chat Messages
+
+### Get Messages
+
+**get** `/institute/community-chat/message/`
+
+Retrieve a paginated list of messages.
+
+**Query Parameters :**
+```ts
+{
+  instituteId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    messages: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      body: string;
+      replyingTo: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      stats: {
+        likes: number;
+      };
+      isLiked: boolean;
+    }[];
+  };
+}
+```
+
+---
+
+### Send Message
+
+**post** `/institute/community-chat/message/`  **( Login Required )**
+
+Create and send a new message.
+
+**Body :**
+```ts
+{
+  instituteId: string;
+  body: string;
+  localId: string | null;
+  replyingTo: string | null;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      body: string;
+      replyingTo: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      stats: {
+        likes: number;
+      };
+      isLiked: boolean;
+    };
+  };
+}
+```
+
+---
+
+### Update Message
+
+**patch** `/institute/community-chat/message/`  **( Login Required )**
+
+Edit the content of an existing message.
+
+**Body :**
+```ts
+{
+  body?: string;
+  localId?: string | null;
+  id: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      body: string;
+      replyingTo: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      stats: {
+        likes: number;
+      };
+      isLiked: boolean;
+    };
+  };
+}
+```
+
+---
+
+### Delete Message
+
+**delete** `/institute/community-chat/message/`  **( Login Required )**
+
+Remove a message.
+
+**Query Parameters :**
+```ts
+{
+  id: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      instituteId: string;
+      body: string;
+      replyingTo: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+      stats: {
+        likes: number;
+      };
+      isLiked: boolean;
+    };
+  };
+}
+```
+
+---
+
+## Institute Community Chat Message Reactions
+
+### Like Message
+
+**post** `/institute/community-chat/reaction/like`  **( Login Required )**
+
+Add a like reaction to a specific message.
+
+**Body :**
+```ts
+{
+  messageId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Unlike Message
+
+**delete** `/institute/community-chat/reaction/like`  **( Login Required )**
+
+Remove a like reaction from a specific message.
+
+**Query Parameters :**
+```ts
+{
+  messageId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+## Feedback
+
+### Give Feedback
+
+**post** `/feedback/`
+
+Give feedback on website or app
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+## Chat/DM
+
+### Get active chats
+
+**get** `/chats/active`  **( Login Required )**
+
+Get chats in order of latest activity
+
+**Query Parameters :**
+```ts
+{
+  userId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    chats: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userOneId: string;
+      userTwoId: string;
+      friend: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: number | null;
+        } | null;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+## Chat Messages
+
+### Get chat messages
+
+**get** `/chats/message/`  **( Login Required )**
+
+Get messages of a chat
+
+**Query Parameters :**
+```ts
+{
+  chatId: string;
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    messages: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+    }[];
+  };
+}
+```
+
+---
+
+### Send Message: Chat
+
+**post** `/chats/message/`  **( Login Required )**
+
+Send message in a chat
+
+**Body :**
+```ts
+{
+  localId: string | null;
+  chatId: string;
+  body: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+    };
+  };
+}
+```
+
+---
+
+### Send Message: User
+
+**post** `/chats/message/user`  **( Login Required )**
+
+Send message to a user if not knowing chat
+
+**Body :**
+```ts
+{
+  localId: string | null;
+  body: string;
+  userId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+    };
+  };
+}
+```
+
+---
+
+### Get chat messages
+
+**get** `/chats/message/latest`  **( Login Required )**
+
+Get messages of a chat
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    messages: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+    }[];
   };
 }
 ```
@@ -2039,54 +2623,16 @@ Deletes a review you have written
 
 ## Ambassador
 
-### Get request info
+### Get Institute's Ambassadors
 
-**GET** `/ambassador/request`  **( Login Required )**
+**get** `/ambassador/institute`
 
-Get ambassador request info, like status (PENDING, REJECTED or ACCEPTED), and institute info
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    request: {
-      id: string;
-      createDate: number;
-      updateDate: number;
-      status: string;
-      reason: string | null;
-      institute: {
-        id: string;
-        name: string;
-        aisheCode: string | null;
-        shortName: string | null;
-        about: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-        website: string | null;
-        imageUrl: string | null;
-        category: string | null;
-      };
-    };
-  };
-}
-```
-
----
-
-### Get institute's ambassadors
-
-**GET** `/ambassador/institute`
-
-Get users that are ambassadors of an institute
+Get users list of ambassadors for queried institute
 
 **Query Parameters :**
 ```ts
 {
-  id: string; // Institute Id
+  instituteId: string;
   page: number;
 }
 ```
@@ -2097,12 +2643,58 @@ Get users that are ambassadors of an institute
   message: string;
   data: {
     ambassadors: {
-      isFollowed: boolean;
       id: string;
-      username: string | null;
       fullName: string;
+      username: string | null;
       avatarUrl: string | null;
+      isFollowed: boolean;
+      ambassadorOf: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      } | null;
     }[];
+  };
+}
+```
+
+---
+
+## Ambassador Request
+
+### Get Request Status
+
+**get** `/ambassador/request/me`  **( Login Required )**
+
+Get status request of the current logged in user
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    request: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userId: string;
+      instituteId: string;
+      reason: string | null;
+      status: string;
+      institute: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      };
+    };
   };
 }
 ```
@@ -2111,14 +2703,14 @@ Get users that are ambassadors of an institute
 
 ### Request for ambassador position
 
-**POST** `/ambassador/request`  **( Login Required )**
+**post** `/ambassador/request/`  **( Login Required )**
 
-Request for an ambassador position
+Request will not happen if already an ambassador or if not a student of applied institute
 
 **Body :**
 ```ts
 {
-  id: string; // Institute Id
+  instituteId: string;
   reason: string | null;
 }
 ```
@@ -2133,17 +2725,18 @@ Request for an ambassador position
 
 ---
 
-### Update ambassador request
+### Update Request
 
-**PUT** `/ambassador/request`  **( Login Required )**
+**patch** `/ambassador/request/`  **( Login Required )**
 
-Udpate the request given for ambassador position
+Update request's institute or reason
 
 **Body :**
 ```ts
 {
-  id: string; // Institute Id
-  reason: string | null;
+  instituteId?: string;
+  reason?: string | null;
+  id: string;
 }
 ```
 
@@ -2159,127 +2752,22 @@ Udpate the request given for ambassador position
 
 ### Withdraw Request
 
-**DELETE** `/ambassador/request`  **( Login Required )**
+**delete** `/ambassador/request/`  **( Login Required )**
 
-Delete the request for an ambassador position
+Withdraw your request of ambassador
+
+**Query Parameters :**
+```ts
+{
+  id: string;
+}
+```
 
 **Response (200 OK) :**
 ```ts
 {
   message: string;
   data?: any;
-}
-```
-
----
-
-## Chat
-
-### Get Chats
-
-**GET** `/chat/all`  **( Login Required )**
-
-Get chats in order of latest activity
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    chats: {
-      id: string;
-      localId: string | null;
-      createDate: number;
-      updateDate: number;
-      friendProfile: {
-        isFollowed: boolean;
-        id: string;
-        username: string | null;
-        fullName: string;
-        avatarUrl: string | null;
-      };
-    }[];
-  };
-}
-```
-
----
-
-## Chat Message
-
-### Get Messages
-
-**GET** `/chat/messages`  **( Login Required )**
-
-Get latest messages of a specific chat
-
-**Query Parameters :**
-```ts
-{
-  id: string; // Chat Id
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    messages: {
-      chatId: string;
-      createDate: number;
-      id: string;
-      localId: string | null;
-      message: string;
-      senderId: string;
-      status: string;
-      updateDate: number;
-      isDeletedByMe: boolean;
-    }[];
-  };
-}
-```
-
----
-
-### Get initial messages
-
-**GET** `/chat/messages/initial`  **( Login Required )**
-
-Get initial latest message of all chats
-
-**Query Parameters :**
-```ts
-{
-  page: number;
-}
-```
-
-**Response (200 OK) :**
-```ts
-{
-  message: string;
-  data: {
-    messages: {
-      chatId: string;
-      createDate: number;
-      id: string;
-      localId: string | null;
-      message: string;
-      senderId: string;
-      status: string;
-      updateDate: number;
-      isDeletedByMe: boolean;
-    }[];
-  };
 }
 ```
 

@@ -1,84 +1,44 @@
-import { Includeable } from "sequelize";
-import {
-  Discussion,
-  DiscussionAttributes,
-  DiscussionInstance,
-} from "./message.model";
-import { Profile, ProfileAttributes } from "@modules/core/profile";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { DiscussionErrors } from "../discussion.errors";
 import { MESSAGES_PER_PAGE } from "@config/constants/items-per-page";
-import { DiscussionCreateDto } from "./dtos/discussion-create.dto";
-import { DiscussionUpdateDto } from "./dtos/discussion-update.dto";
+import { Message, MessageAttributes, MessageInstance } from "./message.model";
+import { MessageCreateDto, MessageUpdateDto } from "./dtos/message-actions.dto";
+import { removeUndefined } from "@shared/utils/clean-object";
+import { hasKeys } from "@shared/utils/object-length";
 
-export class DiscussionService extends BaseService<
-  DiscussionInstance,
-  DiscussionAttributes
-> {
-  static OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
+class _MessageService extends BaseService<MessageInstance> {
+  protected OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
 
-  override get data() {
-    return super.data as DiscussionAttributes & {
-      writer: ProfileAttributes;
-      parentMessage:
-        | null
-        | (DiscussionAttributes & { writer: ProfileAttributes });
-    };
+  constructor() {
+    super(Message);
   }
 
-  static create = async (data: DiscussionCreateDto, userId: string) => {
-    const d = await Discussion.create({ ...data, userId });
-
-    return this.getById(d.dataValues.id);
+  createNew = async (data: MessageCreateDto, userId: string) => {
+    return await this.create({ ...data, userId });
   };
 
-  static getById = async (id: string) => {
-    const discussion = await Discussion.findByPk(id, {
-      include: [DiscussionInclude.writer, DiscussionInclude.parentMessage],
-    });
-    if (!discussion) throw DiscussionErrors.noDiscussionFound;
-
-    return new DiscussionService(discussion);
-  };
-
-  static getByInstituteId = async (id: string, page: number) => {
-    const discussions = await Discussion.findAll({
+  getByInstituteId = async (id: string, page: number) => {
+    const messages = await Message.findAll({
       where: { instituteId: id },
       offset: this.OFFSET(page),
       limit: MESSAGES_PER_PAGE,
       order: [["createDate", "desc"]],
-      include: [DiscussionInclude.writer, DiscussionInclude.parentMessage],
     });
 
-    return discussions.map((d) => new DiscussionService(d));
+    return messages.map((m) => m.plain);
   };
 
-  static update = async (data: DiscussionUpdateDto, userId: string) => {
-    const service = await this.getById(data.id);
-    service.checkOwnership(userId);
+  update = async (data: MessageUpdateDto, userId: string) => {
+    const { id, ...updateData } = data;
+    const message = await this.getById(id);
+    this.checkOwnership(message, userId);
 
-    const discussion = service.model;
-    await discussion.update({ message: data.message });
+    const cleanData = removeUndefined(updateData);
+    if (hasKeys(cleanData))
+      await message.update(cleanData as Partial<MessageAttributes>);
 
-    return new DiscussionService(discussion);
-  };
-
-  static delete = async (id: string, userId: string) => {
-    const service = await this.getById(id);
-    service.checkOwnership(userId);
-
-    const discussion = service.model;
-    await discussion.destroy();
+    return message;
   };
 }
 
-class DiscussionInclude {
-  static get writer(): Includeable {
-    return { model: Profile, as: "writer" };
-  }
-
-  static get parentMessage(): Includeable {
-    return { model: Discussion, as: "parentMessage", include: [this.writer] };
-  }
-}
+export const MessageService = new _MessageService();

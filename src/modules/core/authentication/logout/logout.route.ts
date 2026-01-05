@@ -1,9 +1,12 @@
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { Router } from "express";
 import { LogoutController } from "./logout.controller";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Logout");
 
-router.get("/", RestrictTo.loggedInUser, LogoutController.logout);
+router
+  .describe("Logout", "logout")
+  .auth()
+  .output("Logged out.")
+  .get("/", LogoutController.logout);
 
 export const LogoutRouter = router;

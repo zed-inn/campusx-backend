@@ -1,17 +1,17 @@
-import { RestrictTo } from "@shared/middlewares/auth-restrict";
-import { ValidateReq } from "@shared/middlewares/validate-request";
-import { Router } from "express";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { ReportCreateSchema } from "./dtos/report-create.dto";
 import { ReportController } from "./report.controller";
 
-const router = Router();
+const router = new DetailedRouter("Forum Report");
 
-router.post(
-  "/",
-  RestrictTo.loggedInUser,
-  RestrictTo.profiledUser,
-  ValidateReq.body(ReportCreateSchema),
-  ReportController.reportPost
-);
+router
+  .describe(
+    "Report Post",
+    "Flags a forum post for administrative review due to content violations."
+  )
+  .userProfiled()
+  .body(ReportCreateSchema)
+  .output("Reported.")
+  .post("/", ReportController.reportPost);
 
 export const ReportRouter = router;

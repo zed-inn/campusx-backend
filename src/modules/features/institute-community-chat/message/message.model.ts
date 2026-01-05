@@ -1,13 +1,12 @@
-import { defineModel } from "@shared/utils/define-model";
-import db from "@config/database";
-import { PRIMARY_ID } from "@shared/utils/db-types";
-import { DataTypes } from "sequelize";
-import { Profile } from "@modules/core/profile";
-import { Institute } from "@modules/core/institutes";
-
-import { z } from "zod";
+import { z } from "zod"
 import { modelSchema } from "@shared/utils/model-schema";
 import { MESSAGE } from "./message.constants";
+import { defineModel } from "@shared/utils/define-model";
+import { PRIMARY_ID } from "@shared/utils/db-types";
+import { DataTypes } from "sequelize";
+import db from "@config/database";
+import { Profile } from "@modules/core/profile";
+import { Institute } from "@modules/core/institutes";
 
 export const MessageModel = modelSchema({
   id: z.uuidv4("Invalid Message Id"),
@@ -16,10 +15,8 @@ export const MessageModel = modelSchema({
   instituteId: z.uuidv4("Invalid Institute Id"),
   body: z
     .string("Invalid Message")
-    .min(MESSAGE.BODY.LENGTH.MIN, {
-      error: "Message must contain one letter atleast",
-    })
-    .min(MESSAGE.BODY.LENGTH.MAX, { error: "Message is too long" }),
+    .min(MESSAGE.BODY.LENGTH.MIN, { error: "Message is too short" })
+    .max(MESSAGE.BODY.LENGTH.MAX, { error: "Message is too long" }),
   replyingTo: z.uuidv4("Invalid Message Id To Reply").nullable(),
 });
 
@@ -44,7 +41,16 @@ export const Message = defineModel<
     allowNull: false,
     references: { model: Institute, key: "id" },
   },
-  message: { type: DataTypes.STRING, allowNull: false },
+  body: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: {
+        args: [MESSAGE.BODY.LENGTH.MIN, MESSAGE.BODY.LENGTH.MAX],
+        msg: `Body should be in between ${MESSAGE.BODY.LENGTH.MIN}-${MESSAGE.BODY.LENGTH.MAX} characters.`,
+      },
+    },
+  },
   replyingTo: {
     type: DataTypes.UUID,
     allowNull: true,

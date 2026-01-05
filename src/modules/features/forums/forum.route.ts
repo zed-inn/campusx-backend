@@ -1,11 +1,10 @@
-import { mount } from "@shared/utils/mount-router";
-import { Router } from "express";
 import { PostRouter } from "./post/post.route";
 import { ReactionRouter } from "./reactions/reaction.route";
 import { ReportRouter } from "./report/report.route";
 import { CommentRouter } from "./comments/comment.route";
+import { DetailedRouter } from "@shared/infra/http/detailed-router";
 
-const router = Router();
+const router = new DetailedRouter("Forums");
 
 router.use("/post", PostRouter);
 
@@ -15,4 +14,4 @@ router.use("/reaction", ReactionRouter);
 
 router.use("/report", ReportRouter);
 
-export const ForumRouter = mount("/forums", router);
+export const ForumRouter = router;

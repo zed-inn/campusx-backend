@@ -1,10 +1,11 @@
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { Chat, ChatInstance } from "../chat/chat.model";
+import { Chat, ChatCreationAttributes, ChatInstance } from "../chat/chat.model";
 import { Op } from "sequelize";
-import { ChatErrors } from "../chat.errors";
-import { ChatCreateDto } from "./dtos/chat-create.dto";
 import { CHATS_PER_PAGE } from "@config/constants/items-per-page";
+import { ChatCreateDto } from "./dtos/chat-action.dto";
+import { DB_Errors } from "@shared/errors/db-errors";
+import { ExtendedModel } from "@shared/utils/define-model";
 
 class _ChatService extends BaseService<ChatInstance> {
   protected OFFSET = createOffsetFn(CHATS_PER_PAGE);
@@ -13,31 +14,33 @@ class _ChatService extends BaseService<ChatInstance> {
     super(Chat);
   }
 
-  createNew = async (data: ChatCreateDto) => {
+  getOrCreate = async (
+    data: ChatCreateDto | Omit<ChatCreateDto, "localId">
+  ) => {
     try {
-      return await this.getByMembers(data.userOne, data.userTwo);
+      return await this.getByMembers(data.userOneId, data.userTwoId);
     } catch {
       return await this.create(data);
     }
   };
 
-  getByMembers = async (userOne: string, userTwo: string) => {
+  getByMembers = async (userOneId: string, userTwoId: string) => {
     const chat = await Chat.findOne({
       where: {
         [Op.or]: [
-          { userOne, userTwo },
-          { userOne: userTwo, userTwo: userOne },
+          { userOneId, userTwoId },
+          { userOneId: userTwoId, userTwoId: userOneId },
         ],
       },
     });
-    if (!chat) throw ChatErrors.noChatFound;
+    if (!chat) throw DB_Errors.notFound;
 
     return chat;
   };
 
   getActiveChatsOfUser = async (userId: string, page: number) => {
     const chats = await Chat.findAll({
-      where: { [Op.or]: [{ userOne: userId }, { userTwo: userId }] },
+      where: { [Op.or]: [{ userOneId: userId }, { userTwoId: userId }] },
       offset: this.OFFSET(page),
       limit: CHATS_PER_PAGE,
       order: [["updateDate", "desc"]],
@@ -46,19 +49,20 @@ class _ChatService extends BaseService<ChatInstance> {
     return chats.map((c) => c.plain);
   };
 
-  getAllChatsOfUser = async (userId: string) => {
+  getIdsByUser = async (userId: string) => {
     const chats = await Chat.findAll({
-      where: { [Op.or]: [{ userOne: userId }, { userTwo: userId }] },
+      where: { [Op.or]: [{ userOneId: userId }, { userTwoId: userId }] },
     });
 
-    return chats.map((c) => c.plain);
+    return chats.map((c) => c.dataValues.id);
   };
 
-  makeActiveById = async (id: string) => {
-    await Chat.update(
-      { randomUpdate: Date.now().toString() },
-      { where: { id } }
-    );
+  belongsTo = (
+    obj: ChatInstance | Record<string, any>,
+    value: any,
+    keys: string | string[] = ["userOneId", "userTwoId"]
+  ) => {
+    this.checkOwnership(obj, value, keys);
   };
 }
 

@@ -5,67 +5,64 @@ import { DataTypes } from "sequelize";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
 import { Profile } from "@modules/core/profile";
+import { AppError } from "@shared/errors/app-error";
 
 export const ChatModel = modelSchema({
   id: z.uuidv4("Invalid Chat Id"),
-  localId: z.string("Invalid Local Id").nullable().default(null),
-  userOne: z.uuidv4("Invalid User Id"),
-  userTwo: z.uuidv4("Invalid User Id"),
-  randomUpdate: z.string(),
+  localId: z.string("Invalid Local Id").nullable(),
+  userOneId: z.uuidv4("Invalid User Id"),
+  userTwoId: z.uuidv4("Invalid User Id"),
 });
 
 export type ChatAttributes = z.infer<typeof ChatModel.dbSchema>;
 export type ChatCreationAttributes = Omit<
   z.infer<typeof ChatModel.dbFields>,
-  "id" | "randomUpdate"
+  "id"
 >;
 
 export const Chat = defineModel<ChatAttributes, ChatCreationAttributes>(
   db,
-  "Chat",
+  "UserChat",
   {
     id: { ...PRIMARY_ID },
     localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
-    userOne: {
+    userOneId: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: Profile, key: "id" },
     },
-    userTwo: {
+    userTwoId: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: Profile, key: "id" },
-    },
-    randomUpdate: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "start",
     },
   },
   {
     indexes: [
       {
         unique: true,
-        fields: ["userOne", "userTwo"],
-        name: "unique_chat_per_persons",
+        fields: ["userOneId", "userTwoId"],
+        name: "chats_chat_two_diff_persons",
       },
     ],
   }
 );
 
 // Associations
-Profile.hasMany(Chat, {
-  foreignKey: "userOne",
-  onDelete: "CASCADE",
-  as: "chatsOne",
-});
-Chat.belongsTo(Profile, { foreignKey: "userOne", as: "userOneProfile" });
+Profile.hasMany(Chat, { foreignKey: "userOneId", onDelete: "CASCADE" });
+Chat.belongsTo(Profile, { foreignKey: "userOneId", as: "userOne" });
 
-Profile.hasMany(Chat, {
-  foreignKey: "userTwo",
-  onDelete: "CASCADE",
-  as: "chatsTwo",
+Profile.hasMany(Chat, { foreignKey: "userTwoId", onDelete: "CASCADE" });
+Chat.belongsTo(Profile, { foreignKey: "userTwoId", as: "userTwo" });
+
+// Hooks
+Chat.beforeCreate(async (chat: any) => {
+  const exist = await Chat.findOne({
+    where: { userOneId: chat.userTwoId, userTwoId: chat.userOneId },
+  });
+
+  if (exist)
+    throw new AppError("Already started a chat with this person.", 406);
 });
-Chat.belongsTo(Profile, { foreignKey: "userTwo", as: "userTwoProfile" });
 
 export type ChatInstance = InstanceType<typeof Chat>;
