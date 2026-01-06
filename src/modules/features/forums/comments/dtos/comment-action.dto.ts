@@ -13,6 +13,7 @@ export type CommentCreateDto = z.infer<typeof CommentCreateSchema>;
 
 export const CommentUpdateSchema = CommentModel.dbSchema
   .pick({ localId: true, body: true })
+  .partial()
   .extend({ commentId: CommentModel.fields.id });
 
 export type CommentUpdateDto = z.infer<typeof CommentUpdateSchema>;

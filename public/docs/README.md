@@ -1289,8 +1289,8 @@ Edit the content of an existing comment.
 **Body :**
 ```ts
 {
-  localId: string | null;
-  body: string;
+  localId?: string | null;
+  body?: string;
   commentId: string;
 }
 ```
