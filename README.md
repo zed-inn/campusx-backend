@@ -450,20 +450,11 @@ Get short profiles of recommended/random users
   message: string;
   data: {
     users: {
-      createDate: number;
-      updateDate: number;
       id: string;
-      username: string | null;
       fullName: string;
-      about: string | null;
+      username: string | null;
       avatarUrl: string | null;
-      gender: string | null;
-      dob: number | null;
       isFollowed: boolean;
-      stats: {
-        followers: number;
-        following: number;
-      };
       ambassadorOf: {
         id: string;
         name: string;

@@ -7,7 +7,7 @@ import { ProfileController } from "./profile.controller";
 import { ProfileCreateSchema } from "./dtos/profile-create.dto";
 import { ProfileUpdateSchema } from "./dtos/profile-update.dto";
 import { DetailedRouter } from "@shared/infra/http/detailed-router";
-import { UserSchema } from "./dtos/profile-response.dto";
+import { ShortUserSchema, UserSchema } from "./dtos/profile-response.dto";
 import { array } from "zod";
 
 const router = new DetailedRouter("User Profile");
@@ -33,7 +33,7 @@ router
 router
   .describe("Get users", "Get short profiles of recommended/random users")
   .query(ProfileGetUsersSchema)
-  .output("users", array(UserSchema), "Users fetched.")
+  .output("users", array(ShortUserSchema), "Users fetched.")
   .get("/users", ProfileController.getUsers);
 
 router
