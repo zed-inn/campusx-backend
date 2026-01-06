@@ -1692,13 +1692,16 @@ Add education
 **Body :**
 ```ts
 {
-  localId: string | null;
-  instituteId: string;
-  startYear: number;
-  startMonth: number | null;
-  endYear: number | null;
-  endMonth: number | null;
-  description: string | null;
+  educations: {
+    localId: string | null;
+    instituteId: string;
+    startYear: number;
+    startMonth: number | null;
+    endYear: number | null;
+    endMonth: number | null;
+    description: string | null;
+    uniqueId: number;
+  }[];
 }
 ```
 
@@ -1707,28 +1710,32 @@ Add education
 {
   message: string;
   data: {
-    education: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      instituteId: string;
-      description: string | null;
-      startYear: number;
-      startMonth: number | null;
-      endYear: number | null;
-      endMonth: number | null;
-      institute: {
+    processed: {
+      uniqueId: number;
+      education: {
+        createDate: number;
+        updateDate: number;
         id: string;
-        name: string;
-        shortName: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: string | null;
+        localId: string | null;
+        userId: string;
+        instituteId: string;
+        description: string | null;
+        startYear: number;
+        startMonth: number | null;
+        endYear: number | null;
+        endMonth: number | null;
+        institute: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        };
       };
-    };
+    }[];
+    unprocessed: number[];
   };
 }
 ```

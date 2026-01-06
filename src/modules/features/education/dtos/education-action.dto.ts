@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { EducationModel } from "../education.model";
 
-export const EducationCreateSchema = z.object({
+export const UniqueIdSchema = z.number("Invalid Unique Id");
+
+export type UniqueIdDto = z.infer<typeof UniqueIdSchema>;
+
+export const EducationCreateOneSchema = z.object({
   localId: EducationModel.fields.localId.default(null),
   instituteId: EducationModel.fields.instituteId,
   startYear: EducationModel.fields.startYear,
@@ -9,6 +13,14 @@ export const EducationCreateSchema = z.object({
   endYear: EducationModel.fields.endYear.default(null),
   endMonth: EducationModel.fields.endMonth.default(null),
   description: EducationModel.fields.description.default(null),
+});
+
+export type EducationCreateOneDto = z.infer<typeof EducationCreateOneSchema>;
+
+export const EducationCreateSchema = z.object({
+  educations: z.array(
+    z.object({ ...EducationCreateOneSchema.shape, uniqueId: UniqueIdSchema })
+  ),
 });
 
 export type EducationCreateDto = z.infer<typeof EducationCreateSchema>;

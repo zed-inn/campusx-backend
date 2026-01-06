@@ -11,7 +11,10 @@ import {
 } from "./dtos/education-action.dto";
 import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { array } from "zod";
-import { EducationSchema } from "./dtos/education-response.dto";
+import {
+  EducationCreateResponseSchema,
+  EducationSchema,
+} from "./dtos/education-response.dto";
 import { ShortUserSchema } from "@modules/core/profile";
 import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
@@ -31,27 +34,27 @@ router
   .get("/me", EducationController.getUserEducation);
 
 router
-  .describe("Get user's education", "Get education for a specific user")
+  .describe("Get Institute Students", "Get students for a specific institute")
   .query(EducationGetStudentsSchema)
   .output("students", array(ShortUserSchema), "Institute's students.")
   .get("/students", EducationController.getInstituteStudents);
 
 router
-  .describe("Add Education", "Add education")
+  .describe("Add Educations", "Add educations")
   .userProfiled()
   .body(EducationCreateSchema)
-  .output("education", EducationSchema, "Education added.")
+  .output(EducationCreateResponseSchema, "Educations added.")
   .post("/", EducationController.addEducation);
 
 router
-  .describe("Add Education", "Add education")
+  .describe("Update Education", "Update a specific education")
   .userProfiled()
   .body(EducationUpdateSchema)
   .output("education", EducationSchema, "Education updated.")
   .put("/", EducationController.updateEducation);
 
 router
-  .describe("Add Education", "Add education")
+  .describe("Delete Education", "Remove education for your profile")
   .userProfiled()
   .query(EducationDeleteSchema)
   .output(GlobalDeleteSchema, "Education removed.")

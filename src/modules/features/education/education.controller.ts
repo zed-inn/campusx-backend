@@ -9,7 +9,12 @@ import {
   EducationGetUserDto,
 } from "./dtos/education-get.dto";
 import { EducationAggregator } from "./education.aggregator";
-import { EducationSchema } from "./dtos/education-response.dto";
+import {
+  EducationCreateResponseDto,
+  EducationCreateResponseSchema,
+  EducationDto,
+  EducationSchema,
+} from "./dtos/education-response.dto";
 import {
   ProfileAggregator,
   ProfileService,
@@ -76,16 +81,30 @@ export class EducationController {
   static addEducation = catchAsync(
     async (req: Request<{}, {}, EducationCreateDto>, res: Response) => {
       const user = AuthPayloadSchema.parse(req.user);
+      const q = req.body;
 
-      const iEducation = await EducationService.add(req.body, user.id);
-      const tEducation = await EducationAggregator.transform([
-        iEducation.plain,
-      ]);
-      const pEducation = EducationSchema.parse(tEducation);
+      const responseData: EducationCreateResponseDto = {
+        processed: [],
+        unprocessed: [],
+      };
 
-      return ApiResponse.success(res, "Education added.", {
-        education: pEducation,
-      });
+      for (const edu of q.educations) {
+        const { uniqueId, ...data } = edu;
+        try {
+          const iEducation = await EducationService.add(data, user.id);
+          const [tEducation] = await EducationAggregator.transform([
+            iEducation.plain,
+          ]);
+          const pEducation = EducationSchema.parse(tEducation);
+          responseData.processed.push({ uniqueId, education: pEducation });
+        } catch {
+          responseData.unprocessed.push(uniqueId);
+        }
+      }
+
+      const pResponseData = EducationCreateResponseSchema.parse(responseData);
+
+      return ApiResponse.success(res, "Educations added.", pResponseData);
     }
   );
 
@@ -94,7 +113,7 @@ export class EducationController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iEducation = await EducationService.update(req.body, user.id);
-      const tEducation = await EducationAggregator.transform([
+      const [tEducation] = await EducationAggregator.transform([
         iEducation.plain,
       ]);
       const pEducation = EducationSchema.parse(tEducation);

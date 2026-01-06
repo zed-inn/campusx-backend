@@ -10,6 +10,7 @@ import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
 import { hasKeys } from "@shared/utils/object-length";
 import {
   EducationCreateDto,
+  EducationCreateOneDto,
   EducationUpdateDto,
 } from "./dtos/education-action.dto";
 import db from "@config/database";
@@ -21,7 +22,7 @@ class _EducationService extends BaseService<EducationInstance> {
     super(Education);
   }
 
-  add = async (data: EducationCreateDto, userId: string) => {
+  add = async (data: EducationCreateOneDto, userId: string) => {
     return await this.create({ ...data, userId });
   };
 
