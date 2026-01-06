@@ -6,4 +6,6 @@ echo "Pull complete"
 echo "Restarting application"
 npm run build
 forever restart -s dist/server.js
+git stash clear
+chmod +x **/*/*.sh
 exit
