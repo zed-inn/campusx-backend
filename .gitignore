@@ -152,3 +152,6 @@ bundler.py
 
 # Migration data
 **/*/migration/data
+
+# temp data
+describe.md
