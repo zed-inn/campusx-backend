@@ -8,6 +8,7 @@ import {
 } from "./dtos/message-actions.dto";
 import { array } from "zod";
 import { MessageSchema } from "./dtos/discussion-response.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("Institute Community Chat Messages");
 
@@ -35,7 +36,7 @@ router
   .describe("Delete Message", "Remove a message.")
   .userProfiled()
   .query(MessageDeleteSchema)
-  .output("message", MessageSchema, "Message deleted.")
+  .output(GlobalDeleteSchema, "Message deleted.")
   .delete("/", MessageController.deleteMessage);
 
 export const MessageRouter = router;

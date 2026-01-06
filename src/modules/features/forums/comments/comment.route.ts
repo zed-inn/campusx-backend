@@ -8,6 +8,7 @@ import { CommentController } from "./comment.controller";
 import { CommentGetPostSchema } from "./dtos/comment-get.dto";
 import { array } from "zod";
 import { CommentSchema } from "./dtos/comment-response.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("Forum Comments");
 
@@ -29,7 +30,7 @@ router
   .describe("Delete Comment", "Permanently remove a comment.")
   .userProfiled()
   .query(CommentDeleteSchema)
-  .output("comment", CommentSchema, "Comment deleted.")
+  .output(GlobalDeleteSchema, "Comment deleted.")
   .delete("/", CommentController.deleteComment);
 
 router

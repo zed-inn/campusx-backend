@@ -11,6 +11,7 @@ import {
   CommentDeleteDto,
   CommentUpdateDto,
 } from "./dtos/comment-action.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class CommentController {
   static getPostComments = catchAsync(
@@ -65,8 +66,9 @@ export class CommentController {
         q.commentId,
         user.id
       );
+      const responseData = GlobalDeleteSchema.parse(comment);
 
-      return ApiResponse.success(res, "Comment deleted.", { id: comment.id });
+      return ApiResponse.success(res, "Comment deleted.", responseData);
     }
   );
 }

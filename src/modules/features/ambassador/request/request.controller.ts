@@ -10,6 +10,7 @@ import {
   RequestDeleteDto,
   RequestUpdateDto,
 } from "./dtos/request-action.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class RequestController {
   static getMyRequestStatus = catchAsync(
@@ -56,8 +57,9 @@ export class RequestController {
       const q = req.query;
 
       const request = await RequestService.deleteByOwnerById(q.id, user.id);
+      const responseData = GlobalDeleteSchema.parse(request);
 
-      return ApiResponse.success(res, "Requested.", { id: request.id });
+      return ApiResponse.success(res, "Request withdrawn.", responseData);
     }
   );
 }

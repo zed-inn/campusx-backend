@@ -11,6 +11,7 @@ import {
 } from "./dtos/review-action.dto";
 import { array } from "zod";
 import { ReviewSchema } from "./dtos/review-response.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("Institute Reviews");
 
@@ -51,7 +52,7 @@ router
   .describe("Delete Review", "Permanently remove a review.")
   .userProfiled()
   .query(ReviewDeleteSchema)
-  .output("review", ReviewSchema, "Review deleted.")
+  .output(GlobalDeleteSchema, "Review deleted.")
   .delete("/", ReviewController.deleteReview);
 
 export const InstituteReviewRouter = router;

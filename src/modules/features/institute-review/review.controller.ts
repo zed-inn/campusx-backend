@@ -11,6 +11,7 @@ import {
   ReviewDeleteDto,
   ReviewUpdateDto,
 } from "./dtos/review-action.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class ReviewController {
   static getInstituteReviews = catchAsync(
@@ -78,11 +79,9 @@ export class ReviewController {
       const q = req.query;
 
       const review = await ReviewService.delete(q.reviewId, user.id);
+      const responseData = GlobalDeleteSchema.parse(review);
 
-      return ApiResponse.success(res, "Review deleted.", {
-        id: review.id,
-        localId: review.localId,
-      });
+      return ApiResponse.success(res, "Review deleted.", responseData);
     }
   );
 }

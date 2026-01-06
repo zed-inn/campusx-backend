@@ -7,3 +7,8 @@ export const GlobalSchema = modelSchema({
     .positive("Page must be from 1-Inf")
     .default(1),
 });
+
+export const GlobalDeleteSchema = z.object({
+  id: z.uuidv4(),
+  localId: z.string().nullish(),
+});

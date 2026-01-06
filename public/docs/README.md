@@ -984,37 +984,8 @@ Permanently remove a post.
 {
   message: string;
   data: {
-    forum: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      title: string;
-      body: string | null;
-      imageUrl: string | null;
-      writer: {
-        id: string;
-        fullName: string;
-        username: string | null;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassadorOf: {
-          id: string;
-          name: string;
-          shortName: string | null;
-          district: string | null;
-          state: string | null;
-          country: string | null;
-          yearOfEstablishment: number | null;
-        } | null;
-      };
-      isLiked: boolean;
-      stats: {
-        likes: number;
-        comments: number;
-      };
-    };
+    id: string;
+    localId?: string | null;
   };
 }
 ```
@@ -1354,53 +1325,8 @@ Permanently remove a comment.
 {
   message: string;
   data: {
-    comment: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      postId: string;
-      replyingTo: string | null;
-      body: string;
-      repliesCount: number;
-      writer: {
-        id: string;
-        fullName: string;
-        username: string | null;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassadorOf: {
-          id: string;
-          name: string;
-          shortName: string | null;
-          district: string | null;
-          state: string | null;
-          country: string | null;
-          yearOfEstablishment: number | null;
-        } | null;
-      };
-      parentComment: {
-        id: string;
-        body: string;
-        writer: {
-          id: string;
-          fullName: string;
-          username: string | null;
-          avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassadorOf: {
-            id: string;
-            name: string;
-            shortName: string | null;
-            district: string | null;
-            state: string | null;
-            country: string | null;
-            yearOfEstablishment: number | null;
-          } | null;
-        };
-      } | null;
-    };
+    id: string;
+    localId?: string | null;
   };
 }
 ```
@@ -1880,28 +1806,8 @@ Add education
 {
   message: string;
   data: {
-    education: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      instituteId: string;
-      description: string | null;
-      startYear: number;
-      startMonth: number | null;
-      endYear: number | null;
-      endMonth: number | null;
-      institute: {
-        id: string;
-        name: string;
-        shortName: string | null;
-        district: string | null;
-        state: string | null;
-        country: string | null;
-        yearOfEstablishment: number | null;
-      };
-    };
+    id: string;
+    localId?: string | null;
   };
 }
 ```
@@ -2261,32 +2167,8 @@ Permanently remove a review.
 {
   message: string;
   data: {
-    review: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      instituteId: string;
-      body: string;
-      rating: number;
-      writer: {
-        id: string;
-        fullName: string;
-        username: string | null;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassadorOf: {
-          id: string;
-          name: string;
-          shortName: string | null;
-          district: string | null;
-          state: string | null;
-          country: string | null;
-          yearOfEstablishment: number | null;
-        } | null;
-      };
-    };
+    id: string;
+    localId?: string | null;
   };
 }
 ```
@@ -2481,36 +2363,8 @@ Remove a message.
 {
   message: string;
   data: {
-    message: {
-      createDate: number;
-      updateDate: number;
-      id: string;
-      localId: string | null;
-      userId: string;
-      instituteId: string;
-      body: string;
-      replyingTo: string | null;
-      writer: {
-        id: string;
-        fullName: string;
-        username: string | null;
-        avatarUrl: string | null;
-        isFollowed: boolean;
-        ambassadorOf: {
-          id: string;
-          name: string;
-          shortName: string | null;
-          district: string | null;
-          state: string | null;
-          country: string | null;
-          yearOfEstablishment: number | null;
-        } | null;
-      };
-      stats: {
-        likes: number;
-      };
-      isLiked: boolean;
-    };
+    id: string;
+    localId?: string | null;
   };
 }
 ```
@@ -2875,7 +2729,26 @@ Request will not happen if already an ambassador or if not a student of applied 
 ```ts
 {
   message: string;
-  data?: any;
+  data: {
+    request: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userId: string;
+      instituteId: string;
+      reason: string | null;
+      status: string;
+      institute: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      };
+    };
+  };
 }
 ```
 
@@ -2900,7 +2773,26 @@ Update request's institute or reason
 ```ts
 {
   message: string;
-  data?: any;
+  data: {
+    request: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userId: string;
+      instituteId: string;
+      reason: string | null;
+      status: string;
+      institute: {
+        id: string;
+        name: string;
+        shortName: string | null;
+        district: string | null;
+        state: string | null;
+        country: string | null;
+        yearOfEstablishment: number | null;
+      };
+    };
+  };
 }
 ```
 
@@ -2923,7 +2815,10 @@ Withdraw your request of ambassador
 ```ts
 {
   message: string;
-  data?: any;
+  data: {
+    id: string;
+    localId?: string | null;
+  };
 }
 ```
 

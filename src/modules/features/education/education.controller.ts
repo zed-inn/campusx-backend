@@ -20,6 +20,7 @@ import {
   EducationDeleteDto,
   EducationUpdateDto,
 } from "./dtos/education-action.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class EducationController {
   static getUserEducation = catchAsync(
@@ -113,11 +114,9 @@ export class EducationController {
         q.educationId,
         user.id
       );
+      const responseData = GlobalDeleteSchema.parse(education);
 
-      return ApiResponse.success(res, "Education removed.", {
-        id: education.id,
-        localId: education.localId,
-      });
+      return ApiResponse.success(res, "Education removed.", responseData);
     }
   );
 }

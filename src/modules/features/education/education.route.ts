@@ -13,6 +13,7 @@ import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { array } from "zod";
 import { EducationSchema } from "./dtos/education-response.dto";
 import { ShortUserSchema } from "@modules/core/profile";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("User Education");
 
@@ -53,7 +54,7 @@ router
   .describe("Add Education", "Add education")
   .userProfiled()
   .query(EducationDeleteSchema)
-  .output("education", EducationSchema, "Education removed.")
+  .output(GlobalDeleteSchema, "Education removed.")
   .delete("/", EducationController.removeEducation);
 
 export const EducationRouter = router;

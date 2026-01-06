@@ -11,6 +11,7 @@ import {
   MessageUpdateDto,
 } from "./dtos/message-actions.dto";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class MessageController {
   static getMessages = catchAsync(
@@ -65,11 +66,9 @@ export class MessageController {
       const q = req.query;
 
       const message = await MessageService.deleteByOwnerById(q.id, user.id);
+      const responseData = GlobalDeleteSchema.parse(message);
 
-      return ApiResponse.success(res, "Message deleted.", {
-        id: message.id,
-        localId: message.localId,
-      });
+      return ApiResponse.success(res, "Message deleted.", responseData);
     }
   );
 }

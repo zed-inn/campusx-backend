@@ -12,6 +12,7 @@ import {
 } from "./dtos/post-get.dto";
 import { PostSchema } from "./dtos/post-response.dto";
 import { array } from "zod";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("Forums");
 
@@ -33,7 +34,7 @@ router
   .describe("Delete Post", "Permanently remove a post.")
   .userProfiled()
   .query(PostDeleteSchema)
-  .output("forum", PostSchema, "Forum deleted.")
+  .output(GlobalDeleteSchema, "Forum deleted.")
   .delete("/", PostController.deletePost);
 
 router

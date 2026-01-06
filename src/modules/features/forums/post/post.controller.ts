@@ -15,6 +15,7 @@ import {
   PostDeleteDto,
   PostUpdateDto,
 } from "./dtos/post-action.dto";
+import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class PostController {
   static getLatestPosts = catchAsync(
@@ -83,9 +84,10 @@ export class PostController {
       const user = AuthPayloadSchema.parse(req.user);
       const q = req.query;
 
-      const iPost = await PostService.deleteByOwnerById(q.forumId, user.id);
+      const post = await PostService.deleteByOwnerById(q.forumId, user.id);
+      const responseData = GlobalDeleteSchema.parse(post);
 
-      return ApiResponse.success(res, "Forum deleted.", { id: iPost.id });
+      return ApiResponse.success(res, "Forum deleted.", responseData);
     }
   );
 }
