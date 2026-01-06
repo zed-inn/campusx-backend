@@ -16,7 +16,7 @@ class _RegisterService {
   createBasic = async (data: RegisterBasicDto) => {
     const email = await OtpService.getEmailFromOtpToken(data.otpToken);
 
-    await db.transaction(async () => {
+    return await db.transaction(async () => {
       const user = await UserService.createWithPassword({
         email,
         password: data.password,
