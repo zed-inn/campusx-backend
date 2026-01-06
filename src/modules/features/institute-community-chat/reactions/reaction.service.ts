@@ -4,6 +4,7 @@ import { Op } from "sequelize";
 import db from "@config/database";
 import { MessageService } from "../message/message.service";
 import { ReactionStatService } from "./stat/stat.service";
+import { DB_Errors } from "@shared/errors/db-errors";
 
 class _ReactionService extends BaseService<ReactionInstance> {
   constructor() {
@@ -43,7 +44,14 @@ class _ReactionService extends BaseService<ReactionInstance> {
       const message = await MessageService.getById(id);
       const messageData = message.plain;
 
-      await this.deleteByOwnerById(messageData.id, userId);
+      const reaction = await Reaction.findOne({
+        where: { messageId: messageData.id },
+      });
+      if (!reaction) throw DB_Errors.notFound;
+
+      this.checkOwnership(reaction, userId);
+      await reaction.destroy();
+
       await ReactionStatService.updateCounts(messageData.id, "likes", -1);
     });
   };
