@@ -1509,11 +1509,11 @@ Retrieve a paginated list of available forum categories.
 
 ## Insight Posts
 
-### Get Published Posts
+### Get insights
 
 **GET** `/insights/post`
 
-Retrieve a paginated list of general published posts.
+Retrieve a paginated list of insights.
 
 **Query Parameters :**
 ```ts

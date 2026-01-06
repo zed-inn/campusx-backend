@@ -7,10 +7,7 @@ import { PostSchema } from "./dtos/post-response.dto";
 const router = new DetailedRouter("Insight Posts");
 
 router
-  .describe(
-    "Get Published Posts",
-    "Retrieve a paginated list of general published posts."
-  )
+  .describe("Get insights", "Retrieve a paginated list of insights.")
   .query(PostGetSchema)
   .output("insights", array(PostSchema), "Insights fetched.")
   .get("/", PostsController.getPublishedPosts);
