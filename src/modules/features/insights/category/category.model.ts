@@ -11,7 +11,7 @@ export const CategoryModel = modelSchema({
   name: z
     .string("Invalid Category Name")
     .min(CATEGORY.NAME.LENGTH.MIN, { error: "Category name is too short" })
-    .min(CATEGORY.NAME.LENGTH.MAX, { error: "Category name is too long" }),
+    .max(CATEGORY.NAME.LENGTH.MAX, { error: "Category name is too long" }),
 });
 
 export type CategoryAttributes = z.infer<typeof CategoryModel.dbSchema>;

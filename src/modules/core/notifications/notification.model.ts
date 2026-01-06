@@ -1,8 +1,4 @@
 import { DataTypes } from "sequelize";
-import db from "@config/database";
-import { defineModel } from "@shared/utils/define-model";
-import { PRIMARY_ID } from "@shared/utils/db-types";
-import { User } from "@modules/core/user";
 import {
   NotificationAttributes,
   NotificationCreationAttributes,
