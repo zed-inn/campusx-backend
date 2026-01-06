@@ -21,6 +21,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd /test-server
+            cd ~/test-server
 
             ./scripts/server/reload_server.sh
