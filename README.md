@@ -98,7 +98,7 @@ Login with email and password
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     } | null;
   };
@@ -152,7 +152,7 @@ Login with google mail
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     } | null;
   };
@@ -207,7 +207,7 @@ Register using email and password
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     } | null;
   };
@@ -261,7 +261,7 @@ Register with google mail
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     } | null;
   };
@@ -379,7 +379,7 @@ Get a specific user's profile
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     };
   };
@@ -421,7 +421,7 @@ Get the profile of the current logged in user
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     };
   };
@@ -471,7 +471,7 @@ Get short profiles of recommended/random users
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -525,7 +525,7 @@ Create profile for the current logged in user after registering
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     };
   };
@@ -579,7 +579,7 @@ Update any field of profile, remaining other unaffected
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     };
   };
@@ -717,7 +717,7 @@ Retrieve a paginated list of followers for a specific user.
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -757,7 +757,7 @@ Retrieve a paginated list of the current user's followers.
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -798,7 +798,7 @@ Retrieve a list of users that a specific user is following.
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -838,7 +838,7 @@ Retrieve the list of users the current user is following.
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -892,7 +892,7 @@ Publish a new post to the feed.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       isLiked: boolean;
@@ -951,7 +951,7 @@ Edit the content of an existing post.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       isLiked: boolean;
@@ -1032,7 +1032,7 @@ Retrieve a stream of the most recent posts.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       isLiked: boolean;
@@ -1088,7 +1088,7 @@ Retrieve posts belonging to a specific user.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       isLiked: boolean;
@@ -1143,7 +1143,7 @@ Retrieve the current user's post history.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       isLiked: boolean;
@@ -1204,7 +1204,7 @@ Add a new comment to a specific post.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       parentComment: {
@@ -1223,7 +1223,7 @@ Add a new comment to a specific post.
             district: string | null;
             state: string | null;
             country: string | null;
-            yearOfEstablishment: number | null;
+            yearOfEstablishment: string | null;
           } | null;
         };
       } | null;
@@ -1277,7 +1277,7 @@ Edit the content of an existing comment.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       parentComment: {
@@ -1296,7 +1296,7 @@ Edit the content of an existing comment.
             district: string | null;
             state: string | null;
             country: string | null;
-            yearOfEstablishment: number | null;
+            yearOfEstablishment: string | null;
           } | null;
         };
       } | null;
@@ -1376,7 +1376,7 @@ Retrieve a paginated list of comments for a specific post.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       parentComment: {
@@ -1395,7 +1395,7 @@ Retrieve a paginated list of comments for a specific post.
             district: string | null;
             state: string | null;
             country: string | null;
-            yearOfEstablishment: number | null;
+            yearOfEstablishment: string | null;
           } | null;
         };
       } | null;
@@ -1587,7 +1587,7 @@ Get education for a specific user
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     }[];
   };
@@ -1633,7 +1633,7 @@ Get education for the current logged in user
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     }[];
   };
@@ -1674,7 +1674,7 @@ Get education for a specific user
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -1726,7 +1726,7 @@ Add education
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     };
   };
@@ -1779,7 +1779,7 @@ Add education
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     };
   };
@@ -1847,7 +1847,6 @@ Get details of a specific institute
       country: string | null;
       address: string | null;
       pinCode: number | null;
-      yearOfEstablishment: number | null;
       website: string | null;
       location: string | null;
       category: string | null;
@@ -1862,6 +1861,7 @@ Get details of a specific institute
       imageUrl: string | null;
       rating: number;
       reviewsCount: number;
+      yearOfEstablishment: string | null;
     };
   };
 }
@@ -1897,7 +1897,7 @@ Get short institutes with
       district: string | null;
       state: string | null;
       country: string | null;
-      yearOfEstablishment: number | null;
+      yearOfEstablishment: string | null;
     }[];
   };
 }
@@ -1984,7 +1984,7 @@ Retrieve a paginated list of reviews for institutes.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
     }[];
@@ -2034,7 +2034,7 @@ Retrieve the current user's review on an institute.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
     };
@@ -2087,7 +2087,7 @@ Submit a new review for an institute.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
     };
@@ -2139,7 +2139,7 @@ Edit the content of an existing review.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
     };
@@ -2218,7 +2218,7 @@ Retrieve a paginated list of messages.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       stats: {
@@ -2275,7 +2275,7 @@ Create and send a new message.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       stats: {
@@ -2331,7 +2331,7 @@ Edit the content of an existing message.
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
       stats: {
@@ -2478,7 +2478,7 @@ Get chats in order of latest activity
           district: string | null;
           state: string | null;
           country: string | null;
-          yearOfEstablishment: number | null;
+          yearOfEstablishment: string | null;
         } | null;
       };
     }[];
@@ -2665,7 +2665,7 @@ Get users list of ambassadors for queried institute
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       } | null;
     }[];
   };
@@ -2702,7 +2702,7 @@ Get status request of the current logged in user
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     };
   };
@@ -2745,7 +2745,7 @@ Request will not happen if already an ambassador or if not a student of applied 
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     };
   };
@@ -2789,7 +2789,7 @@ Update request's institute or reason
         district: string | null;
         state: string | null;
         country: string | null;
-        yearOfEstablishment: number | null;
+        yearOfEstablishment: string | null;
       };
     };
   };

@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { InstituteModel } from "../institute.model";
 
-export const InstituteSchema = InstituteModel.dbSchema.omit({
-  nameNormalized: true,
-});
+export const InstituteSchema = InstituteModel.dbSchema
+  .omit({ nameNormalized: true, yearOfEstablishment: true })
+  .extend({ yearOfEstablishment: z.coerce.string().nullable() });
 
 export type InstituteDto = z.infer<typeof InstituteSchema>;
 
