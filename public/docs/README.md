@@ -1149,6 +1149,61 @@ Retrieve the current user's post history.
 
 ---
 
+### Get One
+
+**GET** `/forums/post`
+
+Get one forum by Id
+
+**Query Parameters :**
+```ts
+{
+  id: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    forum: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      userId: string;
+      title: string;
+      body: string | null;
+      imageUrl: string | null;
+      writer: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        } | null;
+      };
+      isLiked: boolean;
+      stats: {
+        likes: number;
+        comments: number;
+      };
+    };
+  };
+}
+```
+
+---
+
 ## Forum Comments
 
 ### Create Comment

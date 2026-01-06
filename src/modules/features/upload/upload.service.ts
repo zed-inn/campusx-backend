@@ -26,7 +26,7 @@ class _UploadService {
   };
 
   filterTruest = async (file: File) => {
-    this.filterByMimeType(file);
+    // this.filterByMimeType(file);
     return await this.filterByDetectedType(file);
   };
 
