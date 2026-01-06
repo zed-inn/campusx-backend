@@ -25,7 +25,9 @@ export const generateReadme = (
       md += `### ${route.title}\n\n`;
 
       const authStatus = route.authTokenReq ? "Auth: Required" : "Auth: No";
-      md += `**${route.method}** \`${route.endpoint}\``;
+      md += `**${route.method.toUpperCase()}** \`${route.endpoint
+        .replaceAll("//", "/")
+        .replace(/\/$/, "")}\``;
 
       if (route.authTokenReq) md += `  **( Login Required )**`;
 

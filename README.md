@@ -6,7 +6,7 @@
 
 ### Get Otp
 
-**post** `/auth/otp/get`
+**POST** `/auth/otp/get`
 
 Get auto generated otp on email
 
@@ -29,7 +29,7 @@ Get auto generated otp on email
 
 ### Verify Otp
 
-**post** `/auth/otp/verify`
+**POST** `/auth/otp/verify`
 
 Verify otp sent on email
 
@@ -57,7 +57,7 @@ Verify otp sent on email
 
 ### Login Basic
 
-**post** `/auth/login/basic`
+**POST** `/auth/login/basic`
 
 Login with email and password
 
@@ -109,7 +109,7 @@ Login with email and password
 
 ### Login Google
 
-**post** `/auth/login/google`
+**POST** `/auth/login/google`
 
 Login with google mail
 
@@ -165,7 +165,7 @@ Login with google mail
 
 ### Register basic
 
-**post** `/auth/register/basic`
+**POST** `/auth/register/basic`
 
 Register using email and password
 
@@ -218,7 +218,7 @@ Register using email and password
 
 ### Register Google
 
-**post** `/auth/register/google`
+**POST** `/auth/register/google`
 
 Register with google mail
 
@@ -274,7 +274,7 @@ Register with google mail
 
 ### Recover password : Basic Account
 
-**post** `/auth/recovery/basic`
+**POST** `/auth/recovery/basic`
 
 Reset password of an account with password after getting and verifying otp
 
@@ -300,7 +300,7 @@ Reset password of an account with password after getting and verifying otp
 
 ### Logout
 
-**get** `/auth/logout/`  **( Login Required )**
+**GET** `/auth/logout`  **( Login Required )**
 
 logout
 
@@ -318,7 +318,7 @@ logout
 
 ### Check username
 
-**get** `/profile/check-username`
+**GET** `/profile/check-username`
 
 Check if a username is available or not
 
@@ -341,7 +341,7 @@ Check if a username is available or not
 
 ### Get user's profile
 
-**get** `/profile/`
+**GET** `/profile`
 
 Get a specific user's profile
 
@@ -390,7 +390,7 @@ Get a specific user's profile
 
 ### Get my profile
 
-**get** `/profile/me`  **( Login Required )**
+**GET** `/profile/me`  **( Login Required )**
 
 Get the profile of the current logged in user
 
@@ -432,7 +432,7 @@ Get the profile of the current logged in user
 
 ### Get users
 
-**get** `/profile/users`
+**GET** `/profile/users`
 
 Get short profiles of recommended/random users
 
@@ -482,7 +482,7 @@ Get short profiles of recommended/random users
 
 ### Create profile
 
-**post** `/profile/`  **( Login Required )**
+**POST** `/profile`  **( Login Required )**
 
 Create profile for the current logged in user after registering
 
@@ -536,7 +536,7 @@ Create profile for the current logged in user after registering
 
 ### Update profile
 
-**patch** `/profile/`  **( Login Required )**
+**PATCH** `/profile`  **( Login Required )**
 
 Update any field of profile, remaining other unaffected
 
@@ -592,7 +592,7 @@ Update any field of profile, remaining other unaffected
 
 ### Report User
 
-**post** `/user/report/`  **( Login Required )**
+**POST** `/user/report`  **( Login Required )**
 
 Reports a user
 
@@ -618,7 +618,7 @@ Reports a user
 
 ### Get Wallet Info
 
-**get** `/user/wallet/me`  **( Login Required )**
+**GET** `/user/wallet/me`  **( Login Required )**
 
 Get the referral Code and the wallet balance of the current logged in user
 
@@ -641,7 +641,7 @@ Get the referral Code and the wallet balance of the current logged in user
 
 ### Follow User
 
-**post** `/follow/`  **( Login Required )**
+**POST** `/follow`  **( Login Required )**
 
 Start following a target user to see their updates.
 
@@ -664,7 +664,7 @@ Start following a target user to see their updates.
 
 ### Unfollow User
 
-**delete** `/follow/`  **( Login Required )**
+**DELETE** `/follow`  **( Login Required )**
 
 Stop following a target user.
 
@@ -687,7 +687,7 @@ Stop following a target user.
 
 ### Get Followers
 
-**get** `/follow/followers`
+**GET** `/follow/followers`
 
 Retrieve a paginated list of followers for a specific user.
 
@@ -728,7 +728,7 @@ Retrieve a paginated list of followers for a specific user.
 
 ### Get My Followers
 
-**get** `/follow/followers/me`  **( Login Required )**
+**GET** `/follow/followers/me`  **( Login Required )**
 
 Retrieve a paginated list of the current user's followers.
 
@@ -768,7 +768,7 @@ Retrieve a paginated list of the current user's followers.
 
 ### Get Following
 
-**get** `/follow/following`
+**GET** `/follow/following`
 
 Retrieve a list of users that a specific user is following.
 
@@ -809,7 +809,7 @@ Retrieve a list of users that a specific user is following.
 
 ### Get My Following
 
-**get** `/follow/following/me`  **( Login Required )**
+**GET** `/follow/following/me`  **( Login Required )**
 
 Retrieve the list of users the current user is following.
 
@@ -851,7 +851,7 @@ Retrieve the list of users the current user is following.
 
 ### Create Post
 
-**post** `/forums/post/`  **( Login Required )**
+**POST** `/forums/post`  **( Login Required )**
 
 Publish a new post to the feed.
 
@@ -909,7 +909,7 @@ Publish a new post to the feed.
 
 ### Update Post
 
-**patch** `/forums/post/`  **( Login Required )**
+**PATCH** `/forums/post`  **( Login Required )**
 
 Edit the content of an existing post.
 
@@ -968,7 +968,7 @@ Edit the content of an existing post.
 
 ### Delete Post
 
-**delete** `/forums/post/`  **( Login Required )**
+**DELETE** `/forums/post`  **( Login Required )**
 
 Permanently remove a post.
 
@@ -1023,7 +1023,7 @@ Permanently remove a post.
 
 ### Get Latest Posts
 
-**get** `/forums/post/latest`
+**GET** `/forums/post/latest`
 
 Retrieve a stream of the most recent posts.
 
@@ -1078,7 +1078,7 @@ Retrieve a stream of the most recent posts.
 
 ### Get User Posts
 
-**get** `/forums/post/user`
+**GET** `/forums/post/user`
 
 Retrieve posts belonging to a specific user.
 
@@ -1134,7 +1134,7 @@ Retrieve posts belonging to a specific user.
 
 ### Get My Posts
 
-**get** `/forums/post/user/me`  **( Login Required )**
+**GET** `/forums/post/user/me`  **( Login Required )**
 
 Retrieve the current user's post history.
 
@@ -1191,7 +1191,7 @@ Retrieve the current user's post history.
 
 ### Create Comment
 
-**post** `/forums/comment/`  **( Login Required )**
+**POST** `/forums/comment`  **( Login Required )**
 
 Add a new comment to a specific post.
 
@@ -1265,7 +1265,7 @@ Add a new comment to a specific post.
 
 ### Update Comment
 
-**patch** `/forums/comment/`  **( Login Required )**
+**PATCH** `/forums/comment`  **( Login Required )**
 
 Edit the content of an existing comment.
 
@@ -1338,7 +1338,7 @@ Edit the content of an existing comment.
 
 ### Delete Comment
 
-**delete** `/forums/comment/`  **( Login Required )**
+**DELETE** `/forums/comment`  **( Login Required )**
 
 Permanently remove a comment.
 
@@ -1409,7 +1409,7 @@ Permanently remove a comment.
 
 ### Get Post Comments
 
-**get** `/forums/comment/`
+**GET** `/forums/comment`
 
 Retrieve a paginated list of comments for a specific post.
 
@@ -1484,7 +1484,7 @@ Retrieve a paginated list of comments for a specific post.
 
 ### Like Post
 
-**post** `/forums/reaction/like`  **( Login Required )**
+**POST** `/forums/reaction/like`  **( Login Required )**
 
 Add a like reaction to a specific post.
 
@@ -1507,7 +1507,7 @@ Add a like reaction to a specific post.
 
 ### Unlike Post
 
-**delete** `/forums/reaction/like`  **( Login Required )**
+**DELETE** `/forums/reaction/like`  **( Login Required )**
 
 Remove a like reaction from a specific post.
 
@@ -1532,7 +1532,7 @@ Remove a like reaction from a specific post.
 
 ### Report Post
 
-**post** `/forums/report/`  **( Login Required )**
+**POST** `/forums/report`  **( Login Required )**
 
 Flags a forum post for administrative review due to content violations.
 
@@ -1558,7 +1558,7 @@ Flags a forum post for administrative review due to content violations.
 
 ### Get Categories
 
-**get** `/insights/category/`
+**GET** `/insights/category`
 
 Retrieve a paginated list of available forum categories.
 
@@ -1585,7 +1585,7 @@ Retrieve a paginated list of available forum categories.
 
 ### Get Published Posts
 
-**get** `/insights/post/`
+**GET** `/insights/post`
 
 Retrieve a paginated list of general published posts.
 
@@ -1625,7 +1625,7 @@ Retrieve a paginated list of general published posts.
 
 ### Get user's education
 
-**get** `/education/`
+**GET** `/education`
 
 Get education for a specific user
 
@@ -1672,7 +1672,7 @@ Get education for a specific user
 
 ### Get my education
 
-**get** `/education/me`  **( Login Required )**
+**GET** `/education/me`  **( Login Required )**
 
 Get education for the current logged in user
 
@@ -1718,7 +1718,7 @@ Get education for the current logged in user
 
 ### Get user's education
 
-**get** `/education/students`
+**GET** `/education/students`
 
 Get education for a specific user
 
@@ -1759,7 +1759,7 @@ Get education for a specific user
 
 ### Add Education
 
-**post** `/education/`  **( Login Required )**
+**POST** `/education`  **( Login Required )**
 
 Add education
 
@@ -1811,7 +1811,7 @@ Add education
 
 ### Add Education
 
-**put** `/education/`  **( Login Required )**
+**PUT** `/education`  **( Login Required )**
 
 Add education
 
@@ -1864,7 +1864,7 @@ Add education
 
 ### Add Education
 
-**delete** `/education/`  **( Login Required )**
+**DELETE** `/education`  **( Login Required )**
 
 Add education
 
@@ -1912,7 +1912,7 @@ Add education
 
 ### Get institute
 
-**get** `/institute/`
+**GET** `/institute`
 
 Get details of a specific institute
 
@@ -1965,7 +1965,7 @@ Get details of a specific institute
 
 ### Get institutes
 
-**get** `/institute/filter`
+**GET** `/institute/filter`
 
 Get short institutes with
 
@@ -2001,7 +2001,7 @@ Get short institutes with
 
 ### Get Map: country-state
 
-**get** `/institute/state`
+**GET** `/institute/state`
 
 Get country state map in format {country: state}[]
 
@@ -2019,7 +2019,7 @@ Get country state map in format {country: state}[]
 
 ### Get Map: state-district
 
-**get** `/institute/district`
+**GET** `/institute/district`
 
 Get state district map in format {state: disctrict}[]
 
@@ -2039,7 +2039,7 @@ Get state district map in format {state: disctrict}[]
 
 ### Get Institute Reviews
 
-**get** `/institute/review/`
+**GET** `/institute/review`
 
 Retrieve a paginated list of reviews for institutes.
 
@@ -2090,7 +2090,7 @@ Retrieve a paginated list of reviews for institutes.
 
 ### Get My Review
 
-**get** `/institute/review/me`  **( Login Required )**
+**GET** `/institute/review/me`  **( Login Required )**
 
 Retrieve the current user's review on an institute.
 
@@ -2140,7 +2140,7 @@ Retrieve the current user's review on an institute.
 
 ### Create Review
 
-**post** `/institute/review/`  **( Login Required )**
+**POST** `/institute/review`  **( Login Required )**
 
 Submit a new review for an institute.
 
@@ -2193,7 +2193,7 @@ Submit a new review for an institute.
 
 ### Update Review
 
-**patch** `/institute/review/`  **( Login Required )**
+**PATCH** `/institute/review`  **( Login Required )**
 
 Edit the content of an existing review.
 
@@ -2245,7 +2245,7 @@ Edit the content of an existing review.
 
 ### Delete Review
 
-**delete** `/institute/review/`  **( Login Required )**
+**DELETE** `/institute/review`  **( Login Required )**
 
 Permanently remove a review.
 
@@ -2297,7 +2297,7 @@ Permanently remove a review.
 
 ### Get Messages
 
-**get** `/institute/community-chat/message/`
+**GET** `/institute/community-chat/message`
 
 Retrieve a paginated list of messages.
 
@@ -2352,7 +2352,7 @@ Retrieve a paginated list of messages.
 
 ### Send Message
 
-**post** `/institute/community-chat/message/`  **( Login Required )**
+**POST** `/institute/community-chat/message`  **( Login Required )**
 
 Create and send a new message.
 
@@ -2409,7 +2409,7 @@ Create and send a new message.
 
 ### Update Message
 
-**patch** `/institute/community-chat/message/`  **( Login Required )**
+**PATCH** `/institute/community-chat/message`  **( Login Required )**
 
 Edit the content of an existing message.
 
@@ -2465,7 +2465,7 @@ Edit the content of an existing message.
 
 ### Delete Message
 
-**delete** `/institute/community-chat/message/`  **( Login Required )**
+**DELETE** `/institute/community-chat/message`  **( Login Required )**
 
 Remove a message.
 
@@ -2521,7 +2521,7 @@ Remove a message.
 
 ### Like Message
 
-**post** `/institute/community-chat/reaction/like`  **( Login Required )**
+**POST** `/institute/community-chat/reaction/like`  **( Login Required )**
 
 Add a like reaction to a specific message.
 
@@ -2544,7 +2544,7 @@ Add a like reaction to a specific message.
 
 ### Unlike Message
 
-**delete** `/institute/community-chat/reaction/like`  **( Login Required )**
+**DELETE** `/institute/community-chat/reaction/like`  **( Login Required )**
 
 Remove a like reaction from a specific message.
 
@@ -2569,7 +2569,7 @@ Remove a like reaction from a specific message.
 
 ### Give Feedback
 
-**post** `/feedback/`
+**POST** `/feedback`
 
 Give feedback on website or app
 
@@ -2587,7 +2587,7 @@ Give feedback on website or app
 
 ### Get active chats
 
-**get** `/chats/active`  **( Login Required )**
+**GET** `/chats/active`  **( Login Required )**
 
 Get chats in order of latest activity
 
@@ -2638,7 +2638,7 @@ Get chats in order of latest activity
 
 ### Get chat messages
 
-**get** `/chats/message/`  **( Login Required )**
+**GET** `/chats/message`  **( Login Required )**
 
 Get messages of a chat
 
@@ -2673,7 +2673,7 @@ Get messages of a chat
 
 ### Send Message: Chat
 
-**post** `/chats/message/`  **( Login Required )**
+**POST** `/chats/message`  **( Login Required )**
 
 Send message in a chat
 
@@ -2709,7 +2709,7 @@ Send message in a chat
 
 ### Send Message: User
 
-**post** `/chats/message/user`  **( Login Required )**
+**POST** `/chats/message/user`  **( Login Required )**
 
 Send message to a user if not knowing chat
 
@@ -2745,7 +2745,7 @@ Send message to a user if not knowing chat
 
 ### Get chat messages
 
-**get** `/chats/message/latest`  **( Login Required )**
+**GET** `/chats/message/latest`  **( Login Required )**
 
 Get messages of a chat
 
@@ -2781,7 +2781,7 @@ Get messages of a chat
 
 ### Get Institute's Ambassadors
 
-**get** `/ambassador/institute`
+**GET** `/ambassador/institute`
 
 Get users list of ambassadors for queried institute
 
@@ -2824,7 +2824,7 @@ Get users list of ambassadors for queried institute
 
 ### Get Request Status
 
-**get** `/ambassador/request/me`  **( Login Required )**
+**GET** `/ambassador/request/me`  **( Login Required )**
 
 Get status request of the current logged in user
 
@@ -2859,7 +2859,7 @@ Get status request of the current logged in user
 
 ### Request for ambassador position
 
-**post** `/ambassador/request/`  **( Login Required )**
+**POST** `/ambassador/request`  **( Login Required )**
 
 Request will not happen if already an ambassador or if not a student of applied institute
 
@@ -2883,7 +2883,7 @@ Request will not happen if already an ambassador or if not a student of applied 
 
 ### Update Request
 
-**patch** `/ambassador/request/`  **( Login Required )**
+**PATCH** `/ambassador/request`  **( Login Required )**
 
 Update request's institute or reason
 
@@ -2908,7 +2908,7 @@ Update request's institute or reason
 
 ### Withdraw Request
 
-**delete** `/ambassador/request/`  **( Login Required )**
+**DELETE** `/ambassador/request`  **( Login Required )**
 
 Withdraw your request of ambassador
 
