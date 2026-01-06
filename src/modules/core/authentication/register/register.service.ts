@@ -10,7 +10,7 @@ import { AuthService } from "../auth.service";
 import db from "@config/database";
 import { ProfileService } from "@modules/core/profile";
 import { WalletService } from "@modules/core/wallet";
-import { WALLET_AMOUNT } from "@config/constants/coins-per-action";
+import { WALLET } from "@config/constants/coins-per-action";
 
 class _RegisterService {
   createBasic = async (data: RegisterBasicDto) => {
@@ -65,19 +65,20 @@ class _RegisterService {
     if (!data.referralCode || !data.deviceId) return;
 
     const referrer = await UserService.getByReferralCode(data.referralCode);
+    const referrerData = referrer.plain;
     await ReferralUseService.createNew({
       deviceId: data.deviceId,
       referralCodeUsed: data.referralCode,
-      referrerId: referrer.plain.id,
+      referrerId: referrerData.id,
       userId,
     });
+
+    await WalletService.updateBalanceByUserId(WALLET.REFERRAL, userId);
+    await WalletService.updateBalanceByUserId(WALLET.REFERRAL, referrerData.id);
   };
 
   availWalletOffer = async (userId: string) => {
-    await WalletService.updateBalanceByUserId(
-      WALLET_AMOUNT.REGISTRATION_SUCCESS,
-      userId
-    );
+    await WalletService.updateBalanceByUserId(WALLET.REGISTRATION, userId);
   };
 }
 

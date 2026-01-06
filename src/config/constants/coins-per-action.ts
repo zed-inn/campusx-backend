@@ -1,3 +1,4 @@
-export const WALLET_AMOUNT = {
-  REGISTRATION_SUCCESS: 50,
+export const WALLET = {
+  REGISTRATION: 50,
+  REFERRAL: 50,
 };
