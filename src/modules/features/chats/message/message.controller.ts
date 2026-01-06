@@ -9,6 +9,7 @@ import {
   MessageCreateChatDto,
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
+import { MessageAggregator } from "./message.aggregator";
 
 export class MessageController {
   static getLatestMessages = catchAsync(
@@ -17,7 +18,8 @@ export class MessageController {
       const q = req.query;
 
       const iMessages = await MessageService.getLatest(user.id, q.page);
-      const pMessages = iMessages.map((m) => MessageSchema.parse(m));
+      const tMessages = await MessageAggregator.transform(iMessages);
+      const pMessages = tMessages.map((m) => MessageSchema.parse(m));
 
       return ApiResponse.success(res, "Messages.", { messages: pMessages });
     }
@@ -33,7 +35,8 @@ export class MessageController {
         q.page,
         user.id
       );
-      const pMessages = iMessages.map((m) => MessageSchema.parse(m));
+      const tMessages = await MessageAggregator.transform(iMessages);
+      const pMessages = tMessages.map((m) => MessageSchema.parse(m));
 
       return ApiResponse.success(res, "Messages.", { messages: pMessages });
     }
@@ -44,7 +47,8 @@ export class MessageController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iMessage = await MessageService.createByChatId(req.body, user.id);
-      const pMessage = MessageSchema.parse(iMessage);
+      const [tMessage] = await MessageAggregator.transform([iMessage.plain]);
+      const pMessage = MessageSchema.parse(tMessage);
 
       return ApiResponse.success(res, "Messaged.", { message: pMessage });
     }
@@ -58,7 +62,8 @@ export class MessageController {
         req.body,
         user.id
       );
-      const pMessage = MessageSchema.parse(iMessage);
+      const [tMessage] = await MessageAggregator.transform([iMessage.plain]);
+      const pMessage = MessageSchema.parse(tMessage);
 
       return ApiResponse.success(res, "Messaged.", { message: pMessage });
     }

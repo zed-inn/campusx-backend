@@ -6,7 +6,9 @@ const namespace = createNamespace("db-transaction");
 Sequelize.useCLS(namespace);
 
 const db = new Sequelize(
-  env.POSTGRESQL_DATABASE,
+  env.NODE_ENV === "test"
+    ? env.POSTGRESQL_DATABASE_TEST
+    : env.POSTGRESQL_DATABASE,
   env.POSTGRESQL_USERNAME,
   env.POSTGRESQL_PASSWORD,
   {

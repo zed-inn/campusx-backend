@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "nodemon",
+    "dev": "NODE_ENV=development nodemon",
     "build": "npm install && npm run clean && tsc && tsc-alias",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "NODE_ENV=test jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,16 @@
     "@types/cls-hooked": "^4.3.9",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.10.4",
     "@types/nodemailer": "^7.0.4",
+    "@types/supertest": "^6.0.3",
     "dotenv": "^17.2.3",
+    "jest": "^30.2.0",
     "read-excel-file": "^6.0.1",
+    "supertest": "^7.1.4",
     "ts-alias": "^0.0.7",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",

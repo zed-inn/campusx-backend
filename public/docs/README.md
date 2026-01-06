@@ -2585,6 +2585,9 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
+      chat: {
+        localId: string | null;
+      };
     }[];
   };
 }
@@ -2621,6 +2624,9 @@ Send message in a chat
       chatId: string;
       body: string;
       status: string;
+      chat: {
+        localId: string | null;
+      };
     };
   };
 }
@@ -2657,6 +2663,9 @@ Send message to a user if not knowing chat
       chatId: string;
       body: string;
       status: string;
+      chat: {
+        localId: string | null;
+      };
     };
   };
 }
@@ -2691,6 +2700,9 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
+      chat: {
+        localId: string | null;
+      };
     }[];
   };
 }
