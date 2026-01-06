@@ -1,4 +1,5 @@
 echo "Pulling from the latest commit"
+git stash
 git pull origin main
 echo "Pull complete"
 

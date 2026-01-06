@@ -1642,11 +1642,11 @@ Get education for the current logged in user
 
 ---
 
-### Get user's education
+### Get Institute Students
 
 **GET** `/education/students`
 
-Get education for a specific user
+Get students for a specific institute
 
 **Query Parameters :**
 ```ts
@@ -1683,11 +1683,11 @@ Get education for a specific user
 
 ---
 
-### Add Education
+### Add Educations
 
 **POST** `/education`  **( Login Required )**
 
-Add education
+Add educations
 
 **Body :**
 ```ts
@@ -1742,11 +1742,11 @@ Add education
 
 ---
 
-### Add Education
+### Update Education
 
 **PUT** `/education`  **( Login Required )**
 
-Add education
+Update a specific education
 
 **Body :**
 ```ts
@@ -1795,11 +1795,11 @@ Add education
 
 ---
 
-### Add Education
+### Delete Education
 
 **DELETE** `/education`  **( Login Required )**
 
-Add education
+Remove education for your profile
 
 **Query Parameters :**
 ```ts

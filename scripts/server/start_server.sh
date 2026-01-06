@@ -1,4 +1,5 @@
 echo "Pulling new code"
+git stash
 git pull
 
 npm run build
