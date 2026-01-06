@@ -2622,6 +2622,7 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
+      createDateLocal: number | null;
     }[];
   };
 }
@@ -2641,6 +2642,7 @@ Send message in a chat
   localId: string | null;
   chatId: string;
   body: string;
+  createDateLocal: number | null;
 }
 ```
 
@@ -2658,6 +2660,7 @@ Send message in a chat
       chatId: string;
       body: string;
       status: string;
+      createDateLocal: number | null;
     };
   };
 }
@@ -2676,6 +2679,7 @@ Send message to a user if not knowing chat
 {
   localId: string | null;
   body: string;
+  createDateLocal: number | null;
   userId: string;
 }
 ```
@@ -2694,6 +2698,7 @@ Send message to a user if not knowing chat
       chatId: string;
       body: string;
       status: string;
+      createDateLocal: number | null;
     };
   };
 }
@@ -2728,6 +2733,7 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
+      createDateLocal: number | null;
     }[];
   };
 }

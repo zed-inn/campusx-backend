@@ -6,6 +6,7 @@ export const MessageCreateChatSchema = z.object({
   localId: MessageModel.fields.localId.default(null),
   chatId: MessageModel.fields.chatId,
   body: MessageModel.fields.body,
+  createDateLocal: MessageModel.fields.createDateLocal.default(null),
 });
 
 export type MessageCreateChatDto = z.infer<typeof MessageCreateChatSchema>;

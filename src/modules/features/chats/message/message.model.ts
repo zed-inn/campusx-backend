@@ -18,6 +18,7 @@ export const MessageModel = modelSchema({
     .min(MESSAGE.BODY.LENGTH.MIN, { error: "Message is too short" })
     .min(MESSAGE.BODY.LENGTH.MAX, { error: "Message is too long" }),
   status: z.enum(MESSAGE.STATUS._),
+  createDateLocal: z.int().positive().nullable(),
 });
 
 export type MessageAttributes = z.infer<typeof MessageModel.dbSchema>;
@@ -57,6 +58,15 @@ export const Message = defineModel<
     values: MESSAGE.STATUS._,
     defaultValue: MESSAGE.STATUS.Sent,
     allowNull: false,
+  },
+  createDateLocal: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    defaultValue: null,
+    get() {
+      const rawValue = this.getDataValue("createDateLocal");
+      return rawValue ? parseInt(rawValue as string, 10) : null;
+    },
   },
 });
 
