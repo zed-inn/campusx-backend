@@ -1,0 +1,3 @@
+export const WALLET_AMOUNT = {
+  REGISTRATION_SUCCESS: 50,
+};

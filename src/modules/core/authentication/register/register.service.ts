@@ -9,6 +9,8 @@ import {
 import { AuthService } from "../auth.service";
 import db from "@config/database";
 import { ProfileService } from "@modules/core/profile";
+import { WalletService } from "@modules/core/wallet";
+import { WALLET_AMOUNT } from "@config/constants/coins-per-action";
 
 class _RegisterService {
   createBasic = async (data: RegisterBasicDto) => {
@@ -20,11 +22,14 @@ class _RegisterService {
         password: data.password,
         role: "STUDENT",
       });
+      const userData = user.plain;
 
       await this.registerReferralCode(
         RegisterReferralUseSchema.parse(data),
-        user.plain.id
+        userData.id
       );
+
+      await this.availWalletOffer(userData.id);
 
       return AuthService.createAuthResponse(user.plain);
     });
@@ -38,13 +43,16 @@ class _RegisterService {
         email,
         role: "STUDENT",
       });
+      const userData = user.plain;
 
       await this.registerReferralCode(
         RegisterReferralUseSchema.parse(data),
-        user.plain.id
+        userData.id
       );
 
-      await ProfileService.createStudent(sData, user.dataValues.id);
+      await this.availWalletOffer(userData.id);
+
+      await ProfileService.createStudent(sData, userData.id);
 
       return AuthService.createAuthResponse(user.plain);
     });
@@ -63,6 +71,13 @@ class _RegisterService {
       referrerId: referrer.plain.id,
       userId,
     });
+  };
+
+  availWalletOffer = async (userId: string) => {
+    await WalletService.updateBalanceByUserId(
+      WALLET_AMOUNT.REGISTRATION_SUCCESS,
+      userId
+    );
   };
 }
 

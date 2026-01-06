@@ -614,6 +614,29 @@ Reports a user
 
 ---
 
+## User
+
+### Get Wallet Info
+
+**get** `/user/wallet/me`  **( Login Required )**
+
+Get the referral Code and the wallet balance of the current logged in user
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    referralCode: string;
+    wallet: {
+      balance: number;
+    };
+  };
+}
+```
+
+---
+
 ## Follow
 
 ### Follow User
