@@ -7,7 +7,8 @@ export const CommentSchema = CommentModel.dbSchema.extend({
   parentComment: CommentModel.dbSchema
     .pick({ id: true, body: true })
     .extend({ writer: ShortUserSchema })
-    .nullable(),
+    .nullable()
+    .default(null),
 });
 
 export type CommentDto = z.infer<typeof CommentSchema>;

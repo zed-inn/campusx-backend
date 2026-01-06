@@ -34,7 +34,7 @@ export class CommentController {
         req.body,
         user.id
       );
-      const tComment = await CommentAggregator.transform([iComment.plain]);
+      const [tComment] = await CommentAggregator.transform([iComment.plain]);
       const pComment = CommentSchema.parse(tComment);
 
       // TODO: notify user, include forum in comment service
@@ -48,7 +48,7 @@ export class CommentController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iComment = await CommentService.update(req.body, user.id);
-      const tComment = await CommentAggregator.transform([iComment.plain]);
+      const [tComment] = await CommentAggregator.transform([iComment.plain]);
       const pComment = CommentSchema.parse(tComment);
 
       return ApiResponse.success(res, "Comment updated.", {
