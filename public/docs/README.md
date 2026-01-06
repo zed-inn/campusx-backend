@@ -2225,6 +2225,26 @@ Retrieve a paginated list of messages.
         likes: number;
       };
       isLiked: boolean;
+      parentMessage: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      } | null;
     }[];
   };
 }
@@ -2282,6 +2302,26 @@ Create and send a new message.
         likes: number;
       };
       isLiked: boolean;
+      parentMessage: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      } | null;
     };
   };
 }
@@ -2338,6 +2378,26 @@ Edit the content of an existing message.
         likes: number;
       };
       isLiked: boolean;
+      parentMessage: {
+        id: string;
+        body: string;
+        writer: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      } | null;
     };
   };
 }
