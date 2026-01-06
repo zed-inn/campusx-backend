@@ -13,6 +13,7 @@ import { InstituteCommunityChatRouter } from "@modules/features/institute-commun
 import { InstituteReviewRouter } from "@modules/features/institute-review";
 import { DetailedRouter } from "./infra/http/detailed-router";
 import { generateReadme } from "./docs/generate-readme";
+import { UploadRouter } from "@modules/features/upload/upload.route";
 
 const router = new DetailedRouter("CampusX Backend");
 
@@ -30,6 +31,7 @@ const routers: Record<string, DetailedRouter> = {
   "/feedback": FeedbackRouter,
   "/chats": ChatsRouter,
   "/ambassador": AmbassadorRouter,
+  "/upload": UploadRouter,
 };
 
 for (const key of Object.keys(routers)) {

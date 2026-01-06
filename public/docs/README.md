@@ -2934,3 +2934,23 @@ Withdraw your request of ambassador
 
 ---
 
+## Upload Files
+
+### Upload Image
+
+**POST** `/upload`  **( Login Required )**
+
+Upload image
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    url: string;
+  };
+}
+```
+
+---
+
