@@ -76,7 +76,7 @@ export class PostController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iPost = await PostService.create({ ...req.body, userId: user.id });
-      const tPost = await PostAggregator.transform([iPost.plain]);
+      const [tPost] = await PostAggregator.transform([iPost.plain]);
       const pPost = PostSchema.parse(tPost);
 
       return ApiResponse.success(res, "Forum created.", { forum: pPost });
@@ -88,7 +88,7 @@ export class PostController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iPost = await PostService.update(req.body, user.id);
-      const tPost = await PostAggregator.transform([iPost.plain]);
+      const [tPost] = await PostAggregator.transform([iPost.plain]);
       const pPost = PostSchema.parse(tPost);
 
       return ApiResponse.success(res, "Forum updated.", { forum: pPost });
