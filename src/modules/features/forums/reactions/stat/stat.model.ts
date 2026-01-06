@@ -20,7 +20,7 @@ export type ReactionStatCreationAttributes = Omit<
 export const ReactionStat = defineModel<
   ReactionStatAttributes,
   ReactionStatCreationAttributes
->(db, "ReactionStat", {
+>(db, "ForumsReactionStat", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
