@@ -23,4 +23,6 @@ jobs:
           script: |
             cd ~/test-server
 
+            chmod +x ./scripts/server/*.sh
+
             ./scripts/server/reload_server.sh
