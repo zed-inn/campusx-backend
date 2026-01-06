@@ -3,7 +3,7 @@ import { PasswordSchema, UserModel } from "@modules/core/user";
 import { z } from "zod";
 
 export const RegisterReferralUseSchema = z.object({
-  referralCode: UserModel.fields.referralCode.nullable().default(null),
+  referralCode: z.string().nullable().default(null),
   deviceId: z.string("Invalid Device Id").nullable().default(null),
 });
 

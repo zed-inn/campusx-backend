@@ -64,17 +64,22 @@ class _RegisterService {
   ) => {
     if (!data.referralCode || !data.deviceId) return;
 
-    const referrer = await UserService.getByReferralCode(data.referralCode);
-    const referrerData = referrer.plain;
-    await ReferralUseService.createNew({
-      deviceId: data.deviceId,
-      referralCodeUsed: data.referralCode,
-      referrerId: referrerData.id,
-      userId,
-    });
+    try {
+      const referrer = await UserService.getByReferralCode(data.referralCode);
+      const referrerData = referrer.plain;
+      await ReferralUseService.createNew({
+        deviceId: data.deviceId,
+        referralCodeUsed: data.referralCode,
+        referrerId: referrerData.id,
+        userId,
+      });
 
-    await WalletService.updateBalanceByUserId(WALLET.REFERRAL, userId);
-    await WalletService.updateBalanceByUserId(WALLET.REFERRAL, referrerData.id);
+      await WalletService.updateBalanceByUserId(WALLET.REFERRAL, userId);
+      await WalletService.updateBalanceByUserId(
+        WALLET.REFERRAL,
+        referrerData.id
+      );
+    } catch {}
   };
 
   availWalletOffer = async (userId: string) => {
