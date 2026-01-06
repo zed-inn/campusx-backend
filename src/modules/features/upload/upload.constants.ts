@@ -4,6 +4,7 @@ export const UPLOAD = {
   MIME_TYPES: {
     ALLOWED: createEnum([
       "image/jpeg",
+      "image/jpg",
       "image/png",
       "image/webp",
       "image/gif",

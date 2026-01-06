@@ -1,16 +1,15 @@
 import fs from "fs/promises";
 import path from "path";
 import { Institute } from "../institute.model";
-import { connectDB } from "@config/database";
+import { connectDB, disconnectDB } from "@config/database";
 import { CreateBySheetSchema } from "../dtos/institute-create.dto";
 
-const run = async () => {
-  await connectDB();
-
+export const dataFill = async () => {
   const data = (
     await fs.readFile(path.join(__dirname, "./data/data.json"))
   ).toString();
 
+  console.log("Institutes filling up...");
   try {
     const parsedData = (JSON.parse(data) as any[]).map((x) =>
       CreateBySheetSchema.parse(x)
@@ -30,6 +29,14 @@ const run = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const run = async () => {
+  await connectDB();
+
+  await dataFill();
+
+  await disconnectDB();
 };
 
 run();

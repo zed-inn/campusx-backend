@@ -1,6 +1,13 @@
 import { UserModel } from "@modules/core/user";
 import { GlobalSchema } from "@shared/dtos/global.dto";
 import { z } from "zod";
+import { PostModel } from "../post.model";
+
+export const PostGetOneSchema = z.object({
+  id: PostModel.fields.id,
+});
+
+export type PostGetOneDto = z.infer<typeof PostGetOneSchema>;
 
 export const PostGetUsersSchema = z.object({
   userId: UserModel.fields.id,

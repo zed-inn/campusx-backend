@@ -8,6 +8,7 @@ import { PostController } from "./post.controller";
 import {
   PostGetLatestSchema,
   PostGetMineSchema,
+  PostGetOneSchema,
   PostGetUsersSchema,
 } from "./dtos/post-get.dto";
 import { PostSchema } from "./dtos/post-response.dto";
@@ -53,7 +54,13 @@ router
   .describe("Get My Posts", "Retrieve the current user's post history.")
   .userProfiled()
   .query(PostGetMineSchema)
-  .output("forums", array(PostSchema), "Forum fetched.")
+  .output("forums", array(PostSchema), "Forums fetched.")
   .get("/user/me", PostController.getMyPosts);
+
+router
+  .describe("Get One", "Get one forum by Id")
+  .query(PostGetOneSchema)
+  .output("forum", PostSchema, "Forum fetched.")
+  .get("/", PostController.getOnePost);
 
 export const PostRouter = router;

@@ -5,6 +5,7 @@ import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import {
   PostGetLatestDto,
   PostGetMineDto,
+  PostGetOneDto,
   PostGetUsersDto,
 } from "./dtos/post-get.dto";
 import { PostService } from "./post.service";
@@ -18,6 +19,21 @@ import {
 import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 export class PostController {
+  static getOnePost = catchAsync(
+    async (req: Request<{}, {}, {}, PostGetOneDto>, res: Response) => {
+      const q = req.query;
+
+      const iPost = await PostService.getById(q.id);
+      const [tPost] = await PostAggregator.transform(
+        [iPost.plain],
+        req.user?.id
+      );
+      const pPost = PostSchema.parse(tPost);
+
+      return ApiResponse.success(res, "Forum fetched.", { forum: pPost });
+    }
+  );
+
   static getLatestPosts = catchAsync(
     async (req: Request<{}, {}, {}, PostGetLatestDto>, res: Response) => {
       const q = req.query;
