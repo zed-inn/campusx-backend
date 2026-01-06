@@ -1,6 +1,6 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "@config/aws/s3";
-import { env } from "process";
+import { env } from "@config/env";
 import { v4 as uuidv4 } from "uuid";
 import { UPLOAD } from "./upload.constants";
 import { AppError } from "@shared/errors/app-error";
@@ -32,8 +32,9 @@ class _UploadService {
 
   putObjectInS3Bucket = async (file: File) => {
     const detected = await this.filterTruest(file);
-    const key = `uploads/${uuidv4()}.${detected.ext}`;
     const compressedBuffer = await this.compressImage(file.buffer);
+    const s3Dir = env.NODE_ENV === "production" ? "uploads" : "dev";
+    const key = `${s3Dir}/${uuidv4()}.${detected.ext}`;
 
     await s3.send(
       new PutObjectCommand({
