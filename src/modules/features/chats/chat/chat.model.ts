@@ -9,7 +9,6 @@ import { AppError } from "@shared/errors/app-error";
 
 export const ChatModel = modelSchema({
   id: z.uuidv4("Invalid Chat Id"),
-  localId: z.string("Invalid Local Id").nullable(),
   userOneId: z.uuidv4("Invalid User Id"),
   userTwoId: z.uuidv4("Invalid User Id"),
 });
@@ -25,7 +24,6 @@ export const Chat = defineModel<ChatAttributes, ChatCreationAttributes>(
   "UserChat",
   {
     id: { ...PRIMARY_ID },
-    localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     userOneId: {
       type: DataTypes.UUID,
       allowNull: false,

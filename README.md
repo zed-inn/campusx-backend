@@ -2497,6 +2497,53 @@ Give feedback on website or app
 
 ## Chat/DM
 
+### Get Chat
+
+**GET** `/chats`  **( Login Required )**
+
+Get chat details by chatId
+
+**Query Parameters :**
+```ts
+{
+  id: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    chat: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userOneId: string;
+      userTwoId: string;
+      friend: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        } | null;
+      };
+    };
+  };
+}
+```
+
+---
+
 ### Get active chats
 
 **GET** `/chats/active`  **( Login Required )**
@@ -2520,7 +2567,6 @@ Get chats in order of latest activity
       createDate: number;
       updateDate: number;
       id: string;
-      localId: string | null;
       userOneId: string;
       userTwoId: string;
       friend: {
@@ -2576,9 +2622,6 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
-      chat: {
-        localId: string | null;
-      };
     }[];
   };
 }
@@ -2615,9 +2658,6 @@ Send message in a chat
       chatId: string;
       body: string;
       status: string;
-      chat: {
-        localId: string | null;
-      };
     };
   };
 }
@@ -2654,9 +2694,6 @@ Send message to a user if not knowing chat
       chatId: string;
       body: string;
       status: string;
-      chat: {
-        localId: string | null;
-      };
     };
   };
 }
@@ -2691,9 +2728,6 @@ Get messages of a chat
       chatId: string;
       body: string;
       status: string;
-      chat: {
-        localId: string | null;
-      };
     }[];
   };
 }

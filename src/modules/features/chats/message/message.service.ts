@@ -28,7 +28,7 @@ class _MessageService extends BaseService<MessageInstance> {
     const { userId: receiverId, ...createData } = data;
     const chat = await ChatService.getByMembers(userId, receiverId);
 
-    return await this.create({ ...createData, userId });
+    return await this.create({ ...createData, userId, chatId: chat.plain.id });
   };
 
   getChatMessages = async (chatId: string, page: number, userId: string) => {
