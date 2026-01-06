@@ -16,7 +16,7 @@ export class _LoginService {
     const passwordMatch = await bcrypt.compare(password, userData.passwordHash);
     if (!passwordMatch) throw new AppError("Unauthorized", 401);
 
-    return AuthService.createAuthResponse(userData);
+    return await AuthService.createAuthResponse(userData);
   };
 
   loginBasicWithUsername = async (username: string, password: string) => {
@@ -28,15 +28,15 @@ export class _LoginService {
     const passwordMatch = await bcrypt.compare(password, userData.passwordHash);
     if (!passwordMatch) throw new AppError("Unauthorized", 401);
 
-    return AuthService.createAuthResponse(userData);
+    return await AuthService.createAuthResponse(userData);
   };
 
   loginGoogle = async (data: LoginGoogleDto) => {
     try {
       const user = await UserService.getByEmail(data.email);
-      return AuthService.createAuthResponse(user.plain);
+      return await AuthService.createAuthResponse(user.plain);
     } catch {
-      return RegisterService.createGoogle(data);
+      return await RegisterService.createGoogle(data);
     }
   };
 }

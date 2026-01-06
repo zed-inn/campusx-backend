@@ -116,6 +116,8 @@ Login with google mail
 **Body :**
 ```ts
 {
+  referralCode: string | null;
+  deviceId: string | null;
   fullName: string;
   avatarUrl: string | null;
   email: string;
@@ -170,6 +172,8 @@ Register using email and password
 **Body :**
 ```ts
 {
+  referralCode: string | null;
+  deviceId: string | null;
   otpToken: string;
   password: string;
 }
@@ -221,6 +225,8 @@ Register with google mail
 **Body :**
 ```ts
 {
+  referralCode: string | null;
+  deviceId: string | null;
   fullName: string;
   avatarUrl: string | null;
   email: string;

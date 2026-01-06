@@ -29,6 +29,13 @@ class _UserService extends BaseService<UserInstance> {
     return user;
   };
 
+  getByReferralCode = async (referralCode: string) => {
+    const user = await User.findOne({ where: { referralCode } });
+    if (!user) throw DB_Errors.notFound;
+
+    return user;
+  };
+
   updatePasswordByEmail = async (data: UpdatePasswordDto) => {
     const user = await this.getByEmail(data.email);
 

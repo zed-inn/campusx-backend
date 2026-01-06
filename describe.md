@@ -489,6 +489,9 @@ createdAt : string,
 updatedAt : string
 ]
 
+## ReferralUse
+
+
 ## Report - /report
 
 **Model** - Report(UserReport)[
@@ -641,3 +644,5 @@ get users by instituteId
 ]
 
 - Get institute's ambassadors - /institute [GET] - (instituteId) - (shortusers)
+
+# Wallet

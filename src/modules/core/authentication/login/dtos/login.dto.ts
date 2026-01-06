@@ -1,6 +1,7 @@
 import { ProfileModel } from "@modules/core/profile";
 import { PasswordSchema, UserModel } from "@modules/core/user";
 import { z } from "zod";
+import { RegisterGoogleSchema } from "../../register/dtos/register.dto";
 
 export const LoginBasicSchema = z.object({
   email: UserModel.fields.email.optional(),
@@ -10,10 +11,6 @@ export const LoginBasicSchema = z.object({
 
 export type LoginBasicDto = z.infer<typeof LoginBasicSchema>;
 
-export const LoginGoogleSchema = z.object({
-  fullName: ProfileModel.fields.fullName,
-  avatarUrl: ProfileModel.fields.avatarUrl.default(null),
-  email: UserModel.fields.email,
-});
+export const LoginGoogleSchema = RegisterGoogleSchema;
 
 export type LoginGoogleDto = z.infer<typeof LoginGoogleSchema>;
