@@ -3,11 +3,13 @@ import { MessageAttributes } from "./message.model";
 import { MessageSchema } from "./dtos/discussion-response.dto";
 import { ReactionService } from "../reactions/reaction.service";
 import { ReactionStatService } from "../reactions/stat/stat.service";
+import { MessageService } from "./message.service";
 
 export type IncompleteMessage = MessageAttributes & {
   isLiked?: boolean;
   stats?: { likes: number };
   writer?: Record<string, unknown>;
+  parentMessage?: Record<string, unknown> | null;
 };
 
 export class MessageAggregator {
@@ -38,6 +40,28 @@ export class MessageAggregator {
     }));
   };
 
+  static addParentMessage = async (
+    messages: IncompleteMessage[],
+    reqUserId?: string | null
+  ) => {
+    const parentIds = messages
+      .map((m) => m.replyingTo)
+      .filter((m) => m !== null);
+
+    const iParentMessages = await MessageService.getByIds(parentIds);
+    const tParentMessages = await MessageAggregator.addWriter(
+      iParentMessages,
+      reqUserId
+    );
+    const parentMessageMap: Record<string, any> = {};
+    tParentMessages.map((m) => (parentMessageMap[m.id] = m));
+
+    return messages.map((m) => ({
+      ...m,
+      parentMessage: m.replyingTo ? parentMessageMap[m.replyingTo] : null,
+    }));
+  };
+
   static addWriter = async (
     messages: IncompleteMessage[],
     reqUserId?: string | null
@@ -58,7 +82,14 @@ export class MessageAggregator {
   ) => {
     const withIsLiked = await MessageAggregator.addIsLiked(messages);
     const withStats = await MessageAggregator.addStats(withIsLiked);
-    const withWriter = await MessageAggregator.addWriter(withStats, reqUserId);
+    const withParentMessage = await MessageAggregator.addParentMessage(
+      withStats,
+      reqUserId
+    );
+    const withWriter = await MessageAggregator.addWriter(
+      withParentMessage,
+      reqUserId
+    );
 
     return withWriter.map((m) => MessageSchema.parse(m));
   };

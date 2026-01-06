@@ -8,6 +8,13 @@ export const MessageSchema = MessageModel.dbSchema.extend({
     .object({ likes: z.number().nonnegative().default(0) })
     .default({ likes: 0 }),
   isLiked: z.boolean().default(false),
+  parentMessage: MessageModel.dbSchema
+    .pick({
+      id: true,
+      body: true,
+    })
+    .extend({ writer: ShortUserSchema })
+    .nullable(),
 });
 
 export type MessageDto = z.infer<typeof MessageSchema>;
