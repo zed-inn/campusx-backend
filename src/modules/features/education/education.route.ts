@@ -31,7 +31,7 @@ router
   .userProfiled()
   .query(EducationGetMineSchema)
   .output("educations", array(EducationSchema), "User's education.")
-  .get("/me", EducationController.getUserEducation);
+  .get("/me", EducationController.getMyEducation);
 
 router
   .describe("Get Institute Students", "Get students for a specific institute")

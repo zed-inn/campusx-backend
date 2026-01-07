@@ -9,7 +9,6 @@ import { BaseService } from "@shared/services/base.service";
 import { INSTITUTES_PER_PAGE } from "@config/constants/items-per-page";
 import { hasKeys } from "@shared/utils/object-length";
 import {
-  EducationCreateDto,
   EducationCreateOneDto,
   EducationUpdateDto,
 } from "./dtos/education-action.dto";

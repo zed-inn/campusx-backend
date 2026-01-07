@@ -12,7 +12,6 @@ import { EducationAggregator } from "./education.aggregator";
 import {
   EducationCreateResponseDto,
   EducationCreateResponseSchema,
-  EducationDto,
   EducationSchema,
 } from "./dtos/education-response.dto";
 import {
