@@ -25,7 +25,6 @@ jobs:
         run: npm run build
 
       - name: Prepare Artifact
-        # We zip the dist folder and package.json
         run: tar -czf release.tar.gz dist package.json package-lock.json
 
       - name: Upload Artifact
@@ -61,20 +60,12 @@ jobs:
           script: |
             cd /home/ec2-user/test-server
 
-            # 1. Unzip
             tar -xzf release.tar.gz
 
-            # 2. Install only prod deps
             npm ci --omit=dev
 
-            # 3. RESTART LOGIC FOR FOREVER
-            # We try to stop the existing process. 
-            # '|| true' ensures the script doesn't fail if the app isn't running yet.
             forever stop dist/server.js || true
 
-            # 4. Start it with memory limits (Crucial for your 1GB server)
-            # -c tells forever what command to run
             forever start -c "node --max-old-space-size=450" dist/server.js
 
-            # 5. Cleanup
             rm release.tar.gz
