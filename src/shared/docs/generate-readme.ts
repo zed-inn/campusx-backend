@@ -62,6 +62,10 @@ export const generateReadme = (
   }
 
   const outputPath = path.join(process.cwd(), fileName);
+  const dirPath = path.dirname(outputPath);
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
   fs.writeFileSync(outputPath, md);
 };
 
