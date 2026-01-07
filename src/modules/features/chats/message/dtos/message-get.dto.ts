@@ -4,7 +4,7 @@ import { GlobalSchema } from "@shared/dtos/global.dto";
 
 export const MessageGetChatSchema = z.object({
   chatId: MessageModel.fields.chatId,
-  page: GlobalSchema.fields.page,
+  timestamp: GlobalSchema.fields.timestamp,
 });
 
 export type MessageGetChatDto = z.infer<typeof MessageGetChatSchema>;

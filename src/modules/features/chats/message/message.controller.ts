@@ -30,7 +30,7 @@ export class MessageController {
 
       const iMessages = await MessageService.getChatMessages(
         q.chatId,
-        q.page,
+        q.timestamp,
         user.id
       );
       const pMessages = iMessages.map((m) => MessageSchema.parse(m));

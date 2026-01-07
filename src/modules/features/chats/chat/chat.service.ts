@@ -38,12 +38,14 @@ class _ChatService extends BaseService<ChatInstance> {
     return chat;
   };
 
-  getActiveChatsOfUser = async (userId: string, page: number) => {
+  getActiveChatsOfUser = async (userId: string, timestamp: number | null) => {
     const chats = await Chat.findAll({
-      where: { [Op.or]: [{ userOneId: userId }, { userTwoId: userId }] },
-      offset: this.OFFSET(page),
+      where: {
+        [Op.or]: [{ userOneId: userId }, { userTwoId: userId }],
+        updateDate: { [Op.gt]: timestamp ?? 0 },
+      },
       limit: CHATS_PER_PAGE,
-      order: [["updateDate", "desc"]],
+      order: [["updateDate", "asc"]],
     });
 
     return chats.map((c) => c.plain);

@@ -13,7 +13,10 @@ export class ChatController {
       const user = AuthPayloadSchema.parse(req.user);
       const q = req.query;
 
-      const iChats = await ChatService.getActiveChatsOfUser(q.userId, q.page);
+      const iChats = await ChatService.getActiveChatsOfUser(
+        q.userId,
+        q.timestamp
+      );
       const tChats = await ChatAggregator.transform(iChats, user.id);
       const pChats = tChats.map((c) => ChatSchema.parse(c));
 

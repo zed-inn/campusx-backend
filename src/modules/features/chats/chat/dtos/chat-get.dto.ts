@@ -5,7 +5,7 @@ import { ChatModel } from "../chat.model";
 
 export const ChatGetActiveSchema = z.object({
   userId: ProfileModel.fields.id,
-  page: GlobalSchema.fields.page,
+  timestamp: GlobalSchema.fields.timestamp,
 });
 
 export type ChatGetActiveDto = z.infer<typeof ChatGetActiveSchema>;

@@ -1944,12 +1944,32 @@ Get short institutes with
   message: string;
   data: {
     institutes: {
+      createDate: number;
+      updateDate: number;
       id: string;
+      aisheCode: string | null;
       name: string;
       shortName: string | null;
+      about: string | null;
       district: string | null;
       state: string | null;
       country: string | null;
+      address: string | null;
+      pinCode: number | null;
+      website: string | null;
+      location: string | null;
+      category: string | null;
+      administrativeMinistry: string | null;
+      standaloneType: string | null;
+      management: string | null;
+      collegeType: string | null;
+      universityName: string | null;
+      universityType: string | null;
+      phone: string | null;
+      landline: string | null;
+      imageUrl: string | null;
+      rating: number;
+      reviewsCount: number;
       yearOfEstablishment: string | null;
     }[];
   };
@@ -2609,7 +2629,7 @@ Get chats in order of latest activity
 ```ts
 {
   userId: string;
-  page: number;
+  timestamp: number | null;
 }
 ```
 
@@ -2659,7 +2679,7 @@ Get messages of a chat
 ```ts
 {
   chatId: string;
-  page: number;
+  timestamp: number | null;
 }
 ```
 

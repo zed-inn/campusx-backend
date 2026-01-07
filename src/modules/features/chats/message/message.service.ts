@@ -8,7 +8,6 @@ import {
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
 import { Op } from "sequelize";
-import { NotificationService } from "@modules/core/notifications";
 
 class _MessageService extends BaseService<MessageInstance> {
   protected OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
@@ -35,13 +34,16 @@ class _MessageService extends BaseService<MessageInstance> {
     return await this.create({ ...createData, userId, chatId: chat.plain.id });
   };
 
-  getChatMessages = async (chatId: string, page: number, userId: string) => {
+  getChatMessages = async (
+    chatId: string,
+    timestamp: number | null,
+    userId: string
+  ) => {
     const chat = await ChatService.getById(chatId);
     ChatService.belongsTo(chat, userId);
 
     const messages = await Message.findAll({
-      where: { chatId },
-      offset: this.OFFSET(page),
+      where: { chatId, updateDate: { [Op.gt]: timestamp ?? 0 } },
       limit: MESSAGES_PER_PAGE,
       order: [["updateDate", "desc"]],
     });
