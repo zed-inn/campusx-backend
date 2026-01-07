@@ -6,6 +6,11 @@ export const GlobalSchema = modelSchema({
     .number("Invalid page")
     .positive("Page must be from 1-Inf")
     .default(1),
+  timestamp: z.coerce
+    .number("Invalid timestamp")
+    .nonnegative("Timestamp can't be negative")
+    .nullable()
+    .default(null),
 });
 
 export const GlobalDeleteSchema = z.object({
