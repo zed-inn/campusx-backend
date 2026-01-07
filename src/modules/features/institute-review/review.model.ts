@@ -35,7 +35,7 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
   "InstituteReview",
   {
     id: { ...PRIMARY_ID },
-    localId: { type: DataTypes.STRING, allowNull: false, defaultValue: null },
+    localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
