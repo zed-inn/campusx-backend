@@ -51,7 +51,7 @@ router
   .userProfiled()
   .body(EducationUpdateSchema)
   .output("education", EducationSchema, "Education updated.")
-  .put("/", EducationController.updateEducation);
+  .patch("/", EducationController.updateEducation);
 
 router
   .describe("Delete Education", "Remove education for your profile")

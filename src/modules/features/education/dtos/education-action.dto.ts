@@ -25,16 +25,18 @@ export const EducationCreateSchema = z.object({
 
 export type EducationCreateDto = z.infer<typeof EducationCreateSchema>;
 
-export const EducationUpdateSchema = EducationModel.dbSchema.pick({
-  id: true,
-  description: true,
-  localId: true,
-  instituteId: true,
-  startMonth: true,
-  startYear: true,
-  endMonth: true,
-  endYear: true,
-});
+export const EducationUpdateSchema = EducationModel.dbSchema
+  .pick({
+    description: true,
+    localId: true,
+    instituteId: true,
+    startMonth: true,
+    startYear: true,
+    endMonth: true,
+    endYear: true,
+  })
+  .partial()
+  .extend(EducationModel.dbSchema.pick({ id: true }).shape);
 
 export type EducationUpdateDto = z.infer<typeof EducationUpdateSchema>;
 
