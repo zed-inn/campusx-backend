@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
 import { MESSAGE } from "./message.constants";
 import { defineModel } from "@shared/utils/define-model";
@@ -31,6 +31,7 @@ export const Message = defineModel<
   MessageCreationAttributes
 >(db, "InstituteMessage", {
   id: { ...PRIMARY_ID },
+  localId: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
   userId: {
     type: DataTypes.UUID,
     allowNull: false,

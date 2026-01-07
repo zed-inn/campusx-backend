@@ -39,7 +39,7 @@ export class MessageController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iMessage = await MessageService.createNew(req.body, user.id);
-      const tMessage = await MessageAggregator.transform([iMessage.plain]);
+      const [tMessage] = await MessageAggregator.transform([iMessage.plain]);
       const pMessage = MessageSchema.parse(tMessage);
 
       return ApiResponse.success(res, "Messaged.", { message: pMessage });
@@ -51,7 +51,7 @@ export class MessageController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iMessage = await MessageService.update(req.body, user.id);
-      const tMessage = await MessageAggregator.transform([iMessage.plain]);
+      const [tMessage] = await MessageAggregator.transform([iMessage.plain]);
       const pMessage = MessageSchema.parse(tMessage);
 
       return ApiResponse.success(res, "Message updated.", {

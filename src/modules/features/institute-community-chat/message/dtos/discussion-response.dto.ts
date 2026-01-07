@@ -14,7 +14,8 @@ export const MessageSchema = MessageModel.dbSchema.extend({
       body: true,
     })
     .extend({ writer: ShortUserSchema })
-    .nullable(),
+    .nullable()
+    .default(null),
 });
 
 export type MessageDto = z.infer<typeof MessageSchema>;
