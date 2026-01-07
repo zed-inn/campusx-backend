@@ -51,7 +51,12 @@ export const Post = defineModel<PostAttributes, PostCreationAttributes>(
     body: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     hindiTitle: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     hindiBody: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
-    imageUrl: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
+    imageUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null,
+      validate: { isUrl: true },
+    },
     categoryId: {
       type: DataTypes.UUID,
       allowNull: true,

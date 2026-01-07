@@ -61,7 +61,12 @@ export const Post = defineModel<PostAttributes, PostCreationAttributes>(
         },
       },
     },
-    imageUrl: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+      validate: { isUrl: true },
+    },
   }
 );
 

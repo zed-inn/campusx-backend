@@ -99,7 +99,12 @@ export const Institute = defineModel<
     },
     phone: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     landline: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
-    imageUrl: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+      validate: { isUrl: true },
+    },
     rating: {
       type: DataTypes.DECIMAL,
       allowNull: false,
