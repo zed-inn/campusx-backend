@@ -6,7 +6,7 @@ import { Chat } from "../chat/chat.model";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
 import { MESSAGE } from "./message.constants";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile/profile.model";
 
 export const MessageModel = modelSchema({
   id: z.uuidv4("Invalid Message Id"),

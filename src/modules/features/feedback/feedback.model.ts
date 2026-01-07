@@ -2,7 +2,7 @@ import { defineModel } from "@shared/utils/define-model";
 import db from "@config/database";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
-import { User } from "@modules/core/user";
+import { User } from "@modules/core/user/user.model";
 import { FEEDBACK } from "./feedback.constants";
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";

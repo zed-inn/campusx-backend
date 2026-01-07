@@ -5,8 +5,8 @@ import { defineModel } from "@shared/utils/define-model";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
 import db from "@config/database";
-import { Profile } from "@modules/core/profile";
-import { Institute } from "@modules/core/institutes";
+import { Profile } from "@modules/core/profile/profile.model";
+import { Institute } from "@modules/core/institutes/institute.model";
 
 export const MessageModel = modelSchema({
   id: z.uuidv4("Invalid Message Id"),

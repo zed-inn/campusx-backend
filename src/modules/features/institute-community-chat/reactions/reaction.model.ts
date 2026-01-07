@@ -1,5 +1,5 @@
 import db from "@config/database";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile/profile.model";
 import { defineModel } from "@shared/utils/define-model";
 import { DataTypes } from "sequelize";
 import { Message } from "../message/message.model";

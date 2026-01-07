@@ -1,10 +1,10 @@
 import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
-import { Institute } from "@modules/core/institutes";
+import { Institute } from "@modules/core/institutes/institute.model";
 import { modelSchema } from "@shared/utils/model-schema";
 import { defineModel } from "@shared/utils/define-model";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile/profile.model";
 import { REQUEST } from "./request.constants";
 import { PRIMARY_ID } from "@shared/utils/db-types";
 

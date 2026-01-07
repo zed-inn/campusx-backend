@@ -1,7 +1,7 @@
 import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile/profile.model";
 import { defineModel } from "@shared/utils/define-model";
 import { modelSchema } from "@shared/utils/model-schema";
 import { PRIMARY_ID, STATS } from "@shared/utils/db-types";

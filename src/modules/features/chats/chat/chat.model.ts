@@ -4,7 +4,7 @@ import { PRIMARY_ID } from "@shared/utils/db-types";
 import { DataTypes } from "sequelize";
 import { modelSchema } from "@shared/utils/model-schema";
 import { z } from "zod";
-import { Profile } from "@modules/core/profile";
+import { Profile } from "@modules/core/profile/profile.model";
 import { AppError } from "@shared/errors/app-error";
 
 export const ChatModel = modelSchema({
