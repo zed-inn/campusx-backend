@@ -4,10 +4,7 @@ import {
   InstituteGetPageSchema,
 } from "./dtos/institute-get.dto";
 import { DetailedRouter } from "@shared/infra/http/detailed-router";
-import {
-  InstituteSchema,
-  ShortInstituteSchema,
-} from "./dtos/institute-response.dto";
+import { InstituteSchema } from "./dtos/institute-response.dto";
 import { array, z } from "zod";
 
 const router = new DetailedRouter("Institute");
@@ -21,7 +18,7 @@ router
 router
   .describe("Get institutes", "Get short institutes with")
   .query(InstituteGetPageSchema)
-  .output("institutes", array(ShortInstituteSchema), "Institutes fetched.")
+  .output("institutes", array(InstituteSchema), "Institutes fetched.")
   .get("/filter", InstituteController.getFilteredInstitutes);
 
 router

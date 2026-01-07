@@ -28,7 +28,7 @@ export class InstituteController {
   static getFilteredInstitutes = catchAsync(
     async (req: Request<{}, {}, {}, InstituteGetPageDto>, res: Response) => {
       const institutes = await InstituteService.filterByPage(req.query);
-      const pInstitutes = institutes.map((i) => ShortInstituteSchema.parse(i));
+      const pInstitutes = institutes.map((i) => InstituteSchema.parse(i));
 
       return ApiResponse.success(res, "Institutes fetched.", {
         institutes: pInstitutes,
