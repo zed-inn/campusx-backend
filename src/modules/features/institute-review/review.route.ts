@@ -32,7 +32,7 @@ router
   .userProfiled()
   .query(ReviewGetMineSchema)
   .output("review", ReviewSchema, "Review fetched.")
-  .get("/me", ReviewController.getInstituteReviews);
+  .get("/me", ReviewController.getMyReviewOnInstitute);
 
 router
   .describe("Create Review", "Submit a new review for an institute.")
