@@ -59,7 +59,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ec2-user/campusx-backend
+            cd /home/ec2-user/test-server
 
             # 1. Unzip
             tar -xzf release.tar.gz
