@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "NODE_ENV=development nodemon",
-    "build": "npm install && npm run clean && tsc && tsc-alias",
+    "build": "npm install && npm run clean && tsc --incremental && tsc-alias",
     "start": "node dist/server.js",
     "test": "NODE_ENV=test jest",
     "migrate": "tsx src/shared/migration/migrate.ts"
