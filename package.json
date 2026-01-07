@@ -33,7 +33,6 @@
     "@types/nodemailer": "^7.0.4",
     "@types/supertest": "^6.0.3",
     "@types/uuid": "^10.0.0",
-    "dotenv": "^17.2.3",
     "jest": "^30.2.0",
     "read-excel-file": "^6.0.1",
     "supertest": "^7.1.4",
@@ -45,6 +44,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.962.0",
+    "dotenv": "^17.2.3",
     "bcryptjs": "^3.0.3",
     "cls-hooked": "^4.2.2",
     "cookie-parser": "^1.4.7",
