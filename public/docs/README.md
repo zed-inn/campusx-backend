@@ -1790,21 +1790,21 @@ Add educations
 
 ### Update Education
 
-**PUT** `/education`  **( Login Required )**
+**PATCH** `/education`  **( Login Required )**
 
 Update a specific education
 
 **Body :**
 ```ts
 {
+  description?: string | null;
+  localId?: string | null;
+  instituteId?: string;
+  startMonth?: number | null;
+  startYear?: number;
+  endMonth?: number | null;
+  endYear?: number | null;
   id: string;
-  description: string | null;
-  localId: string | null;
-  instituteId: string;
-  startMonth: number | null;
-  startYear: number;
-  endMonth: number | null;
-  endYear: number | null;
 }
 ```
 
