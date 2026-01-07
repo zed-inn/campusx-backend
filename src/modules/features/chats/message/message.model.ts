@@ -16,7 +16,7 @@ export const MessageModel = modelSchema({
   body: z
     .string("Invalid Message")
     .min(MESSAGE.BODY.LENGTH.MIN, { error: "Message is too short" })
-    .min(MESSAGE.BODY.LENGTH.MAX, { error: "Message is too long" }),
+    .max(MESSAGE.BODY.LENGTH.MAX, { error: "Message is too long" }),
   status: z.enum(MESSAGE.STATUS._),
   createDateLocal: z.int().positive().nullable(),
 });
