@@ -31,11 +31,11 @@ export class PostAggregator {
 
     const cStats = await CommentStatService.getByIds(postIds);
     const cStatsMap: Record<string, any> = {};
-    cStats.map((c) => (cStatsMap[c.id] = c));
+    cStats.map((c) => (cStatsMap[c.id] = c.comments));
 
     const rStats = await ReactionStatService.getByIds(postIds);
     const rStatsMap: Record<string, any> = {};
-    rStats.map((r) => (rStatsMap[r.id] = r));
+    rStats.map((r) => (rStatsMap[r.id] = r.likes));
 
     return posts.map((p) => ({
       ...p,
