@@ -6,23 +6,75 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Prepare Artifact
+        # We zip the dist folder and package.json
+        run: tar -czf release.tar.gz dist package.json package-lock.json
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: release.tar.gz
+
   deploy:
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Copy Files to EC2
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
+          source: "release.tar.gz"
+          target: "/home/ec2-user/campusx-backend"
+
+      - name: Execute Deployment
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/test-server
+            cd /home/ec2-user/campusx-backend
 
-            chmod +x ./scripts/server/*.sh
+            # 1. Unzip
+            tar -xzf release.tar.gz
 
-            ./scripts/server/reload_server.sh
+            # 2. Install only prod deps
+            npm ci --omit=dev
+
+            # 3. RESTART LOGIC FOR FOREVER
+            # We try to stop the existing process. 
+            # '|| true' ensures the script doesn't fail if the app isn't running yet.
+            forever stop dist/server.js || true
+
+            # 4. Start it with memory limits (Crucial for your 1GB server)
+            # -c tells forever what command to run
+            forever start -c "node --max-old-space-size=450" dist/server.js
+
+            # 5. Cleanup
+            rm release.tar.gz
