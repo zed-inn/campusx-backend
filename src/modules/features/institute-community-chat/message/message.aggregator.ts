@@ -32,7 +32,7 @@ export class MessageAggregator {
 
     const rStats = await ReactionStatService.getByIds(messageIds);
     const rStatsMap: Record<string, any> = {};
-    rStats.map((r) => (rStatsMap[r.id] = r));
+    rStats.map((r) => (rStatsMap[r.id] = r.likes));
 
     return messages.map((p) => ({
       ...p,
