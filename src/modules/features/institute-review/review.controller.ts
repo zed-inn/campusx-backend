@@ -40,7 +40,7 @@ export class ReviewController {
         q.instituteId,
         user.id
       );
-      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const [tReview] = await ReviewAggregator.transform([iReview.plain]);
       const pReview = ReviewSchema.parse(tReview);
 
       return ApiResponse.success(res, "Review fetched.", {
@@ -54,7 +54,7 @@ export class ReviewController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iReview = await ReviewService.createNew(req.body, user.id);
-      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const [tReview] = await ReviewAggregator.transform([iReview.plain]);
       const pReview = ReviewSchema.parse(tReview);
 
       return ApiResponse.success(res, "Reviewed.", { review: pReview });
@@ -66,7 +66,7 @@ export class ReviewController {
       const user = AuthPayloadSchema.parse(req.user);
 
       const iReview = await ReviewService.update(req.body, user.id);
-      const tReview = await ReviewAggregator.transform([iReview.plain]);
+      const [tReview] = await ReviewAggregator.transform([iReview.plain]);
       const pReview = ReviewSchema.parse(tReview);
 
       return ApiResponse.success(res, "Review updated.", { review: pReview });
