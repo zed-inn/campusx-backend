@@ -3009,3 +3009,39 @@ Upload image
 
 ---
 
+## Notification
+
+### Get notifications
+
+**GET** `/notification`  **( Login Required )**
+
+Get notifications of a user.
+Type allowed: `LIKE`, `COMMENT`, `MESSAGE`
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    notitifications: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userId: string;
+      title: string;
+      body: string | null;
+      type: string;
+    }[];
+  };
+}
+```
+
+---
+

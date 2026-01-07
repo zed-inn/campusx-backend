@@ -24,6 +24,7 @@ class _CommentService extends BaseService<CommentInstance> {
     return await db.transaction(async () => {
       const post = await PostService.getById(postId);
 
+      // TODO: notify writer
       const c = await Comment.create({ ...createData, postId, userId });
 
       if (!data.replyingTo)

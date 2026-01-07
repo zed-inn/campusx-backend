@@ -62,6 +62,7 @@ class _FollowService extends BaseService<FollowInstance> {
     await db.transaction(async () => {
       await Follow.create({ followeeId, followerId });
 
+      // TODO: notify other user
       await FollowStatService.updateCounts(followeeId, "followers", 1);
       await FollowStatService.updateCounts(followerId, "following", 1);
     });

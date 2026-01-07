@@ -46,7 +46,7 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/modules/core/notifications", "src/shared/migration"],
+  "exclude": ["src/shared/migration"],
   "typeAcquisition": {
     "enable": true,
     "include": ["jest"]

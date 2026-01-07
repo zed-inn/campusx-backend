@@ -1,4 +1,5 @@
 import client from "@config/cache";
+import { User } from "@modules/core/user/user.model";
 import { AppError } from "@shared/errors/app-error";
 import { SocketUserService } from "@shared/services/socket-user.service";
 import { TokenService } from "@shared/services/token.service";
@@ -17,9 +18,12 @@ const authenticateRequest = async (
     null;
   req.authToken = authToken;
 
+  const fcmToken = req.headers["fcmtoken"]?.toString() ?? null;
+
   try {
     const decoded = await TokenService.verifyToken(authToken);
     req.user = decoded;
+    await User.update({ fcmToken }, { where: { id: decoded.id } });
   } catch {}
 
   next();

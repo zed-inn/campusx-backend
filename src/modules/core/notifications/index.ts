@@ -1,3 +1,2 @@
-export { Notification } from "./notification.model";
+export { NotificationRouter } from "./notification.route";
 export { NotificationService } from "./notification.service";
-export { NotificationInterface } from "./notification.interface";

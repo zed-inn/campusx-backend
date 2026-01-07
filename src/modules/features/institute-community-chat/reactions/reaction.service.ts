@@ -34,6 +34,7 @@ class _ReactionService extends BaseService<ReactionInstance> {
       const message = await MessageService.getById(id);
       const messageData = message.plain;
 
+      // TODO: notify writer
       await this.create({ messageId: messageData.id, userId });
       await ReactionStatService.updateCounts(messageData.id, "likes", 1);
     });

@@ -8,6 +8,7 @@ import {
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
 import { Op } from "sequelize";
+import { NotificationService } from "@modules/core/notifications";
 
 class _MessageService extends BaseService<MessageInstance> {
   protected OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
@@ -19,8 +20,10 @@ class _MessageService extends BaseService<MessageInstance> {
   createByChatId = async (data: MessageCreateChatDto, userId: string) => {
     const { chatId, ...createData } = data;
     const chat = await ChatService.getById(chatId);
+    const chatData = chat.plain;
     ChatService.belongsTo(chat, userId);
 
+    // TODO: notify other user
     return await this.create({ ...createData, userId });
   };
 
@@ -28,6 +31,7 @@ class _MessageService extends BaseService<MessageInstance> {
     const { userId: receiverId, ...createData } = data;
     const chat = await ChatService.getByMembers(userId, receiverId);
 
+    // TODO: notify other user
     return await this.create({ ...createData, userId, chatId: chat.plain.id });
   };
 
