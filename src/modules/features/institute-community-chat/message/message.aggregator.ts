@@ -80,7 +80,7 @@ export class MessageAggregator {
     messages: IncompleteMessage[],
     reqUserId?: string | null
   ) => {
-    const withIsLiked = await MessageAggregator.addIsLiked(messages);
+    const withIsLiked = await MessageAggregator.addIsLiked(messages, reqUserId);
     const withStats = await MessageAggregator.addStats(withIsLiked);
     const withParentMessage = await MessageAggregator.addParentMessage(
       withStats,
