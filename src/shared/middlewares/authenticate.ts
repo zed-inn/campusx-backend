@@ -1,7 +1,5 @@
-import client from "@config/cache";
 import { User } from "@modules/core/user/user.model";
-import { AppError } from "@shared/errors/app-error";
-import { SocketUserService } from "@shared/services/socket-user.service";
+import { SocketUserService } from "@shared/services/socket/socket-user.service";
 import { TokenService } from "@shared/services/token.service";
 import { NextFunction, Request, Response } from "express";
 import { ExtendedError, Socket } from "socket.io";
