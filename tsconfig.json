@@ -16,11 +16,11 @@
     // and npm install -D @types/node
     "typeRoots": ["./src/shared/types"],
     // Path Alias
-    "baseUrl": "./",
+    "sourceRoot": "./",
     "paths": {
-      "@modules/*": ["src/modules/*"],
-      "@shared/*": ["src/shared/*"],
-      "@config/*": ["src/config/*"]
+      "@modules/*": ["./src/modules/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@config/*": ["./src/config/*"]
     },
     // Other Outputs
     "sourceMap": true,
@@ -46,7 +46,6 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/shared/migration"],
   "typeAcquisition": {
     "enable": true,
     "include": ["jest"]
