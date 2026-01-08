@@ -8,6 +8,7 @@ import { Op } from "sequelize";
 import { FollowGetDto } from "./dtos/follow-get.dto";
 import { ProfileService } from "@modules/core/profile";
 import { FollowStatService } from "./stat/stat.service";
+import { NotificationService } from "@modules/core/notifications";
 
 class _FollowService extends BaseService<FollowInstance> {
   protected OFFSET = createOffsetFn(USERS_PER_PAGE);
@@ -62,7 +63,19 @@ class _FollowService extends BaseService<FollowInstance> {
     await db.transaction(async () => {
       await Follow.create({ followeeId, followerId });
 
-      // TODO: notify other user
+      const followee = (await ProfileService.getById(followeeId)).plain;
+      const follower = (await ProfileService.getById(followerId)).plain;
+      await NotificationService.createNew(
+        {
+          type: "FOLLOW",
+          title: `New Follower`,
+          body: `${follower.fullName}${
+            follower.username ? ` (@${follower.username})` : ""
+          } started following you.`,
+        },
+        followee.id
+      );
+
       await FollowStatService.updateCounts(followeeId, "followers", 1);
       await FollowStatService.updateCounts(followerId, "following", 1);
     });

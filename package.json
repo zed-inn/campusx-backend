@@ -9,7 +9,7 @@
     "build": "npm run clean && tsc --incremental && tsc-alias",
     "start": "node --max-old-space-size=450 dist/server.js",
     "test": "NODE_ENV=test jest",
-    "migrate": "tsx src/shared/migration/migrate.ts"
+    "migrate": "NODE_ENV=production tsx src/shared/migration/migrate.ts"
   },
   "repository": {
     "type": "git",

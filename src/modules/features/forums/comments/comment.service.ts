@@ -10,6 +10,9 @@ import { PostService } from "../post/post.service";
 import { CommentStatService } from "./stat/stat.service";
 import { CommentGetPostDto } from "./dtos/comment-get.dto";
 import { AppError } from "@shared/errors/app-error";
+import { ProfileService } from "@modules/core/profile";
+import { NotificationService } from "@modules/core/notifications";
+import { limitText } from "@shared/utils/limit-text";
 
 class _CommentService extends BaseService<CommentInstance> {
   protected OFFSET = createOffsetFn(COMMENTS_PER_PAGE);
@@ -23,8 +26,23 @@ class _CommentService extends BaseService<CommentInstance> {
 
     return await db.transaction(async () => {
       const post = await PostService.getById(postId);
+      const postData = post.plain;
 
-      // TODO: notify writer
+      const user = (await ProfileService.getById(userId)).plain;
+
+      {
+        const notifiedUser = (await ProfileService.getById(postData.userId))
+          .plain;
+        await NotificationService.createNew(
+          {
+            type: "COMMENT",
+            title: `New comment on your post ${limitText(postData.title, 20)}`,
+            body: `${user.fullName}: ${limitText(createData.body)}`,
+          },
+          notifiedUser.id
+        );
+      }
+
       const c = await Comment.create({ ...createData, postId, userId });
 
       if (!data.replyingTo)
@@ -35,8 +53,26 @@ class _CommentService extends BaseService<CommentInstance> {
         );
       else {
         const parentComment = await this.getById(data.replyingTo);
-        if (parentComment.dataValues.postId !== post.dataValues.id)
+        const parentCommentData = parentComment.plain;
+        if (parentCommentData.postId !== postData.id)
           throw new AppError("Invalid Request", 406);
+
+        {
+          const notifiedUser = (
+            await ProfileService.getById(parentCommentData.userId)
+          ).plain;
+          await NotificationService.createNew(
+            {
+              type: "REPLY",
+              title: `New reply on your comment on post ${limitText(
+                postData.title,
+                20
+              )}`,
+              body: `${user.fullName}: ${limitText(createData.body)}`,
+            },
+            notifiedUser.id
+          );
+        }
 
         await parentComment.increment({ repliesCount: 1 });
       }

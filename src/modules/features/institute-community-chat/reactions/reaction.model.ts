@@ -6,14 +6,14 @@ import { Message } from "../message/message.model";
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
 
-export const ReactionInterface = modelSchema({
+export const ReactionModel = modelSchema({
   userId: z.uuidv4("Invalid User Id"),
   messageId: z.uuidv4("Invalid Message Id"),
 });
 
-export type ReactionAttributes = z.infer<typeof ReactionInterface.dbSchema>;
+export type ReactionAttributes = z.infer<typeof ReactionModel.dbSchema>;
 export type ReactionCreationAttributes = Omit<
-  z.infer<typeof ReactionInterface.dbFields>,
+  z.infer<typeof ReactionModel.dbFields>,
   never
 >;
 

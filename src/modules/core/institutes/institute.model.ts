@@ -68,7 +68,12 @@ export const Institute = defineModel<
       allowNull: true,
       defaultValue: null,
     },
-    website: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
+    website: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+      validate: { isUrl: true },
+    },
     location: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     category: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     administrativeMinistry: {

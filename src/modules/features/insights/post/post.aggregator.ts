@@ -6,11 +6,11 @@ export type IncompletePost = PostAttributes & { category?: { name: string } };
 
 export class PostAggregator {
   static addCategoryName = async (posts: IncompletePost[]) => {
-    const categoryNames = posts
+    const categoryIds = posts
       .map((p) => p.categoryId)
       .filter((c) => c !== null);
 
-    const categories = await CategoryService.getByNames(categoryNames);
+    const categories = await CategoryService.getByIds(categoryIds);
     const categoryMap: Record<string, string> = {};
     categories.map((c) => (categoryMap[c.id] = c.name));
 
@@ -23,6 +23,7 @@ export class PostAggregator {
   static transform = async (posts: IncompletePost[]) => {
     const withCategory = await PostAggregator.addCategoryName(posts);
 
+    console.log(withCategory);
     return withCategory.map((p) => PostSchema.parse(p));
   };
 }

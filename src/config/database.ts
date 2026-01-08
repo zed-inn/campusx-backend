@@ -58,6 +58,7 @@ export const connectDB = async (fn: Function | null = null) => {
     if (fn) fn();
     if (env.DB_RESET === "true") await db.sync({ force: true });
     else if (env.NODE_ENV === "development") await db.sync({ alter: true });
+    else await db.sync();
     return true;
   } catch (error) {
     console.log("Failed to connect to Postgresql database", error);

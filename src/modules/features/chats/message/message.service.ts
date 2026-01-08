@@ -8,6 +8,10 @@ import {
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
 import { Op } from "sequelize";
+import { NotificationService } from "@modules/core/notifications";
+import { ProfileService } from "@modules/core/profile";
+import { limitText } from "@shared/utils/limit-text";
+import { ChatInstance } from "../chat/chat.model";
 
 class _MessageService extends BaseService<MessageInstance> {
   protected OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
@@ -19,10 +23,9 @@ class _MessageService extends BaseService<MessageInstance> {
   createByChatId = async (data: MessageCreateChatDto, userId: string) => {
     const { chatId, ...createData } = data;
     const chat = await ChatService.getById(chatId);
-    const chatData = chat.plain;
     ChatService.belongsTo(chat, userId);
 
-    // TODO: notify other user
+    await MessageUtils.notifyOtherUser(chat, userId, createData.body);
     return await this.create({ ...createData, userId });
   };
 
@@ -30,7 +33,7 @@ class _MessageService extends BaseService<MessageInstance> {
     const { userId: receiverId, ...createData } = data;
     const chat = await ChatService.getByMembers(userId, receiverId);
 
-    // TODO: notify other user
+    await MessageUtils.notifyOtherUser(chat, userId, createData.body);
     return await this.create({ ...createData, userId, chatId: chat.plain.id });
   };
 
@@ -62,6 +65,33 @@ class _MessageService extends BaseService<MessageInstance> {
     });
 
     return messages.map((m) => m.plain);
+  };
+}
+
+class MessageUtils {
+  static notifyOtherUser = async (
+    chat: ChatInstance,
+    senderId: string,
+    body: string
+  ) => {
+    const chatData = chat.plain;
+    const notifiedUser = (
+      await ProfileService.getById(
+        chatData.userOneId === senderId
+          ? chatData.userTwoId
+          : chatData.userOneId
+      )
+    ).plain;
+    await NotificationService.createNew(
+      {
+        type: "MESSAGE",
+        title: `New Message by ${notifiedUser.fullName}${
+          notifiedUser.username ? ` @${notifiedUser.username}` : ""
+        }`,
+        body: `${notifiedUser.fullName}: ${limitText(body)}`,
+      },
+      notifiedUser.id
+    );
   };
 }
 

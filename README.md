@@ -1585,7 +1585,7 @@ Retrieve a paginated list of insights.
       imageUrl: string | null;
       categoryId: string | null;
       status: string;
-      category: string;
+      category: string | null;
     }[];
   };
 }

@@ -1,5 +1,4 @@
 import { DataTypes } from "sequelize";
-import { NOTIFICATION } from "./notification.constants";
 import { z } from "zod";
 import { modelSchema } from "@shared/utils/model-schema";
 import { defineModel } from "@shared/utils/define-model";
@@ -12,9 +11,7 @@ export const NotificationModel = modelSchema({
   userId: z.uuidv4("Invalid User Id"),
   title: z.string("Invalid Notification Title"),
   body: z.string("Invalid Notification Body").nullable(),
-  type: z.enum(Object.values(NOTIFICATION.TYPES._), {
-    error: "Invalid Notification Type",
-  }),
+  type: z.string("Invalid Notification Type"),
 });
 
 export type NotificationAttributes = z.infer<typeof NotificationModel.dbSchema>;
@@ -35,11 +32,7 @@ export const Notification = defineModel<
   },
   title: { type: DataTypes.TEXT, allowNull: false },
   body: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
-  type: {
-    type: DataTypes.STRING,
-    values: Object.values(NOTIFICATION.TYPES._),
-    allowNull: false,
-  },
+  type: { type: DataTypes.STRING, allowNull: false },
 });
 
 // Associations

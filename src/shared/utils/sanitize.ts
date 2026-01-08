@@ -1,5 +1,15 @@
 import { Request } from "express";
 import { Socket } from "socket.io";
+import { z } from "zod";
+
+const BLACKLIST = [
+  "nil.nil",
+  "none.com",
+  "na.com",
+  "nowebsite.com",
+  "websiteunderprocess.com",
+  "nil.com",
+];
 
 export class Sanitize {
   static keysToMask = [
@@ -96,5 +106,65 @@ export class Sanitize {
     if (typeof x !== "string") return "";
 
     return x.toLowerCase().replace(/[^\p{L}]+/gu, "");
+  };
+
+  static sanitizeUrl = (input: string | null | undefined): string | null => {
+    if (!input || typeof input !== "string") return null;
+
+    let candidate = input.trim();
+
+    // 1. Basic Protocol Check (We only allow adding https://, nothing else)
+    // If it's just "google.com", we assume https.
+    // If it's "google,com", we fail later.
+    if (!/^https?:\/\//i.test(candidate)) {
+      candidate = `https://${candidate}`;
+    }
+
+    try {
+      const url = new URL(candidate);
+      const hostname = url.hostname;
+
+      // === STRICT RULE 1: CHARACTER WHITELIST ===
+      // Domains can ONLY contain: a-z, 0-9, dots (.), and hyphens (-).
+      // ANY other character (underscore _, comma ,, quote ', space) -> REJECT.
+      if (/[^a-zA-Z0-9.-]/.test(hostname)) {
+        return null;
+      }
+
+      // === STRICT RULE 2: STRUCTURAL INTEGRITY ===
+      // Reject double dots (site..com)
+      if (hostname.includes("..")) return null;
+
+      // Reject leading/trailing dots or hyphens (.site.com or site-.com)
+      if (hostname.startsWith(".") || hostname.endsWith(".")) return null;
+      if (hostname.startsWith("-") || hostname.endsWith("-")) return null;
+
+      // Reject hyphens touching dots (.- or -.)
+      if (hostname.includes(".-") || hostname.includes("-.")) return null;
+
+      // === STRICT RULE 3: TLD VALIDATION ===
+      // Must look like a real domain ending (.com, .in, .org)
+      // Rejects: "localhost", "192.168.1.1", "google.c", "site.123"
+      const parts = hostname.split(".");
+
+      // Must have at least domain + TLD (google.com)
+      if (parts.length < 2) return null;
+
+      // TLD must be only letters and at least 2 chars
+      const tld = parts[parts.length - 1];
+      if (!/^[a-zA-Z]{2,}$/.test(tld as string)) return null;
+
+      // If "www" is present, ensure there are 3 parts (www.google.com)
+      if (parts[0] === "www" && parts.length < 3) return null;
+
+      // === FINAL CHECK: ZOD ===
+      // Double check with standard library
+      const result = z.url().safeParse(url.href);
+
+      return result.success ? result.data : null;
+    } catch (e) {
+      // If URL parsing failed for any reason -> REJECT
+      return null;
+    }
   };
 }

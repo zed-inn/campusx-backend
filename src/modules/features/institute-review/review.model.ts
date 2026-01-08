@@ -46,7 +46,7 @@ export const Review = defineModel<ReviewAttributes, ReviewCreationAttributes>(
       allowNull: false,
       references: { model: Institute, key: "id" },
     },
-    body: { type: DataTypes.STRING, allowNull: false },
+    body: { type: DataTypes.TEXT, allowNull: false },
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,

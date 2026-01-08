@@ -11,6 +11,7 @@ import db from "@config/database";
 import { ProfileService } from "@modules/core/profile";
 import { WalletService } from "@modules/core/wallet";
 import { WALLET } from "@config/constants/coins-per-action";
+import { NotificationService } from "@modules/core/notifications";
 
 class _RegisterService {
   createBasic = async (data: RegisterBasicDto) => {
@@ -73,6 +74,18 @@ class _RegisterService {
         referrerId: referrerData.id,
         userId,
       });
+
+      {
+        const referrer = (await ProfileService.getById(referrerData.id)).plain;
+        await NotificationService.createNew(
+          {
+            type: "REFERRAL_USE",
+            title: `You just got ${WALLET.REFERRAL} coins.`,
+            body: "Someone just used your referral code to register.",
+          },
+          referrer.id
+        );
+      }
 
       await WalletService.updateBalanceByUserId(WALLET.REFERRAL, userId);
       await WalletService.updateBalanceByUserId(

@@ -10,13 +10,12 @@ export const dataFill = async () => {
   ).toString();
 
   console.log("Institutes filling up...");
+
+  const parsedData = (JSON.parse(data) as any[]).map((x) =>
+    CreateBySheetSchema.parse(x)
+  );
+  let i = 0;
   try {
-    const parsedData = (JSON.parse(data) as any[]).map((x) =>
-      CreateBySheetSchema.parse(x)
-    );
-
-    let i = 0;
-
     for (const institute of parsedData) {
       const existing = await Institute.findOne({
         where: { aisheCode: institute.aisheCode },
@@ -27,6 +26,7 @@ export const dataFill = async () => {
       process.stdout.write(`\r${i + 1}/${parsedData.length} Completed`);
     }
   } catch (error) {
+    console.log(parsedData[i]);
     console.log(error);
   }
 };
@@ -39,4 +39,4 @@ const run = async () => {
   await disconnectDB();
 };
 
-run();
+// run();

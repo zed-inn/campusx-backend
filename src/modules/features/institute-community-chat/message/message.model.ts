@@ -43,7 +43,7 @@ export const Message = defineModel<
     references: { model: Institute, key: "id" },
   },
   body: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
     validate: {
       len: {

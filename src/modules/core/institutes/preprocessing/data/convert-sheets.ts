@@ -6,6 +6,7 @@ import {
   CreateBySheetDto,
   CreateBySheetSchema,
 } from "../../dtos/institute-create.dto";
+import { Sanitize } from "@shared/utils/sanitize";
 
 const capitalize = (x: string) =>
   x.length > 0 ? x[0]?.toUpperCase() + x.slice(1).toLowerCase() : x;
@@ -38,20 +39,11 @@ const getDataJson = async (
     });
 
     rows.map((r) => {
-      if (r.website)
-        r.website =
-          "https://" +
-          r.website.replaceAll(" ", "").replace("https://", "").toLowerCase();
-      try {
-        DataSchema.shape.website.parse(r.website);
-      } catch {
-        r.website = null;
-      }
-
+      r.website = Sanitize.sanitizeUrl(r.website);
       r.name = fixName(r.name);
       if (r.universityName) r.universityName = fixName(r.universityName);
-
       r.category = file.type;
+      r.country = "India";
       dataJson.push(DataSchema.parse(r));
     });
   }
