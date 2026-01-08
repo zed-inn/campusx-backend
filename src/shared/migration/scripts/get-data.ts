@@ -21,7 +21,7 @@ export function getOldData(): OldDataCollection {
 
     if (!fs.existsSync(filePath)) {
       console.warn(
-        `⚠️  Warning: File not found '${fileName}'. Returning empty array.`
+        `Warning: File not found '${fileName}'. Returning empty array.`
       );
       results[key as keyof OldDataCollection] = [];
       continue;
@@ -39,7 +39,7 @@ export function getOldData(): OldDataCollection {
 
       results[key as keyof OldDataCollection] = parsedData as any;
     } catch (error) {
-      console.error(`❌ Error processing ${fileName}:`);
+      console.error(`Error processing ${fileName}:`);
       if (error instanceof z.ZodError) {
         console.error(JSON.stringify(z.treeifyError(error), null, 2));
       } else {

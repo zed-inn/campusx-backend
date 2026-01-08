@@ -12,14 +12,12 @@ const toMap = <T extends { id: string }>(items: T[]): Record<string, T> => {
 };
 
 export function mapAllData(data: OldDataCollection): OldDataMaps {
-  //   console.log("🔄 Indexing data by ID...");
-
   const result: any = {};
 
   for (const key of Object.keys(data) as (keyof OldDataCollection)[]) {
     const items = data[key];
 
-    if (items.length > 0 && !("id" in items[0])) {
+    if (items.length > 0 && !("id" in (items[0] as any))) {
       console.warn(`⚠️ Skipping ${key}: Items do not have an 'id' property.`);
       result[key] = {};
       continue;
