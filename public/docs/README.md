@@ -2774,6 +2774,29 @@ Send message to a user if not knowing chat
       body: string;
       status: string;
       createDateLocal: number | null;
+      chat: {
+        createDate: number;
+        updateDate: number;
+        id: string;
+        userOneId: string;
+        userTwoId: string;
+        friend: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      };
     };
   };
 }

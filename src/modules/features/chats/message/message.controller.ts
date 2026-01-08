@@ -4,11 +4,12 @@ import { Request, Response } from "express";
 import { MessageService } from "./message.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { MessageGetChatDto, MessageGetLatestDto } from "./dtos/message-get.dto";
-import { MessageSchema } from "./dtos/message-response.dto";
+import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
 import {
   MessageCreateChatDto,
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
+import { MessageAggregator } from "./message.aggregator";
 
 export class MessageController {
   static getLatestMessages = catchAsync(
@@ -58,7 +59,11 @@ export class MessageController {
         req.body,
         user.id
       );
-      const pMessage = MessageSchema.parse(iMessage.plain);
+      const [tMessage] = await MessageAggregator.transform(
+        [iMessage.plain],
+        user.id
+      );
+      const pMessage = MessageChatSchema.parse(tMessage);
 
       return ApiResponse.success(res, "Messaged.", { message: pMessage });
     }

@@ -9,7 +9,7 @@ import {
 } from "./dtos/message-action.dto";
 import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { array } from "zod";
-import { MessageSchema } from "./dtos/message-response.dto";
+import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
 
 const router = new DetailedRouter("Chat Messages");
 
@@ -31,7 +31,7 @@ router
   .describe("Send Message: User", "Send message to a user if not knowing chat")
   .userProfiled()
   .body(MessageCreateUserSchema)
-  .output("message", MessageSchema, "Messaged.")
+  .output("message", MessageChatSchema, "Messaged.")
   .post("/user", MessageController.sendMessageToUser);
 
 router
