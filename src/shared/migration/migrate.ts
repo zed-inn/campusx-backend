@@ -113,12 +113,13 @@ import { NotificationService } from "@modules/core/notifications";
 import { limitText } from "@shared/utils/limit-text";
 import { DB_Errors } from "@shared/errors/db-errors";
 import { readFileSync } from "fs";
+import path from "path";
 
 const migrate = async () => {
   const oldData = getOldData();
   const oldDataMap = mapAllData(oldData);
   const imageUrls: Record<string, string> = JSON.parse(
-    readFileSync("./src/shared/migration/url-mapped.json").toString()
+    readFileSync(path.join(__dirname, "./url-mapped.json")).toString()
   );
   console.log("Loaded Url mapped of images...");
 
