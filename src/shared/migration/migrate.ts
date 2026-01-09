@@ -107,6 +107,11 @@ import {
   EducationModel,
 } from "@modules/features/education/education.model";
 import { Sanitize } from "@shared/utils/sanitize";
+import { PostService } from "@modules/features/forums/post/post.service";
+import { ProfileService } from "@modules/core/profile";
+import { NotificationService } from "@modules/core/notifications";
+import { limitText } from "@shared/utils/limit-text";
+import { DB_Errors } from "@shared/errors/db-errors";
 
 const migrate = async () => {
   const oldData = getOldData();
@@ -387,7 +392,7 @@ const migrate = async () => {
   // Module Institute
   {
     await InstitutesFill(); // Fill institutes
-
+    console.log("\nInstitutes updating now...");
     const instituteIds: Set<string> = new Set();
     oldData.education.map((e) => instituteIds.add(e.instituteId));
     oldData.institutereview.map((r) => instituteIds.add(r.instituteId));
@@ -568,6 +573,58 @@ const migrate = async () => {
     );
     await Education.bulkCreate(educations);
     console.log("Completed Module : Education");
+  }
+
+  // Module Notification
+  {
+    const comments = await ForumComment.findAll();
+    const reactions = await ForumReaction.findAll();
+
+    for (const reaction of reactions) {
+      const r = reaction.plain;
+      const f = (await PostService.getById(r.postId)).plain;
+      const u = (await ProfileService.getById(r.userId)).plain;
+
+      await NotificationService.create({
+        type: "LIKE",
+        title: `${u.fullName}${
+          u.username ? ` (@${u.username})` : ""
+        } liked your post ${limitText(f.title, 20)}`,
+        userId: f.userId,
+        body: null,
+        createDate: r.createDate,
+        updateDate: r.updateDate,
+      });
+    }
+
+    for (const comment of comments) {
+      const c = comment.plain;
+      const f = (await PostService.getById(c.postId)).plain;
+      const u = (await ProfileService.getById(c.userId)).plain;
+
+      await NotificationService.create({
+        type: "COMMENT",
+        title: `New comment on your post ${limitText(f.title, 20)}`,
+        body: `${u.fullName}: ${limitText(c.body)}`,
+        userId: f.userId,
+        createDate: c.createDate,
+        updateDate: c.updateDate,
+      });
+
+      if (c.replyingTo) {
+        const pc = await ForumComment.findByPk(c.replyingTo);
+        if (!pc) throw DB_Errors.notFound;
+        await NotificationService.create({
+          type: "REPLY",
+          title: `New reply on your comment on post ${limitText(f.title, 20)}`,
+          body: `${u.fullName}: ${limitText(c.body)}`,
+          userId: pc.plain.userId,
+          createDate: c.createDate,
+          updateDate: c.updateDate,
+        });
+      }
+    }
+    console.log("Completed Module : Notifications");
   }
 };
 
