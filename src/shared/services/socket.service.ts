@@ -1,7 +1,8 @@
+import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { authenticate } from "@shared/middlewares/authenticate";
+import { SocketRouter } from "@shared/socket.router";
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
-import { SocketUserService } from "./socket-user.service";
 
 class SocketService {
   private _io: Server | null = null;
@@ -17,8 +18,12 @@ class SocketService {
     this._io.use(authenticate.socket);
 
     this._io.on("connection", (socket: Socket) => {
+      const user = AuthPayloadSchema.parse(socket.data.user);
+      socket.join(`user:${user.id}`);
+
       console.log(`Client connected: ${socket.id}`);
 
+      SocketRouter(socket);
       this.handleConnection(socket);
     });
   }
@@ -32,7 +37,6 @@ class SocketService {
 
   private handleConnection(socket: Socket) {
     socket.on("disconnect", async () => {
-      await SocketUserService.unmapUserToSocket(socket);
       console.log(`Client disconnected: ${socket.id}`);
     });
   }

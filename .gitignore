@@ -154,7 +154,7 @@ bundler.py
 **/*/migration/data
 
 # temp data
-describe.md
+describe*.md
 
 # Old Data
 /src/shared/migration/data.old

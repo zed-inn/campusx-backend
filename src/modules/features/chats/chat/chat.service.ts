@@ -14,9 +14,7 @@ class _ChatService extends BaseService<ChatInstance> {
     super(Chat);
   }
 
-  getOrCreate = async (
-    data: ChatCreateDto | Omit<ChatCreateDto, "localId">
-  ) => {
+  getOrCreate = async (data: ChatCreateDto) => {
     try {
       return await this.getByMembers(data.userOneId, data.userTwoId);
     } catch {

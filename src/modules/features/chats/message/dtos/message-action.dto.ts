@@ -17,6 +17,10 @@ export const MessageCreateUserSchema = MessageCreateChatSchema.omit({
 
 export type MessageCreateUserDto = z.infer<typeof MessageCreateUserSchema>;
 
+export const MessageReceivedSchema = MessageModel.dbSchema.pick({ id: true });
+
+export type MessageReceivedDto = z.infer<typeof MessageReceivedSchema>;
+
 export const MessageUpdateSchema = MessageModel.dbSchema
   .pick({ localId: true, body: true })
   .partial()

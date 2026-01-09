@@ -1,5 +1,4 @@
 import { User } from "@modules/core/user/user.model";
-import { SocketUserService } from "@shared/services/socket/socket-user.service";
 import { TokenService } from "@shared/services/token.service";
 import { NextFunction, Request, Response } from "express";
 import { ExtendedError, Socket } from "socket.io";
@@ -40,7 +39,6 @@ const authenticateSocket = async (
   try {
     const decoded = await TokenService.verifyToken(authToken);
     socket.data.user = decoded;
-    await SocketUserService.mapUserToSocket(socket);
   } catch {}
 
   next();

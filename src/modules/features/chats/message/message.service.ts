@@ -8,6 +8,8 @@ import {
   MessageCreateUserDto,
 } from "./dtos/message-action.dto";
 import { Op } from "sequelize";
+import { MESSAGE } from "./message.constants";
+import db from "@config/database";
 
 class _MessageService extends BaseService<MessageInstance> {
   protected OFFSET = createOffsetFn(MESSAGES_PER_PAGE);
@@ -21,14 +23,21 @@ class _MessageService extends BaseService<MessageInstance> {
     const chat = await ChatService.getById(chatId);
     ChatService.belongsTo(chat, userId);
 
-    return await this.create({ ...createData, userId });
+    return await this.create({ ...createData, senderId: userId, chatId });
   };
 
   createByReceiverId = async (data: MessageCreateUserDto, userId: string) => {
     const { userId: receiverId, ...createData } = data;
-    const chat = await ChatService.getByMembers(userId, receiverId);
+    const chat = await ChatService.getOrCreate({
+      userOneId: userId,
+      userTwoId: data.userId,
+    });
 
-    return await this.create({ ...createData, userId, chatId: chat.plain.id });
+    return await this.create({
+      ...createData,
+      senderId: userId,
+      chatId: chat.plain.id,
+    });
   };
 
   getChatMessages = async (
@@ -59,6 +68,16 @@ class _MessageService extends BaseService<MessageInstance> {
     });
 
     return messages.map((m) => m.plain);
+  };
+
+  updateStatusByIds = async (
+    ids: string[],
+    status: (typeof MESSAGE.STATUS._)[number]
+  ) => {
+    return await db.transaction(async () => {
+      await Message.update({ status }, { where: { id: { [Op.in]: ids } } });
+      return await this.getByIds(ids);
+    });
   };
 }
 
