@@ -1,6 +1,6 @@
 import firebase from "@config/firebase/firebase";
 import { response } from "express";
-import { Message } from "firebase-admin/lib/messaging/messaging-api";
+import { Message } from "firebase-admin/messaging";
 
 export class NotifyService {
   static send = async (
