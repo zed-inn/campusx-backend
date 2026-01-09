@@ -8,4 +8,5 @@ export const NOTIFICATION_TYPE = createEnum([
   "MESSAGE",
   "FOLLOW",
   "REFERRAL_USE",
+  "REGISTER",
 ] as const);

@@ -70,8 +70,6 @@ export const Message = defineModel<
   },
 });
 
-export type MessageInstance = InstanceType<typeof Message>;
-
 // Associations
 Chat.hasMany(Message, {
   foreignKey: "chatId",
@@ -86,3 +84,5 @@ Profile.hasMany(Message, {
   as: "messages",
 });
 Message.belongsTo(Profile, { foreignKey: "senderId", as: "sender" });
+
+export type MessageInstance = InstanceType<typeof Message>;

@@ -2,7 +2,6 @@ import { z } from "zod";
 import db from "@config/database";
 import { DataTypes } from "sequelize";
 import { defineModel } from "@shared/utils/define-model";
-import { AppError } from "@shared/errors/app-error";
 import { modelSchema } from "@shared/utils/model-schema";
 import { Profile } from "@modules/core/profile/profile.model";
 
@@ -49,11 +48,5 @@ Follow.belongsTo(Profile, { foreignKey: "followerId", as: "followerProfile" });
 
 Profile.hasMany(Follow, { foreignKey: "followeeId", as: "followers" });
 Follow.belongsTo(Profile, { foreignKey: "followeeId", as: "followeeProfile" });
-
-// Hooks
-Follow.beforeValidate((follow: any) => {
-  if (follow.followeeId === follow.followerId)
-    throw new AppError("You can't follow yourself", 406);
-});
 
 export type FollowInstance = InstanceType<typeof Follow>;

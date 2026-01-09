@@ -4,11 +4,12 @@ import { env } from "@config/env";
 import { connectDB, disconnectDB } from "@config/database";
 import { connectRedis, disconnectRedis } from "@config/cache";
 import { socketService } from "@shared/services/socket/socket.service";
+import { defineHooks } from "@shared/hooks/hooks";
 
 const httpServer = http.createServer(app);
 
 const startServer = async () => {
-  const dbConnected = await connectDB();
+  const dbConnected = await connectDB(defineHooks);
   const cacheConnected = await connectRedis();
 
   socketService.init(httpServer);

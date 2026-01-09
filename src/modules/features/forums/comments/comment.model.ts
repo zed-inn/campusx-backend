@@ -81,15 +81,4 @@ Comment.hasMany(Comment, {
 });
 Comment.belongsTo(Comment, { foreignKey: "replyingTo", as: "parentComment" });
 
-// Hooks
-Comment.beforeDestroy(async (comment: any) => {
-  const repliedComments = await Comment.findAll({
-    where: { replyingTo: comment.id },
-  });
-
-  for (const c of repliedComments) {
-    await c.destroy();
-  }
-});
-
 export type CommentInstance = InstanceType<typeof Comment>;

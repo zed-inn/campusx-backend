@@ -5,9 +5,6 @@ import { Op } from "sequelize";
 import { PostService } from "../post/post.service";
 import { ReactionStatService } from "./stat/stat.service";
 import { DB_Errors } from "@shared/errors/db-errors";
-import { ProfileService } from "@modules/core/profile";
-import { NotificationService } from "@modules/core/notifications";
-import { limitText } from "@shared/utils/limit-text";
 
 class _ReactionService extends BaseService<ReactionInstance> {
   constructor() {
@@ -36,22 +33,6 @@ class _ReactionService extends BaseService<ReactionInstance> {
     return await db.transaction(async () => {
       const post = await PostService.getById(id);
       const postData = post.plain;
-
-      {
-        const user = (await ProfileService.getById(userId)).plain;
-        const notifiedUser = (await ProfileService.getById(postData.userId))
-          .plain;
-        await NotificationService.createNew(
-          {
-            type: "LIKE",
-            title: `${user.fullName} liked your post ${limitText(
-              postData.title,
-              20
-            )}`,
-          },
-          notifiedUser.id
-        );
-      }
 
       await this.create({ postId: postData.id, userId });
       await ReactionStatService.updateCounts(postData.id, "likes", 1);

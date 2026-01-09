@@ -8,8 +8,6 @@ import { DB_Errors } from "@shared/errors/db-errors";
 import { removeUndefined } from "@shared/utils/clean-object";
 import { hasKeys } from "@shared/utils/object-length";
 import { AmbassadorService } from "../ambassador.service";
-import { NotificationService } from "@modules/core/notifications";
-import { InstituteService } from "@modules/core/institutes";
 
 class _RequestService extends BaseService<RequestInstance> {
   constructor() {
@@ -31,17 +29,6 @@ class _RequestService extends BaseService<RequestInstance> {
       const isUserAmbassador = await AmbassadorService.isUserAmbassador(userId);
       if (isUserAmbassador) throw new AppError("Already an ambassador", 400);
 
-      const institute = (await InstituteService.getById(data.instituteId))
-        .plain;
-
-      await NotificationService.createNew(
-        {
-          title: "Ambassador Update",
-          body: `Your request to represent ${institute.name} has been received and under evaluation.`,
-          type: "AMBASSADOR_REQUEST",
-        },
-        userId
-      );
       return await this.create({ ...data, userId });
     });
   };
@@ -62,21 +49,8 @@ class _RequestService extends BaseService<RequestInstance> {
       throw new AppError("Your request is being reviewed.", 400);
 
     const cleanData = removeUndefined(updateData);
-    if (hasKeys(cleanData)) {
-      const institute = await InstituteService.getById(
-        cleanData.instituteId ?? request.plain.instituteId
-      );
-
-      await NotificationService.createNew(
-        {
-          title: "Ambassador Update",
-          body: "Your request has been updated and is being evaluated.",
-          type: "AMBASSADOR_REQUEST",
-        },
-        userId
-      );
+    if (hasKeys(cleanData))
       await request.update(cleanData as Partial<RequestAttributes>);
-    }
 
     return request;
   };
