@@ -4,12 +4,7 @@ import { Request, Response } from "express";
 import { MessageService } from "./message.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { MessageGetChatDto, MessageGetLatestDto } from "./dtos/message-get.dto";
-import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
-import {
-  MessageCreateChatDto,
-  MessageCreateUserDto,
-} from "./dtos/message-action.dto";
-import { MessageAggregator } from "./message.aggregator";
+import { MessageSchema } from "./dtos/message-response.dto";
 
 export class MessageController {
   static getLatestMessages = catchAsync(
@@ -37,35 +32,6 @@ export class MessageController {
       const pMessages = iMessages.map((m) => MessageSchema.parse(m));
 
       return ApiResponse.success(res, "Messages.", { messages: pMessages });
-    }
-  );
-
-  static sendMessageInChat = catchAsync(
-    async (req: Request<{}, {}, MessageCreateChatDto>, res: Response) => {
-      const user = AuthPayloadSchema.parse(req.user);
-
-      const iMessage = await MessageService.createByChatId(req.body, user.id);
-      const pMessage = MessageSchema.parse(iMessage.plain);
-
-      return ApiResponse.success(res, "Messaged.", { message: pMessage });
-    }
-  );
-
-  static sendMessageToUser = catchAsync(
-    async (req: Request<{}, {}, MessageCreateUserDto>, res: Response) => {
-      const user = AuthPayloadSchema.parse(req.user);
-
-      const iMessage = await MessageService.createByReceiverId(
-        req.body,
-        user.id
-      );
-      const [tMessage] = await MessageAggregator.transform(
-        [iMessage.plain],
-        user.id
-      );
-      const pMessage = MessageChatSchema.parse(tMessage);
-
-      return ApiResponse.success(res, "Messaged.", { message: pMessage });
     }
   );
 }
