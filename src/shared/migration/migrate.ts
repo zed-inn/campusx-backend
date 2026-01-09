@@ -112,10 +112,15 @@ import { ProfileService } from "@modules/core/profile";
 import { NotificationService } from "@modules/core/notifications";
 import { limitText } from "@shared/utils/limit-text";
 import { DB_Errors } from "@shared/errors/db-errors";
+import { readFileSync } from "fs";
 
 const migrate = async () => {
   const oldData = getOldData();
   const oldDataMap = mapAllData(oldData);
+  const imageUrls: Record<string, string> = JSON.parse(
+    readFileSync("./src/shared/migration/url-mapped.json").toString()
+  );
+  console.log("Loaded Url mapped of images...");
 
   // Module Insights
   {
@@ -130,8 +135,9 @@ const migrate = async () => {
       try {
         i.imageUrl = z.url().parse(i.imageUrl);
       } catch {
-        // TODO: make the image upload to s3 bucket here...
-        i.imageUrl = null;
+        i.imageUrl = i.imageUrl
+          ? imageUrls[i.imageUrl.replace("/uploads/", "")] ?? null
+          : null;
       }
       return InsightPostModel.dbSchema.parse(i);
     });
@@ -173,8 +179,9 @@ const migrate = async () => {
       try {
         avatarUrl = z.url().parse(avatarUrl);
       } catch {
-        // TODO: send avatar to s3
-        avatarUrl = null;
+        avatarUrl = avatarUrl
+          ? imageUrls[avatarUrl.replace("/uploads/", "")] ?? null
+          : null;
       }
       profiles.push(
         ProfileModel.dbSchema.parse({
@@ -245,8 +252,9 @@ const migrate = async () => {
       try {
         imageUrl = z.url().parse(imageUrl);
       } catch {
-        // TODO: upload this image to s3
-        imageUrl = null;
+        imageUrl = imageUrl
+          ? imageUrls[imageUrl.replace("/uploads/", "")] ?? null
+          : null;
       }
       forums.posts.push(
         ForumPostModel.dbSchema.parse({ ...f, userId: f.profileId, imageUrl })

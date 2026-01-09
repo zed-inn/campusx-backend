@@ -21,20 +21,6 @@ router
   .get("/", MessageController.getMessages);
 
 router
-  .describe("Send Message: Chat", "Send message in a chat")
-  .userProfiled()
-  .body(MessageCreateChatSchema)
-  .output("message", MessageSchema, "Messaged.")
-  .post("/", MessageController.sendMessageInChat);
-
-router
-  .describe("Send Message: User", "Send message to a user if not knowing chat")
-  .userProfiled()
-  .body(MessageCreateUserSchema)
-  .output("message", MessageChatSchema, "Messaged.")
-  .post("/user", MessageController.sendMessageToUser);
-
-router
   .describe("Get chat messages", "Get messages of a chat")
   .userProfiled()
   .query(MessageGetLatestSchema)
