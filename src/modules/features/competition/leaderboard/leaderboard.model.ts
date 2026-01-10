@@ -40,4 +40,11 @@ export const Leaderboard = defineModel<
   },
 });
 
+// Associations
+Profile.hasMany(Leaderboard, { foreignKey: "userId", onDelete: "CASCADE" });
+Leaderboard.belongsTo(Profile, { foreignKey: "userId", as: "user" });
+
+Event.hasMany(Leaderboard, { foreignKey: "eventId", onDelete: "CASCADE" });
+Leaderboard.belongsTo(Event, { foreignKey: "eventId", as: "participants" });
+
 export type LeaderboardInstance = InstanceType<typeof Leaderboard>;
