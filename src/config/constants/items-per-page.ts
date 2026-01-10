@@ -17,3 +17,7 @@ export const CHATS_PER_PAGE = 30;
 export const MESSAGES_PER_PAGE = 50;
 
 export const NOTIFICATIONS_PER_PAGE = 50;
+
+export const COMPETITIONS_PER_PAGE = 50;
+
+export const COMPETITION_POSITION_PER_PAGE = 100;

@@ -2989,6 +2989,147 @@ Type allowed: `LIKE`, `COMMENT`, `MESSAGE`
 
 ---
 
+## Competition Event
+
+### Get events
+
+**GET** `/competition/event`
+
+Get events by page
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    events: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      name: string;
+      description: string;
+      rules: string[];
+      prizes: {
+        postition: string;
+        amount: number;
+        description: string;
+      }[];
+      startDate: number;
+      endDate: number;
+      posterUrl: string | null;
+      status: string;
+      category: string;
+      organizer: string;
+      isRegistered: boolean;
+    };
+  };
+}
+```
+
+---
+
+## Competition Event Leaderboard
+
+### Get Top Participants
+
+**GET** `/competition/event/participants/top`
+
+Get participants with thier points to arrange in any order
+
+**Query Parameters :**
+```ts
+{
+  eventId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    leaderboard: {
+      createDate: number;
+      updateDate: number;
+      userId: string;
+      eventId: string;
+      points: number;
+      user: {
+        id: string;
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
+          id: string;
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        } | null;
+      };
+    }[];
+  };
+}
+```
+
+---
+
+### Register for event
+
+**POST** `/competition/event/register`  **( Login Required )**
+
+Register current logged in user for an event
+
+**Body :**
+```ts
+{
+  eventId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
+### Deregister from event
+
+**DELETE** `/competition/event/deregister`  **( Login Required )**
+
+Deregister current logged in user from an event
+
+**Query Parameters :**
+```ts
+{
+  eventId: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data?: any;
+}
+```
+
+---
+
 ## Messaging
 
 ### [Server] [UserId] Send Message

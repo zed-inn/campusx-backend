@@ -12,9 +12,9 @@ import { InsightsRouter } from "@modules/features/insights";
 import { InstituteCommunityChatRouter } from "@modules/features/institute-community-chat";
 import { InstituteReviewRouter } from "@modules/features/institute-review";
 import { DetailedRouter } from "./infra/http/detailed-router";
-import { generateReadme } from "./docs/generate-readme";
 import { UploadRouter } from "@modules/features/upload/upload.route";
-import { NotificationRouter } from "@modules/core/notifications/notification.route";
+import { NotificationRouter } from "@modules/core/notifications";
+import { CompetitionRouter } from "@modules/features/competition";
 
 const router = new DetailedRouter("CampusX Backend");
 
@@ -34,6 +34,7 @@ const routers: Record<string, DetailedRouter> = {
   "/ambassador": AmbassadorRouter,
   "/upload": UploadRouter,
   "/notification": NotificationRouter,
+  "/competition": CompetitionRouter,
 };
 
 for (const key of Object.keys(routers)) {
