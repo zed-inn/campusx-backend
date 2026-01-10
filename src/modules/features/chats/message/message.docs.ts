@@ -1,5 +1,5 @@
 import { EndpointDetails } from "@shared/docs/readme-types";
-import { z } from "zod";
+import { array, z } from "zod";
 import {
   MessageCreateSchema,
   MessageReceivedSchema,
@@ -10,7 +10,7 @@ import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
 export const MessageSocketDocs: EndpointDetails[] = [
   {
     category: "Messaging",
-    title: "[Server] [UserId] Send Message",
+    title: "[Server] [ChatId] Send Message",
     endpoint: "chat:message-to",
     method: "socket",
     description:
@@ -29,7 +29,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
   },
   {
     category: "Messaging",
-    title: "[Server] [ChatId] Send Message",
+    title: "[Server] [UserId] Send Message",
     endpoint: "chat:message-to",
     method: "socket",
     description: "Send message to server using chatId",
@@ -87,7 +87,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     }),
     response: {
       message: "Message received on server",
-      data: z.object({ message: MessageSchema }),
+      data: z.object({ message: array(MessageSchema) }),
     },
   },
   {
@@ -100,7 +100,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     authTokenReq: false,
     response: {
       message: "Message has been received by the other user",
-      data: z.object({ message: MessageSchema }),
+      data: z.object({ message: array(MessageSchema) }),
     },
   },
   {

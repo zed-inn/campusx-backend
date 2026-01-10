@@ -3163,7 +3163,7 @@ Get jobs by page
 
 ## Messaging
 
-### [Server] [UserId] Send Message
+### [Server] [ChatId] Send Message
 
 **SOCKET** `chat:message-to`  **( Login Required )**
 
@@ -3205,7 +3205,7 @@ Send message to server using usedId and the server will forward to users appropr
 
 ---
 
-### [Server] [ChatId] Send Message
+### [Server] [UserId] Send Message
 
 **SOCKET** `chat:message-to`  **( Login Required )**
 
@@ -3380,7 +3380,7 @@ Send message received if you have received a message from endpoint `chat:message
       body: string;
       status: string;
       createDateLocal: number | null;
-    };
+    }[];
   };
 }
 ```
@@ -3408,7 +3408,7 @@ Server sends that the message has been received by the other user after `chat:me
       body: string;
       status: string;
       createDateLocal: number | null;
-    };
+    }[];
   };
 }
 ```
