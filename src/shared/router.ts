@@ -15,6 +15,7 @@ import { DetailedRouter } from "./infra/http/detailed-router";
 import { UploadRouter } from "@modules/features/upload/upload.route";
 import { NotificationRouter } from "@modules/core/notifications";
 import { CompetitionRouter } from "@modules/features/competition";
+import { JobRouter } from "@modules/features/job";
 
 const router = new DetailedRouter("CampusX Backend");
 
@@ -35,6 +36,7 @@ const routers: Record<string, DetailedRouter> = {
   "/upload": UploadRouter,
   "/notification": NotificationRouter,
   "/competition": CompetitionRouter,
+  "/jobs": JobRouter,
 };
 
 for (const key of Object.keys(routers)) {

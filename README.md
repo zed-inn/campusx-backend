@@ -3130,6 +3130,37 @@ Deregister current logged in user from an event
 
 ---
 
+## Jobs
+
+### Get jobs
+
+**GET** `/jobs`  **( Login Required )**
+
+Get jobs by page
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    jobs: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+    }[];
+  };
+}
+```
+
+---
+
 ## Messaging
 
 ### [Server] [UserId] Send Message

@@ -21,3 +21,5 @@ export const NOTIFICATIONS_PER_PAGE = 50;
 export const COMPETITIONS_PER_PAGE = 50;
 
 export const COMPETITION_POSITION_PER_PAGE = 100;
+
+export const JOBS_PER_PAGE = 100;
