@@ -1,112 +1,131 @@
 import { Socket } from "socket.io";
 import {
-  MessageCreateChatDto,
-  MessageCreateChatSchema,
-  MessageCreateUserDto,
-  MessageCreateUserSchema,
+  MessageCreateDto,
+  MessageCreateSchema,
   MessageReceivedDto,
   MessageReceivedSchema,
+  MessageUpdateSchema,
 } from "./dtos/message-action.dto";
 import { MessageService } from "./message.service";
 import { MessageAggregator } from "./message.aggregator";
 import { AuthPayloadSchema } from "@shared/dtos/auth.dto";
 import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
-import { socketService } from "@shared/services/socket.service";
+import { SocketService } from "@shared/services/socket.service";
 import { catchAsyncSocket } from "@shared/utils/catch-async";
+import { ChatService } from "../chat/chat.service";
+import { SockRes } from "@shared/utils/api-response";
 
 export const MessageSocketController = (socket: Socket) => {
   socket.on(
     "chat:message-to",
-    catchAsyncSocket(socket, async (payload: any) => {
-      const _data: MessageCreateChatDto | MessageCreateUserDto =
-        JSON.parse(payload);
+    catchAsyncSocket(socket, async (payload: any, callback: any) => {
+      const data: MessageCreateDto = MessageCreateSchema.parse(payload);
       const user = AuthPayloadSchema.parse(socket.data.user);
 
-      const isChatContaining = MessageCreateChatSchema.safeParse(_data);
-
-      if (!isChatContaining.success) {
-        const data = MessageCreateUserSchema.parse(_data);
-
+      if (data.userId) {
         const iMessage = await MessageService.createByReceiverId(data, user.id);
-
         const [tMessage1] = await MessageAggregator.transform(
           [iMessage.plain],
           user.id
         );
+
         const pMessage1 = MessageChatSchema.parse(tMessage1);
-
-        const userId =
-          pMessage1.chat.userOneId === user.id
-            ? pMessage1.chat.userTwoId
-            : pMessage1.chat.userOneId;
-
+        const userId = await ChatService.getOtherUser(pMessage1.chat, user.id);
         const [tMessage2] = await MessageAggregator.transform(
           [iMessage.plain],
           userId
         );
         const pMessage2 = MessageChatSchema.parse(tMessage2);
 
-        socket.emit(
-          "chat:message-received-by-server",
-          JSON.stringify({ message: pMessage1 })
+        callback(
+          SockRes.data("Message received on server", {
+            message: pMessage1,
+          })
         );
-        socketService.io
-          .to(`user:${userId}`)
-          .emit("chat:message-from", JSON.stringify({ message: pMessage2 }));
-      } else {
-        const data = MessageCreateChatSchema.parse(_data);
-
+        SocketService.u.sendTo(
+          userId,
+          "chat:message-from",
+          SockRes.data("Someone sent you a message", { message: pMessage2 })
+        );
+      } else if (data.chatId) {
         const iMessage = await MessageService.createByChatId(data, user.id);
         const [tMessage] = await MessageAggregator.transform(
           [iMessage.plain],
           user.id
         );
         const pMessage = MessageSchema.parse(iMessage.plain);
-        const pMessageWChat = MessageChatSchema.parse(tMessage);
 
-        const userId =
-          pMessageWChat.chat.userOneId === user.id
-            ? pMessageWChat.chat.userTwoId
-            : pMessageWChat.chat.userOneId;
-        socket.emit(
-          "chat:message-received-by-server",
-          JSON.stringify({ message: pMessage })
+        const pMessageWChat = MessageChatSchema.parse(tMessage);
+        const userId = await ChatService.getOtherUser(
+          pMessageWChat.chat,
+          user.id
         );
-        socketService.io
-          .to(`user:${userId}`)
-          .emit("chat:message-from", JSON.stringify({ message: pMessage }));
-      }
+
+        callback(
+          SockRes.data("Message received on server", {
+            message: pMessage,
+          })
+        );
+        SocketService.u.sendTo(
+          userId,
+          "chat:message-from",
+          SockRes.data("Someone sent you a message", { message: pMessage })
+        );
+      } else throw new Error("No userId or chatId given");
     })
   );
 
   socket.on(
     "chat:message-received",
-    catchAsyncSocket(socket, async (payload: any) => {
-      const data: MessageReceivedDto = MessageReceivedSchema.parse(
-        JSON.parse(payload)
-      );
+    catchAsyncSocket(socket, async (payload: any, callback: any) => {
+      const data: MessageReceivedDto = MessageReceivedSchema.parse(payload);
       const user = AuthPayloadSchema.parse(socket.data.user);
 
       const iMessages = await MessageService.updateStatusByIds(
-        [data.id],
+        data.ids,
         "Received"
       );
       const [tMessage] = await MessageAggregator.transform(iMessages, user.id);
       const pMessage = MessageSchema.parse(tMessage);
+
       const pMessageWChat = MessageChatSchema.parse(tMessage);
-
-      const userId =
-        pMessageWChat.chat.userOneId === user.id
-          ? pMessageWChat.chat.userTwoId
-          : pMessageWChat.chat.userOneId;
-
-      socket.emit(
-        "chat:message-received-by-server",
-        JSON.stringify({ message: pMessage })
+      const userId = await ChatService.getOtherUser(
+        pMessageWChat.chat,
+        user.id
       );
-      socketService.io
-        .to(`user:${userId}`)
-        .emit("chat:message-received", JSON.stringify({ message: pMessage }));
+
+      callback(
+        SockRes.data("Message received on server", {
+          message: pMessage,
+        })
+      );
+      SocketService.u.sendTo(
+        userId,
+        "chat:message-received",
+        SockRes.data("Message has been received by the other user", {
+          message: pMessage,
+        })
+      );
+    })
+  );
+
+  socket.on(
+    "chat:message-update-to",
+    catchAsyncSocket(socket, async (payload: any, callback: any) => {
+      const data = MessageUpdateSchema.parse(payload);
+      const user = AuthPayloadSchema.parse(socket.data.user);
+
+      const iMessage = await MessageService.update(data, user.id);
+      const pMessage = MessageSchema.parse(iMessage.plain);
+
+      const userId = await ChatService.getOtherUser(pMessage.chatId, user.id);
+
+      callback(SockRes.data("Message updated", { message: pMessage }));
+      SocketService.u.sendTo(
+        userId,
+        "chat:message-update-from",
+        SockRes.data("Message update from someone", { message: pMessage })
+      );
     })
   );
 };

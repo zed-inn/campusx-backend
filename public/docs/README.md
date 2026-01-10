@@ -2989,3 +2989,325 @@ Type allowed: `LIKE`, `COMMENT`, `MESSAGE`
 
 ---
 
+## Messaging
+
+### [Server] [UserId] Send Message
+
+**SOCKET** `chat:message-to`  **( Login Required )**
+
+Send message to server using usedId and the server will forward to users appropriately, A callback is needed for sending user
+
+**Body :**
+```ts
+{
+  payload: {
+    localId: string | null;
+    chatId?: string;
+    userId?: string;
+    body: string;
+    createDateLocal: number | null;
+  };
+  callback: any; // Callback function to act as response for client
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+
+### [Server] [ChatId] Send Message
+
+**SOCKET** `chat:message-to`  **( Login Required )**
+
+Send message to server using chatId
+
+**Body :**
+```ts
+{
+  payload: {
+    localId: string | null;
+    chatId?: string;
+    userId?: string;
+    body: string;
+    createDateLocal: number | null;
+  };
+  callback: any; // Callback function to act as response for client
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+      chat: {
+        createDate: number;
+        updateDate: number;
+        id: string;
+        userOneId: string;
+        userTwoId: string;
+        friend: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      };
+    };
+  };
+}
+```
+
+---
+
+### [Client] [ChatId] Send Message
+
+**SOCKET** `chat:message-from`
+
+Send Message to user that has been received by server using chatId
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+
+### [Client] [UserId] Send Message
+
+**SOCKET** `chat:message-from`
+
+Send Message to user that has been received by server using userId
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+      chat: {
+        createDate: number;
+        updateDate: number;
+        id: string;
+        userOneId: string;
+        userTwoId: string;
+        friend: {
+          id: string;
+          fullName: string;
+          username: string | null;
+          avatarUrl: string | null;
+          isFollowed: boolean;
+          ambassadorOf: {
+            id: string;
+            name: string;
+            shortName: string | null;
+            district: string | null;
+            state: string | null;
+            country: string | null;
+            yearOfEstablishment: string | null;
+          } | null;
+        };
+      };
+    };
+  };
+}
+```
+
+---
+
+### [Server] Message Recieved
+
+**SOCKET** `chat:message-received`  **( Login Required )**
+
+Send message received if you have received a message from endpoint `chat:message-from` or `chat:message-update-to
+
+**Body :**
+```ts
+{
+  payload: {
+    ids: string[];
+  };
+  callback: any; // Callback function to act as response for client
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+
+### [Client] Message Received
+
+**SOCKET** `chat:message-received`
+
+Server sends that the message has been received by the other user after `chat:message-to` or `chat:message-update-to`
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+
+### [Server] Message Update
+
+**SOCKET** `chat:message-update-to`  **( Login Required )**
+
+Update message and gets a response.
+
+**Body :**
+```ts
+{
+  payload: {
+    localId?: string | null;
+    body?: string;
+    id: string;
+  };
+  callback: any; // Callback function to act as response for client
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+
+### [Client] Message Update From
+
+**SOCKET** `chat:message-update-from`
+
+Gets a message update from other user, server sends it.
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    message: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      localId: string | null;
+      senderId: string;
+      chatId: string;
+      body: string;
+      status: string;
+      createDateLocal: number | null;
+    };
+  };
+}
+```
+
+---
+

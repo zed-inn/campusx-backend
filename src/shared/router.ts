@@ -40,7 +40,5 @@ for (const key of Object.keys(routers)) {
   if (routers[key]) router.use(key, routers[key]);
 }
 
-generateReadme(router.definitions, "./public/docs/README.md");
-generateReadme(router.definitions, "./README.md");
-
+export const RESTDocs = router.definitions;
 export const AppRouter = router.router;

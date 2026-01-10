@@ -4,7 +4,7 @@ import { SocketRouter } from "@shared/socket.router";
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 
-class SocketService {
+class _SocketService {
   private _io: Server | null = null;
 
   public init(httpServer: HttpServer) {
@@ -40,6 +40,21 @@ class SocketService {
       console.log(`Client disconnected: ${socket.id}`);
     });
   }
+
+  /** Utils */
+  public u = new SocketUtils(this);
 }
 
-export const socketService = new SocketService();
+class SocketUtils {
+  private socketService: _SocketService;
+
+  constructor(socketService: _SocketService) {
+    this.socketService = socketService;
+  }
+
+  public sendTo = (userId: string, eventName: string, ...args: any[]) => {
+    return this.socketService.io.to(`user:${userId}`).emit(eventName, ...args);
+  };
+}
+
+export const SocketService = new _SocketService();

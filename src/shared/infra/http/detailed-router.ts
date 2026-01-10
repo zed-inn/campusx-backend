@@ -148,7 +148,11 @@ class RouteBuilder {
       middlewares.push(ValidateReq.query(this.meta.query));
     }
 
-    this.parent.router[method](path, ...middlewares, ...handlers);
+    this.parent.router[method as "get" | "post" | "patch" | "delete" | "put"](
+      path,
+      ...middlewares,
+      ...handlers
+    );
 
     const doc: EndpointDetails = {
       category: this.parent.categoryName,

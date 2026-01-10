@@ -3,13 +3,9 @@ import {
   MessageGetLatestSchema,
 } from "./dtos/message-get.dto";
 import { MessageController } from "./message.controller";
-import {
-  MessageCreateChatSchema,
-  MessageCreateUserSchema,
-} from "./dtos/message-action.dto";
 import { DetailedRouter } from "@shared/infra/http/detailed-router";
 import { array } from "zod";
-import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
+import { MessageSchema } from "./dtos/message-response.dto";
 
 const router = new DetailedRouter("Chat Messages");
 

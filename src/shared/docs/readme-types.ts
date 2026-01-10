@@ -4,7 +4,7 @@ export type EndpointDetails = {
   category: string;
   title: string;
   endpoint: string;
-  method: "get" | "post" | "patch" | "delete" | "put";
+  method: "get" | "post" | "patch" | "delete" | "put" | "socket";
   description: string;
   authTokenReq: boolean;
   query?: ZodObject;

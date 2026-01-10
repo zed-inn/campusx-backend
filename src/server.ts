@@ -3,16 +3,19 @@ import app from "./app";
 import { env } from "@config/env";
 import { connectDB, disconnectDB } from "@config/database";
 import { connectRedis, disconnectRedis } from "@config/cache";
-import { socketService } from "@shared/services/socket.service";
+import { SocketService } from "@shared/services/socket.service";
 import { defineHooks } from "@shared/hooks/hooks";
+import { generateDocs } from "@shared/app.docs";
 
 const httpServer = http.createServer(app);
 
 const startServer = async () => {
+  generateDocs(); // before server starts
+
   const dbConnected = await connectDB(defineHooks);
   const cacheConnected = await connectRedis();
 
-  socketService.init(httpServer);
+  SocketService.init(httpServer);
 
   httpServer.listen(env.PORT, env.HOST, () => {
     console.log(`
@@ -31,8 +34,8 @@ const shutdown = async (signal: string) => {
   try {
     console.log(`\n${signal} received. Starting graceful shutdown...`);
 
-    if (socketService.io) {
-      socketService.io.close(() => {
+    if (SocketService.io) {
+      SocketService.io.close(() => {
         console.log("Socket.io closed.");
       });
     }

@@ -1,6 +1,11 @@
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
-import { Chat, ChatCreationAttributes, ChatInstance } from "../chat/chat.model";
+import {
+  Chat,
+  ChatAttributes,
+  ChatCreationAttributes,
+  ChatInstance,
+} from "../chat/chat.model";
 import { Op } from "sequelize";
 import { CHATS_PER_PAGE } from "@config/constants/items-per-page";
 import { ChatCreateDto } from "./dtos/chat-action.dto";
@@ -64,6 +69,18 @@ class _ChatService extends BaseService<ChatInstance> {
   ) => {
     this.checkOwnership(obj, value, keys);
   };
+
+  async getOtherUser(chatId: string, userId: string): Promise<string>;
+  async getOtherUser(chat: ChatAttributes, userId: string): Promise<string>;
+
+  async getOtherUser(arg: string | ChatAttributes, userId: string) {
+    const chatData =
+      typeof arg === "string" ? (await ChatService.getById(arg)).plain : arg;
+
+    return chatData.userOneId === userId
+      ? chatData.userTwoId
+      : chatData.userOneId;
+  }
 }
 
 export const ChatService = new _ChatService();

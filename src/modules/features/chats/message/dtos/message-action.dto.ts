@@ -1,23 +1,20 @@
 import { z } from "zod";
 import { MessageModel } from "../message.model";
-import { ProfileModel } from "@modules/core/profile";
+import { UserModel } from "@modules/core/user";
 
-export const MessageCreateChatSchema = z.object({
+export const MessageCreateSchema = z.object({
   localId: MessageModel.fields.localId.default(null),
-  chatId: MessageModel.fields.chatId,
+  chatId: MessageModel.fields.chatId.optional(),
+  userId: UserModel.fields.id.optional(),
   body: MessageModel.fields.body,
   createDateLocal: MessageModel.fields.createDateLocal.default(null),
 });
 
-export type MessageCreateChatDto = z.infer<typeof MessageCreateChatSchema>;
+export type MessageCreateDto = z.infer<typeof MessageCreateSchema>;
 
-export const MessageCreateUserSchema = MessageCreateChatSchema.omit({
-  chatId: true,
-}).extend({ userId: ProfileModel.fields.id });
-
-export type MessageCreateUserDto = z.infer<typeof MessageCreateUserSchema>;
-
-export const MessageReceivedSchema = MessageModel.dbSchema.pick({ id: true });
+export const MessageReceivedSchema = z.object({
+  ids: z.array(MessageModel.fields.id),
+});
 
 export type MessageReceivedDto = z.infer<typeof MessageReceivedSchema>;
 

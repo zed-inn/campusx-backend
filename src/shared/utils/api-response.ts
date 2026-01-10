@@ -25,3 +25,12 @@ export class ApiResponse {
     return res.status(400).json({ message, ...(data ? { data } : {}) });
   };
 }
+
+export class SockRes {
+  static data = (
+    message: string,
+    data: Record<string, unknown> | null = null
+  ) => {
+    return { message, data };
+  };
+}
