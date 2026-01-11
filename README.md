@@ -3016,7 +3016,7 @@ Get events by page
       description: string;
       rules: string[];
       prizes: {
-        postition: string;
+        position: string;
         amount: number;
         description: string;
       }[];

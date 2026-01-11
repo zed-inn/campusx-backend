@@ -26,7 +26,7 @@ export const EventModel = modelSchema({
     .max(EVENT.RULES.HOW_MANY.MAX, { error: "Rules are too many" }),
   prizes: z.array(
     z.object({
-      postition: z.string("Invalid Position"),
+      position: z.string("Invalid Position"),
       amount: z.int("Invalid Amount").positive(),
       description: z.string("Invalid Prize Description"),
     })
@@ -74,12 +74,6 @@ export const Event = defineModel<EventAttributes, EventCreationAttributes>(
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
       defaultValue: [],
-      validate: {
-        len: {
-          args: [EVENT.RULES.HOW_MANY.MIN, EVENT.RULES.HOW_MANY.MAX],
-          msg: "Rules is not in appropriate length.",
-        },
-      },
     },
     prizes: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
