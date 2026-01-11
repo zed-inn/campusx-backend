@@ -6,8 +6,7 @@ export const InstituteFiltersSchema = InstituteModel.dbSchema.partial();
 
 export type InstituteFiltersDto = z.infer<typeof InstituteFiltersSchema>;
 
-export const InstituteGetFilterSchema = z.object({
-  filters: InstituteFiltersSchema,
+export const InstituteGetFilterSchema = InstituteFiltersSchema.extend({
   order: GlobalSchema.fields.order,
   page: GlobalSchema.fields.page,
 });

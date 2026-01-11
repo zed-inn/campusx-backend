@@ -20,7 +20,8 @@ export class InstituteController {
 
   static getInstitutesByFilter = catchAsync(
     async (req: Request<{}, {}, {}, InstituteGetFilterDto>, res: Response) => {
-      const q = req.query;
+      const { page, order, ...filters } = req.query;
+      const q = { page, order, filters };
 
       const institutes = await InstituteService.getByFilter(
         q.filters,
