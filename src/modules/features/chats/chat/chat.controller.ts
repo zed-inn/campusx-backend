@@ -14,7 +14,7 @@ export class ChatController {
       const q = req.query;
 
       const iChats = await ChatService.getActiveChatsOfUser(
-        q.userId,
+        user.id,
         q.timestamp
       );
       const tChats = await ChatAggregator.transform(iChats, user.id);

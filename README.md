@@ -2628,7 +2628,6 @@ Get chats in order of latest activity
 **Query Parameters :**
 ```ts
 {
-  userId: string;
   timestamp: number | null;
 }
 ```

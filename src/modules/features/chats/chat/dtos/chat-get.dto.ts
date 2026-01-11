@@ -1,10 +1,8 @@
-import { ProfileModel } from "@modules/core/profile";
 import { GlobalSchema } from "@shared/dtos/global.dto";
 import { z } from "zod";
 import { ChatModel } from "../chat.model";
 
 export const ChatGetActiveSchema = z.object({
-  userId: ProfileModel.fields.id,
   timestamp: GlobalSchema.fields.timestamp,
 });
 
