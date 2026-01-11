@@ -85,27 +85,27 @@ export const MessageSocketController = (socket: Socket) => {
         data.ids,
         "Received"
       );
-      const [tMessage] = await MessageAggregator.transform(iMessages, user.id);
-      const pMessage = MessageSchema.parse(tMessage);
-
-      const pMessageWChat = MessageChatSchema.parse(tMessage);
-      const userId = await ChatService.getOtherUser(
-        pMessageWChat.chat,
-        user.id
-      );
+      const tMessages = await MessageAggregator.transform(iMessages, user.id);
+      const pMessages = tMessages.map((m) => MessageSchema.parse(m));
 
       callback(
-        SockRes.data("Message received on server", {
-          message: pMessage,
+        SockRes.data("Messages received on server", {
+          messages: pMessages,
         })
       );
-      SocketService.u.sendTo(
-        userId,
-        "chat:message-received",
-        SockRes.data("Message has been received by the other user", {
-          message: pMessage,
-        })
-      );
+
+      const pMessagesWChat = tMessages.map((m) => MessageChatSchema.parse(m));
+      for (const x of pMessagesWChat) {
+        const userId = await ChatService.getOtherUser(x.chat, user.id);
+
+        SocketService.u.sendTo(
+          userId,
+          "chat:message-received",
+          SockRes.data("Message has been received by the other user", {
+            messages: [x],
+          })
+        );
+      }
     })
   );
 

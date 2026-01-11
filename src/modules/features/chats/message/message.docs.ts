@@ -87,7 +87,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     }),
     response: {
       message: "Message received on server",
-      data: z.object({ message: array(MessageSchema) }),
+      data: z.object({ messages: array(MessageSchema) }),
     },
   },
   {
@@ -100,7 +100,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     authTokenReq: false,
     response: {
       message: "Message has been received by the other user",
-      data: z.object({ message: array(MessageSchema) }),
+      data: z.object({ messages: array(MessageSchema) }),
     },
   },
   {

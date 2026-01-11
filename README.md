@@ -3370,7 +3370,7 @@ Send message received if you have received a message from endpoint `chat:message
 {
   message: string;
   data: {
-    message: {
+    messages: {
       createDate: number;
       updateDate: number;
       id: string;
@@ -3398,7 +3398,7 @@ Server sends that the message has been received by the other user after `chat:me
 {
   message: string;
   data: {
-    message: {
+    messages: {
       createDate: number;
       updateDate: number;
       id: string;
