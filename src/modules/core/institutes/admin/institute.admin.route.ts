@@ -16,7 +16,7 @@ const router = new DetailedRouter("Institute");
 router
   .describe("Get Institutes", "Get institutes by filter")
   .admin()
-  .body(InstituteGetFilterSchema)
+  .query(InstituteGetFilterSchema)
   .output("institutes", array(InstituteSchema), "Institutes fetched.")
   .get("/", InstituteController.getInstitutesByFilter);
 
