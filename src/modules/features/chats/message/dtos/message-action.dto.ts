@@ -4,8 +4,8 @@ import { UserModel } from "@modules/core/user";
 
 export const MessageCreateSchema = z.object({
   localId: MessageModel.fields.localId.default(null),
-  chatId: MessageModel.fields.chatId.optional(),
-  userId: UserModel.fields.id.optional(),
+  chatId: MessageModel.fields.chatId.nullable().optional(),
+  userId: UserModel.fields.id.nullable().optional(),
   body: MessageModel.fields.body,
   createDateLocal: MessageModel.fields.createDateLocal.default(null),
 });
