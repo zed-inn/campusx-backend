@@ -111,7 +111,7 @@ export const Event = defineModel<EventAttributes, EventCreationAttributes>(
     status: {
       type: DataTypes.STRING,
       values: EVENT.STATUS._,
-      defaultValue: EVENT.STATUS.QUEUED,
+      defaultValue: EVENT.STATUS.UPCOMING,
       allowNull: false,
     },
     category: { type: DataTypes.STRING, allowNull: false },
