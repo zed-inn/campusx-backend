@@ -22,7 +22,31 @@ export const MessageSocketController = (socket: Socket) => {
       const data: MessageCreateDto = MessageCreateSchema.parse(payload);
       const user = AuthPayloadSchema.parse(socket.data.user);
 
-      if (data.userId) {
+      if (data.chatId) {
+        const iMessage = await MessageService.createByChatId(data, user.id);
+        const [tMessage] = await MessageAggregator.transform(
+          [iMessage.plain],
+          user.id
+        );
+        const pMessage = MessageSchema.parse(iMessage.plain);
+
+        const pMessageWChat = MessageChatSchema.parse(tMessage);
+        const userId = await ChatService.getOtherUser(
+          pMessageWChat.chat,
+          user.id
+        );
+
+        callback(
+          SockRes.data("Message received on server", {
+            message: pMessage,
+          })
+        );
+        SocketService.u.sendTo(
+          userId,
+          "chat:message-from",
+          SockRes.data("Someone sent you a message", { message: pMessage })
+        );
+      } else if (data.userId) {
         const iMessage = await MessageService.createByReceiverId(data, user.id);
 
         const [tMessage1] = await MessageAggregator.transform(
@@ -52,30 +76,6 @@ export const MessageSocketController = (socket: Socket) => {
             message: pMessage,
             chat: pMessage2.chat,
           })
-        );
-      } else if (data.chatId) {
-        const iMessage = await MessageService.createByChatId(data, user.id);
-        const [tMessage] = await MessageAggregator.transform(
-          [iMessage.plain],
-          user.id
-        );
-        const pMessage = MessageSchema.parse(iMessage.plain);
-
-        const pMessageWChat = MessageChatSchema.parse(tMessage);
-        const userId = await ChatService.getOtherUser(
-          pMessageWChat.chat,
-          user.id
-        );
-
-        callback(
-          SockRes.data("Message received on server", {
-            message: pMessage,
-          })
-        );
-        SocketService.u.sendTo(
-          userId,
-          "chat:message-from",
-          SockRes.data("Someone sent you a message", { message: pMessage })
         );
       } else throw new Error("No userId or chatId given");
     })

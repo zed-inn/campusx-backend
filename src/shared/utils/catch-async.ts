@@ -13,7 +13,11 @@ export const catchAsyncSocket = (socket: Socket, fn: Function) => {
       await fn(...args);
     } catch (err) {
       console.log(err);
-      socket.emit("error", { message: "Internal Server Error", err });
+      socket.emit("error", {
+        message: "Internal Server Error",
+        err,
+        stack: (err as any).stack,
+      });
     }
   };
 };
