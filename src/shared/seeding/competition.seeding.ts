@@ -24,7 +24,7 @@ const loadOneCompetition = async () => {
       "https://amazon-s3-bucket-campusx.s3.amazonaws.com/dev/b2709944-3469-42c1-9601-b0b414cf5c43.jpg",
   });
 
-  console.log("Created one event in competitions.");
+  console.log("Seeded one event in competitions.");
 };
 
 const run = async () => {
