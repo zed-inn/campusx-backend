@@ -30,4 +30,14 @@ export class RestrictTo {
       next();
     }
   );
+
+  static adminUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const reqUser = AuthPayloadSchema.parse(req.user);
+    if (reqUser.role !== "ADMIN") throw new AppError("Forbidden", 403);
+    next();
+  };
 }

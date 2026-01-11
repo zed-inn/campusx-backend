@@ -28,6 +28,7 @@ const envSchema = z.object({
   AWS_REGION: z.string(),
   AWS_BUCKET_NAME: z.string(),
   FIREBASE_CONFIG_JSON: z.string(),
+  ADMIN_CODE: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);

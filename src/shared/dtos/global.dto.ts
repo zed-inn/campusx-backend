@@ -11,6 +11,23 @@ export const GlobalSchema = modelSchema({
     .nonnegative("Timestamp can't be negative")
     .nullable()
     .default(null),
+  order: z
+    .string("Invalid Order")
+    .refine((val) => {
+      try {
+        const lls = JSON.parse(val) as string[][];
+        if (!Array.isArray(lls)) return false;
+        for (const ls of lls) {
+          if (!Array.isArray(ls) || ls.length !== 2) return false;
+          for (const s of ls) if (typeof s !== "string") return false;
+        }
+        return true;
+      } catch {
+        return false;
+      }
+    })
+    .transform((val) => JSON.parse(val) as string[][])
+    .default([]),
 });
 
 export const GlobalDeleteSchema = z.object({

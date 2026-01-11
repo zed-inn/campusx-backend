@@ -6,6 +6,7 @@ import { AppRouter } from "@shared/router";
 import { globalErrorHandler } from "@shared/middlewares/global-error-handler";
 import { AppError } from "@shared/errors/app-error";
 import { authenticate } from "@shared/middlewares/authenticate";
+import { AdminAppRouter } from "@shared/admin.router";
 
 declare global {
   namespace Express {
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(authenticate.req);
 
 app.use("/", AppRouter);
+app.use("/admin", AdminAppRouter.router);
 
 app.use((req, res, next) => {
   next(

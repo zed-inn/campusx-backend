@@ -1,0 +1,16 @@
+import { AuthAdminRouter } from "@modules/core/authentication/admin";
+import { DetailedRouter } from "./infra/http/detailed-router";
+import { InstituteAdminRouter } from "@modules/core/institutes/admin";
+
+const router = new DetailedRouter("Admin");
+
+const routers: Record<string, DetailedRouter> = {
+  "/auth": AuthAdminRouter,
+  "/institute": InstituteAdminRouter,
+};
+
+for (const key of Object.keys(routers)) {
+  if (routers[key]) router.use(key, routers[key]);
+}
+
+export const AdminAppRouter = router;

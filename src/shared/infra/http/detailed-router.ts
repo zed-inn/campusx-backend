@@ -1,4 +1,6 @@
 import { EndpointDetails } from "@shared/docs/readme-types";
+import { RestrictTo } from "@shared/middlewares/auth-restrict";
+import { ValidateReq } from "@shared/middlewares/validate-request";
 import { Router, RequestHandler } from "express";
 import { object, ZodObject, ZodType } from "zod";
 
@@ -44,6 +46,7 @@ class RouteBuilder {
   private meta: Partial<EndpointDetails> & {
     _requiresAuth?: boolean;
     _requiresProfile?: boolean;
+    _requiresAdmin?: boolean;
   } = {
     response: { message: "Success" },
   };
@@ -58,6 +61,12 @@ class RouteBuilder {
   userProfiled() {
     this.meta._requiresAuth = true;
     this.meta._requiresProfile = true;
+    return this;
+  }
+
+  admin() {
+    this.meta._requiresAuth = true;
+    this.meta._requiresAdmin = true;
     return this;
   }
 
@@ -130,15 +139,16 @@ class RouteBuilder {
   ) {
     const middlewares: RequestHandler[] = [];
 
-    const { RestrictTo } = require("@shared/middlewares/auth-restrict");
-    const { ValidateReq } = require("@shared/middlewares/validate-request");
-
     if (this.meta._requiresAuth) {
       middlewares.push(RestrictTo.loggedInUser);
     }
 
     if (this.meta._requiresProfile) {
       middlewares.push(RestrictTo.profiledUser);
+    }
+
+    if (this.meta._requiresAdmin) {
+      middlewares.push(RestrictTo.adminUser);
     }
 
     if (this.meta.body) {
