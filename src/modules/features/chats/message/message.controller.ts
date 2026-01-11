@@ -12,7 +12,7 @@ export class MessageController {
       const user = AuthPayloadSchema.parse(req.user);
       const q = req.query;
 
-      const iMessages = await MessageService.getLatest(user.id, q.page);
+      const iMessages = await MessageService.getLatest(user.id, q.timestamp);
       const pMessages = iMessages.map((m) => MessageSchema.parse(m));
 
       return ApiResponse.success(res, "Messages.", { messages: pMessages });

@@ -2704,7 +2704,7 @@ Get messages of a chat
 
 ---
 
-### Get chat messages
+### Get initial messages
 
 **GET** `/chats/message/latest`  **( Login Required )**
 
@@ -2713,7 +2713,7 @@ Get messages of a chat
 **Query Parameters :**
 ```ts
 {
-  page: number;
+  timestamp: number | null;
 }
 ```
 
@@ -3173,8 +3173,8 @@ Send message to server using usedId and the server will forward to users appropr
 {
   payload: {
     localId: string | null;
-    chatId?: string;
-    userId?: string;
+    chatId?: string | null;
+    userId?: string | null;
     body: string;
     createDateLocal: number | null;
   };
@@ -3215,8 +3215,8 @@ Send message to server using chatId
 {
   payload: {
     localId: string | null;
-    chatId?: string;
-    userId?: string;
+    chatId?: string | null;
+    userId?: string | null;
     body: string;
     createDateLocal: number | null;
   };

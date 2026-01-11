@@ -10,7 +10,7 @@ export const MessageGetChatSchema = z.object({
 export type MessageGetChatDto = z.infer<typeof MessageGetChatSchema>;
 
 export const MessageGetLatestSchema = z.object({
-  page: GlobalSchema.fields.page,
+  timestamp: GlobalSchema.fields.timestamp,
 });
 
 export type MessageGetLatestDto = z.infer<typeof MessageGetLatestSchema>;

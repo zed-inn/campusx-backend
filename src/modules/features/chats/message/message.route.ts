@@ -17,7 +17,7 @@ router
   .get("/", MessageController.getMessages);
 
 router
-  .describe("Get chat messages", "Get messages of a chat")
+  .describe("Get initial messages", "Get messages of a chat")
   .userProfiled()
   .query(MessageGetLatestSchema)
   .output("messages", array(MessageSchema), "Messages.")

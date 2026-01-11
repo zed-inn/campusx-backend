@@ -61,13 +61,17 @@ class _MessageService extends BaseService<MessageInstance> {
     return messages.map((m) => m.plain);
   };
 
-  getLatest = async (userId: string, page: number) => {
+  getLatest = async (userId: string, timestamp: number | null) => {
     const chatIds = await ChatService.getIdsByUser(userId);
 
     const messages = await Message.findAll({
-      where: { chatId: { [Op.in]: chatIds } },
+      where: {
+        chatId: {
+          [Op.in]: chatIds,
+          ...(timestamp ? { updateDate: { [Op.gt]: timestamp } } : {}),
+        },
+      },
       limit: MESSAGES_PER_PAGE,
-      offset: this.OFFSET(page),
       order: [["updateDate", "desc"]],
     });
 
