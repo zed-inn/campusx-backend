@@ -3240,28 +3240,28 @@ Send message to server using chatId
       body: string;
       status: string;
       createDateLocal: number | null;
-      chat: {
-        createDate: number;
-        updateDate: number;
+    };
+    chat: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userOneId: string;
+      userTwoId: string;
+      friend: {
         id: string;
-        userOneId: string;
-        userTwoId: string;
-        friend: {
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
           id: string;
-          fullName: string;
-          username: string | null;
-          avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassadorOf: {
-            id: string;
-            name: string;
-            shortName: string | null;
-            district: string | null;
-            state: string | null;
-            country: string | null;
-            yearOfEstablishment: string | null;
-          } | null;
-        };
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        } | null;
       };
     };
   };
@@ -3319,28 +3319,28 @@ Send Message to user that has been received by server using userId
       body: string;
       status: string;
       createDateLocal: number | null;
-      chat: {
-        createDate: number;
-        updateDate: number;
+    };
+    chat: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      userOneId: string;
+      userTwoId: string;
+      friend: {
         id: string;
-        userOneId: string;
-        userTwoId: string;
-        friend: {
+        fullName: string;
+        username: string | null;
+        avatarUrl: string | null;
+        isFollowed: boolean;
+        ambassadorOf: {
           id: string;
-          fullName: string;
-          username: string | null;
-          avatarUrl: string | null;
-          isFollowed: boolean;
-          ambassadorOf: {
-            id: string;
-            name: string;
-            shortName: string | null;
-            district: string | null;
-            state: string | null;
-            country: string | null;
-            yearOfEstablishment: string | null;
-          } | null;
-        };
+          name: string;
+          shortName: string | null;
+          district: string | null;
+          state: string | null;
+          country: string | null;
+          yearOfEstablishment: string | null;
+        } | null;
       };
     };
   };

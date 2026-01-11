@@ -5,7 +5,8 @@ import {
   MessageReceivedSchema,
   MessageUpdateSchema,
 } from "./dtos/message-action.dto";
-import { MessageChatSchema, MessageSchema } from "./dtos/message-response.dto";
+import { MessageSchema } from "./dtos/message-response.dto";
+import { ChatSchema } from "../chat/dtos/chat-response.dto";
 
 export const MessageSocketDocs: EndpointDetails[] = [
   {
@@ -42,7 +43,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     }),
     response: {
       message: "Message received on server",
-      data: z.object({ message: MessageChatSchema }),
+      data: z.object({ message: MessageSchema, chat: ChatSchema }),
     },
   },
   {
@@ -68,7 +69,7 @@ export const MessageSocketDocs: EndpointDetails[] = [
     authTokenReq: false,
     response: {
       message: "Someone sent you a message",
-      data: z.object({ message: MessageChatSchema }),
+      data: z.object({ message: MessageSchema, chat: ChatSchema }),
     },
   },
   {

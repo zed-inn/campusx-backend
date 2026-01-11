@@ -24,10 +24,12 @@ export const MessageSocketController = (socket: Socket) => {
 
       if (data.userId) {
         const iMessage = await MessageService.createByReceiverId(data, user.id);
+
         const [tMessage1] = await MessageAggregator.transform(
           [iMessage.plain],
           user.id
         );
+        const pMessage = MessageSchema.parse(tMessage1);
 
         const pMessage1 = MessageChatSchema.parse(tMessage1);
         const userId = await ChatService.getOtherUser(pMessage1.chat, user.id);
@@ -39,13 +41,17 @@ export const MessageSocketController = (socket: Socket) => {
 
         callback(
           SockRes.data("Message received on server", {
-            message: pMessage1,
+            message: pMessage,
+            chat: pMessage1.chat,
           })
         );
         SocketService.u.sendTo(
           userId,
           "chat:message-from",
-          SockRes.data("Someone sent you a message", { message: pMessage2 })
+          SockRes.data("Someone sent you a message", {
+            message: pMessage,
+            chat: pMessage2.chat,
+          })
         );
       } else if (data.chatId) {
         const iMessage = await MessageService.createByChatId(data, user.id);
