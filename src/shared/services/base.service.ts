@@ -23,6 +23,11 @@ export abstract class BaseService<M extends ExtendedModel<any, any>> {
     return instances.map((i) => i.plain) as Attributes<M>[];
   };
 
+  getAllIds = async () => {
+    const instances = await this.model.findAll({ attributes: ["id"] });
+    return instances.map((i) => i.plain.id) as { id: string }[];
+  };
+
   create = async (data: any) => {
     const instance = await this.model.create(data);
     return instance;
