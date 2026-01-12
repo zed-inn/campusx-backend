@@ -5,6 +5,7 @@ import { InsightsAdminRouter } from "@modules/features/insights/admin";
 import { UserAdminRouter } from "@modules/core/user/admin/";
 import { NotificatioAdminRouter } from "@modules/core/notifications/admin";
 import { CompetitionAdminRouter } from "@modules/features/competition/admin";
+import { ForumAdminRouter } from "@modules/features/forums/admin";
 
 const router = new DetailedRouter("Admin");
 
@@ -15,6 +16,7 @@ const routers: Record<string, DetailedRouter> = {
   "/user": UserAdminRouter,
   "/notification": NotificatioAdminRouter,
   "/competition": CompetitionAdminRouter,
+  "/forums": ForumAdminRouter,
 };
 
 for (const key of Object.keys(routers)) {
