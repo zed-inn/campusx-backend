@@ -1557,7 +1557,7 @@ Retrieve a paginated list of available forum categories.
 
 ### Get insights
 
-**GET** `/insights/post`
+**GET** `/insights/post/filter`
 
 Retrieve a paginated list of insights.
 
@@ -1587,6 +1587,43 @@ Retrieve a paginated list of insights.
       status: string;
       category: string | null;
     }[];
+  };
+}
+```
+
+---
+
+### Get one insights
+
+**GET** `/insights/post`
+
+Retrieve one insight by Id
+
+**Query Parameters :**
+```ts
+{
+  id: string;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    insight: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      title: string | null;
+      body: string | null;
+      hindiTitle: string | null;
+      hindiBody: string | null;
+      imageUrl: string | null;
+      categoryId: string | null;
+      status: string;
+      category: string | null;
+    };
   };
 }
 ```
@@ -3159,7 +3196,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       title: string;
       slug: string | null;
       type: string;
-      location: string | null;
+      locations: string[] | null;
       isRemote: boolean;
       salaryConfig?: {
         min?: number;
