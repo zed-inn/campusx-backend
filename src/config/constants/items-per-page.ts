@@ -27,3 +27,5 @@ export const JOBS_PER_PAGE = 100;
 export const REPORTS_PER_PAGE = 30;
 
 export const EVENTS_PER_PAGE = 45;
+
+export const FEEDBACKS_PER_PAGE = 45;

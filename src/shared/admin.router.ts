@@ -6,6 +6,7 @@ import { UserAdminRouter } from "@modules/core/user/admin/";
 import { NotificatioAdminRouter } from "@modules/core/notifications/admin";
 import { CompetitionAdminRouter } from "@modules/features/competition/admin";
 import { ForumAdminRouter } from "@modules/features/forums/admin";
+import { FeedbackAdminRouter } from "@modules/features/feedback/admin";
 
 const router = new DetailedRouter("Admin");
 
@@ -17,6 +18,7 @@ const routers: Record<string, DetailedRouter> = {
   "/notification": NotificatioAdminRouter,
   "/competition": CompetitionAdminRouter,
   "/forums": ForumAdminRouter,
+  "/feedback": FeedbackAdminRouter,
 };
 
 for (const key of Object.keys(routers)) {
