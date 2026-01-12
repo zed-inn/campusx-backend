@@ -7,7 +7,7 @@ const router = new DetailedRouter("Upload Files");
 
 router
   .describe("Upload Image", "Upload image")
-  .userProfiled()
+  .auth()
   .output("url", z.string(), "File uploaded.")
   .post("/", upload.single("file"), UploadController.uploadImage);
 
