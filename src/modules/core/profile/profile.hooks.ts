@@ -19,7 +19,14 @@ export const ProfileHooks = () => {
         p.id
       );
 
-    if (WALLET.REFERRAL) {
+    let referralUsed = false;
+    try {
+      await ReferralUseService.getByUserId(p.id);
+      referralUsed = true;
+    } catch {
+      referralUsed = false;
+    }
+    if (WALLET.REFERRAL && referralUsed) {
       const u = (
         await ProfileService.getById(
           (
