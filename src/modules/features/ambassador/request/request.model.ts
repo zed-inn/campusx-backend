@@ -29,42 +29,29 @@ export type RequestCreationAttributes = Omit<
 export const Request = defineModel<
   RequestAttributes,
   RequestCreationAttributes
->(
-  db,
-  "AmbassadorRequest",
-  {
-    id: { ...PRIMARY_ID },
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: { model: Profile, key: "id" },
-    },
-    instituteId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: { model: Institute, key: "id" },
-    },
-    reason: { type: DataTypes.STRING, allowNull: true },
-    status: {
-      type: DataTypes.STRING,
-      values: REQUEST.STATUS._,
-      allowNull: false,
-      defaultValue: REQUEST.STATUS.PENDING,
-    },
+>(db, "AmbassadorRequest", {
+  id: { ...PRIMARY_ID },
+  userId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: { model: Profile, key: "id" },
   },
-  {
-    indexes: [
-      {
-        unique: true,
-        fields: ["userId"],
-        name: "ambassodor_request_one_per_user",
-      },
-    ],
-  }
-);
+  instituteId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: { model: Institute, key: "id" },
+  },
+  reason: { type: DataTypes.STRING, allowNull: true },
+  status: {
+    type: DataTypes.STRING,
+    values: REQUEST.STATUS._,
+    allowNull: false,
+    defaultValue: REQUEST.STATUS.PENDING,
+  },
+});
 
 // Associations
-Profile.hasOne(Request, {
+Profile.hasMany(Request, {
   foreignKey: "id",
   onDelete: "CASCADE",
   as: "ambassadorRequest",
