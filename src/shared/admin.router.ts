@@ -2,6 +2,7 @@ import { AuthAdminRouter } from "@modules/core/authentication/admin";
 import { DetailedRouter } from "./infra/http/detailed-router";
 import { InstituteAdminRouter } from "@modules/core/institutes/admin";
 import { InsightsAdminRouter } from "@modules/features/insights/admin";
+import { ProfileAdminRouter } from "@modules/core/profile/admin";
 
 const router = new DetailedRouter("Admin");
 
@@ -9,6 +10,7 @@ const routers: Record<string, DetailedRouter> = {
   "/auth": AuthAdminRouter,
   "/institute": InstituteAdminRouter,
   "/insight": InsightsAdminRouter,
+  "/user": ProfileAdminRouter,
 };
 
 for (const key of Object.keys(routers)) {

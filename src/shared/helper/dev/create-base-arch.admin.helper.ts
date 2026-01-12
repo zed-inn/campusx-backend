@@ -98,11 +98,14 @@ const processArgs = () => {
   )
     throw new Error("No valid working directory given");
 
-  const _name = _workingDirectory
-    .replaceAll("/", "\\")
-    .replaceAll("\\", "/")
-    .split("/")
-    .pop();
+  const _name =
+    process.argv[3] ??
+    _workingDirectory
+      .replaceAll("/", "\\")
+      .replaceAll("\\", "/")
+      .replace(/\/$/, "")
+      .split("/")
+      .pop();
   const workingDir = path.join(process.cwd(), _workingDirectory);
   if (!_name)
     throw new Error("No name can be fetched from given working directory");
