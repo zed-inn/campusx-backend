@@ -3193,11 +3193,18 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       createDate: number;
       updateDate: number;
       id: string;
+      source: {
+        originalId: any | null;
+        name: string | null;
+        url: string | null;
+        dateFetched: number | null;
+      } | null;
       title: string;
       slug: string | null;
-      type: string;
-      locations: string[] | null;
-      isRemote: boolean;
+      type: string | null;
+      locations: any | null;
+      isRemote: boolean | null;
+      workMode: string[] | null;
       salaryConfig?: {
         min?: number;
         max?: number;
@@ -3205,13 +3212,30 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
         period: string;
         negotiable: boolean;
       } | null;
+      role: string[] | null;
+      subRole: string[] | null;
       meta?: any | null;
-      description: string;
-      companyName: string;
-      companyLogo: string | null;
-      applyLink: string;
-      status: string;
+      description: {
+        full: string | null;
+        short: string | null;
+      } | null;
+      company: {
+        name: string;
+        logo: string | null;
+        website: string | null;
+        industry: string | null;
+        foundedYear: number | null;
+        meta: any | null;
+      } | null;
+      applyLink: string | null;
+      status: string | null;
       expiresAt: number | null;
+      requirements: {
+        relevantDegrees: string[] | null;
+        targetColleges: any[] | null;
+        isCampusDrive: boolean | null;
+        meta: any | null;
+      } | null;
     }[];
   };
 }
