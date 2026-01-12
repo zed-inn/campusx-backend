@@ -8,6 +8,8 @@ import {
   PostDeleteDto,
   PostUpdateDto,
 } from "./dtos/post-action.admin.dto";
+import { PostAggregator } from "./post.admin.aggregator";
+import { PostSchema } from "./dtos/post-response.admin.dto";
 
 export class PostController {
   static getPostsByFilter = catchAsync(
@@ -15,25 +17,31 @@ export class PostController {
       const { page, order, ...filters } = req.query;
       const q = { page, order, filters };
 
-      const posts = await PostService.getByFilters(q.filters, q.order, q.page);
+      const iPosts = await PostService.getByFilters(q.filters, q.order, q.page);
+      const tPosts = await PostAggregator.transform(iPosts);
+      const pPosts = tPosts.map((p) => PostSchema.parse(p));
 
-      return ApiResponse.success(res, "Posts fetched.", { posts });
+      return ApiResponse.success(res, "Posts fetched.", { posts: pPosts });
     }
   );
 
   static createPost = catchAsync(
     async (req: Request<{}, {}, PostCreateDto>, res: Response) => {
-      const post = await PostService.createNew(req.body);
+      const iPost = await PostService.createNew(req.body);
+      const [tPost] = await PostAggregator.transform([iPost.plain]);
+      const pPost = PostSchema.parse(tPost);
 
-      return ApiResponse.success(res, "Post created.", { post });
+      return ApiResponse.success(res, "Post created.", { post: pPost });
     }
   );
 
   static updatePost = catchAsync(
     async (req: Request<{}, {}, PostUpdateDto>, res: Response) => {
-      const post = await PostService.update(req.body);
+      const iPost = await PostService.update(req.body);
+      const [tPost] = await PostAggregator.transform([iPost.plain]);
+      const pPost = PostSchema.parse(tPost);
 
-      return ApiResponse.success(res, "Post updated.", { post });
+      return ApiResponse.success(res, "Post updated.", { post: pPost });
     }
   );
 
