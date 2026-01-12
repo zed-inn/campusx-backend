@@ -7,7 +7,10 @@ import { JobController } from "./job.controller";
 const router = new DetailedRouter("Jobs");
 
 router
-  .describe("Get jobs", "Get jobs by page")
+  .describe(
+    "Get jobs",
+    "Get jobs by page | \nTypes: `FULL_TIME`, `PART_TIME`, `INTERNSHIP`, `FREELANCE`, `CONTRACT`, `GOVT`, `WALK_IN` | \nStatus: `DRAFT`, `ACTIVE`, `CLOSED`, `EXPIRED` | \nSalary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`"
+  )
   .userProfiled()
   .query(JobGetPageSchema)
   .output("jobs", array(JobSchema), "Jobs.")

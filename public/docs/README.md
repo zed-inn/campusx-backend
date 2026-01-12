@@ -3135,7 +3135,10 @@ Deregister current logged in user from an event
 
 **GET** `/jobs`  **( Login Required )**
 
-Get jobs by page
+Get jobs by page | 
+Types: `FULL_TIME`, `PART_TIME`, `INTERNSHIP`, `FREELANCE`, `CONTRACT`, `GOVT`, `WALK_IN` | 
+Status: `DRAFT`, `ACTIVE`, `CLOSED`, `EXPIRED` | 
+Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
 
 **Query Parameters :**
 ```ts
@@ -3153,6 +3156,25 @@ Get jobs by page
       createDate: number;
       updateDate: number;
       id: string;
+      title: string;
+      slug: string | null;
+      type: string;
+      location: string | null;
+      isRemote: boolean;
+      salaryConfig?: {
+        min?: number;
+        max?: number;
+        currency: string;
+        period: string;
+        negotiable: boolean;
+      } | null;
+      meta?: any | null;
+      description: string;
+      companyName: string;
+      companyLogo: string | null;
+      applyLink: string;
+      status: string;
+      expiresAt: number | null;
     }[];
   };
 }
