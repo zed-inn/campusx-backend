@@ -3244,6 +3244,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
         isCampusDrive: boolean | null;
         meta?: any | null;
       } | null;
+      datePosted: number | null;
     }[];
   };
 }

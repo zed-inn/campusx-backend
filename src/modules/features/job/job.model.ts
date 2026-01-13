@@ -145,7 +145,7 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
       allowNull: true,
       defaultValue: null,
       get() {
-        const rawValue = this.getDataValue("expiresAt");
+        const rawValue = this.getDataValue("datePosted");
         return rawValue ? parseInt(rawValue as string, 10) : null;
       },
     },
