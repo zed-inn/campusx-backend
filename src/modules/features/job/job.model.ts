@@ -20,7 +20,7 @@ export const JobModel = modelSchema({
   id: z.uuidv4("Invalid Job Id"),
   source: z
     .object({
-      originalId: z.any().nullable(),
+      originalId: z.string().nullable(),
       name: z.string().nullable(),
       url: z.string().nullable(),
       dateFetched: z.int().positive().nullable(),
@@ -31,7 +31,18 @@ export const JobModel = modelSchema({
     .min(JOB.TITLE.LENGTH.MIN, { error: "Title too short" }),
   slug: z.string("Invalid Slug").nullable(),
   type: z.enum(JOB.TYPES._, { error: "Invalid Job Type" }).nullable(),
-  locations: z.any().nullable(),
+  locations: z
+    .array(
+      z.object({
+        district: z.string().nullable(),
+        city: z.string().nullable(),
+        state: z.string().nullable(),
+        country: z.string().nullable(),
+        lat: z.string().nullable(),
+        lon: z.string().nullable(),
+      })
+    )
+    .nullable(),
   isRemote: z.boolean("Invalid Remote Flag").nullable(),
   workMode: z.array(z.string("Invalid Work Mode")).nullable(),
   salaryConfig: SalaryConfigSchema.optional().nullable(),
@@ -52,8 +63,8 @@ export const JobModel = modelSchema({
       logo: z.url("Invalid Logo URL").nullable(),
       website: z.url("Invalid company website").nullable(),
       industry: z.url("Invalid Company Industry").nullable(),
-      foundedYear: z.int().nullable(),
-      meta: z.record(z.any(), z.any()).nullable(),
+      foundedYear: z.string().nullable(),
+      meta: JobMetaSchema.optional().nullable(),
     })
     .nullable(),
   applyLink: z.url("Invalid Apply Link").nullable(),
@@ -61,12 +72,11 @@ export const JobModel = modelSchema({
   expiresAt: z.int("Invalid Expiry Date").positive().nullable(),
   requirements: z
     .object({
+      relevantSkills: z.array(z.string()).nullable(),
       relevantDegrees: z.array(z.string()).nullable(),
-      targetColleges: z
-        .array(z.string().or(z.record(z.any(), z.any())))
-        .nullable(),
+      targetColleges: z.array(z.string()).nullable(),
       isCampusDrive: z.boolean().nullable(),
-      meta: z.record(z.any(), z.any()).nullable(),
+      meta: JobMetaSchema.optional().nullable(),
     })
     .nullable(),
 });

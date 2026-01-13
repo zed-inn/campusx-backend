@@ -3194,7 +3194,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       updateDate: number;
       id: string;
       source: {
-        originalId: any | null;
+        originalId: string | null;
         name: string | null;
         url: string | null;
         dateFetched: number | null;
@@ -3202,7 +3202,14 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       title: string;
       slug: string | null;
       type: string | null;
-      locations: any | null;
+      locations: {
+        district: string | null;
+        city: string | null;
+        state: string | null;
+        country: string | null;
+        lat: string | null;
+        lon: string | null;
+      }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
@@ -3224,17 +3231,18 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
         logo: string | null;
         website: string | null;
         industry: string | null;
-        foundedYear: number | null;
-        meta: any | null;
+        foundedYear: string | null;
+        meta?: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;
       expiresAt: number | null;
       requirements: {
+        relevantSkills: string[] | null;
         relevantDegrees: string[] | null;
-        targetColleges: any[] | null;
+        targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta: any | null;
+        meta?: any | null;
       } | null;
     }[];
   };
