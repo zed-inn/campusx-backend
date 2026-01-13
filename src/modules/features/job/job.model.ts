@@ -79,6 +79,7 @@ export const JobModel = modelSchema({
       meta: JobMetaSchema.optional().nullable(),
     })
     .nullable(),
+  datePosted: z.int().positive().nullable(),
 });
 
 export type JobAttributes = z.infer<typeof JobModel.dbSchema>;
@@ -131,6 +132,15 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
       validate: { isIn: [JOB.STATUS._] },
     },
     expiresAt: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      defaultValue: null,
+      get() {
+        const rawValue = this.getDataValue("expiresAt");
+        return rawValue ? parseInt(rawValue as string, 10) : null;
+      },
+    },
+    datePosted: {
       type: DataTypes.BIGINT,
       allowNull: true,
       defaultValue: null,
