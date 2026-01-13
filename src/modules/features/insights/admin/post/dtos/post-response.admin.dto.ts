@@ -1,4 +1,4 @@
-import { PostModel } from "@modules/features/forums/post/post.model";
+import { PostModel } from "@modules/features/insights/post/post.model";
 import { CategoryModel } from "@modules/features/insights/category/category.model";
 import { z } from "zod";
 
