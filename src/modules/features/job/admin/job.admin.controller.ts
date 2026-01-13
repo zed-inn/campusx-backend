@@ -6,15 +6,17 @@ import { JobSchema } from "./dtos/job-response.admin.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import {
   JobCreateDto,
+  JobCreateManyDto,
   JobDeleteDto,
   JobUpdateDto,
 } from "./dtos/job-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class JobController {
   static getJobsByFilters = catchAsync(
     async (req: Request<{}, {}, {}, JobGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iJobs = await JobService.getByFilters(q.filters, q.order, q.page);
       const pJobs = iJobs.map((j) => JobSchema.parse(j));
@@ -29,6 +31,17 @@ export class JobController {
       const pJob = JobSchema.parse(iJob.plain);
 
       return ApiResponse.success(res, "Job created.", { job: pJob });
+    }
+  );
+
+  static createJobs = catchAsync(
+    async (req: Request<{}, {}, JobCreateManyDto>, res: Response) => {
+      const q = req.body;
+
+      const iJobs = await JobService.createBulk(q.jobs);
+      const pJobs = iJobs.map((j) => JobSchema.parse(j));
+
+      return ApiResponse.success(res, "Jobs created.", { jobs: pJobs });
     }
   );
 

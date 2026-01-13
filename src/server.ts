@@ -34,11 +34,13 @@ const shutdown = async (signal: string) => {
   try {
     console.log(`\n${signal} received. Starting graceful shutdown...`);
 
-    if (SocketService.io) {
-      SocketService.io.close(() => {
-        console.log("Socket.io closed.");
-      });
-    }
+    try {
+      if (SocketService.io) {
+        SocketService.io.close(() => {
+          console.log("Socket.io closed.");
+        });
+      }
+    } catch {}
 
     httpServer.close(() => {
       console.log("HTTP Server closed.");
@@ -71,13 +73,13 @@ const shutdown = async (signal: string) => {
 
   process.on("unhandledRejection", (err: Error) => {
     console.error("UNHANDLED REJECTION! 💥 Shutting down...");
-    console.error(err.name, err.message);
+    console.error(err);
     shutdown("UNHANDLED_REJECTION");
   });
 
   process.on("uncaughtException", (err: Error) => {
     console.error("UNCAUGHT EXCEPTION! 💥 Shutting down...");
-    console.error(err.name, err.message);
+    console.error(err);
     process.exit(1);
   });
 }

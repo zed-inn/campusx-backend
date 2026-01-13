@@ -9,12 +9,13 @@ import {
   ReportDeleteDto,
   ReportUpdateDto,
 } from "./dtos/report-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class ReportController {
   static getReportsByFilters = catchAsync(
     async (req: Request<{}, {}, {}, ReportGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iReports = await ReportService.getByFilters(
         q.filters,

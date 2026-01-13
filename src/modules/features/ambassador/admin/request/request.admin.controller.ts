@@ -6,12 +6,13 @@ import { ApiResponse } from "@shared/utils/api-response";
 import { RequestAggregator } from "./request.admin.aggregator";
 import { RequestSchema } from "./dtos/request-response.admin.dto";
 import { RequestUpdateDto } from "./dtos/request-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class RequestController {
   static getRequestsByFilter = catchAsync(
     async (req: Request<{}, {}, {}, RequestGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iRequests = await RequestService.getByFilters(
         q.filters,

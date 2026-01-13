@@ -4,6 +4,7 @@ import { array } from "zod";
 import { JobSchema } from "./dtos/job-response.admin.dto";
 import { JobController } from "./job.admin.controller";
 import {
+  JobCreateManySchema,
   JobCreateSchema,
   JobDeleteSchema,
   JobUpdateSchema,
@@ -25,6 +26,13 @@ router
   .body(JobCreateSchema)
   .output("job", JobSchema, "Job created.")
   .post("/", JobController.createJob);
+
+router
+  .describe("Create jobs", "Create jobs")
+  .admin()
+  .body(JobCreateManySchema)
+  .output("jobs", array(JobSchema), "Jobs created.")
+  .post("/bulk", JobController.createJobs);
 
 router
   .describe("Update job", "Update job by Id")

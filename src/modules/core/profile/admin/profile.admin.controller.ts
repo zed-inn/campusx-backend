@@ -5,12 +5,13 @@ import { ProfileService } from "./profile.admin.service";
 import { ProfileAggregator } from "./profile.admin.aggregator";
 import { ProfileSchema } from "./dtos/profile-response.admin.dto";
 import { ApiResponse } from "@shared/utils/api-response";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class ProfileController {
   static getUsersByFilters = catchAsync(
     async (req: Request<{}, {}, {}, ProfileGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iProfiles = await ProfileService.getByFilters(
         q.filters,

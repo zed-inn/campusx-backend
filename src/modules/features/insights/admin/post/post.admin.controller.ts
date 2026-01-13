@@ -10,12 +10,13 @@ import {
 } from "./dtos/post-action.admin.dto";
 import { PostAggregator } from "./post.admin.aggregator";
 import { PostSchema } from "./dtos/post-response.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class PostController {
   static getPostsByFilter = catchAsync(
     async (req: Request<{}, {}, {}, PostGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iPosts = await PostService.getByFilters(q.filters, q.order, q.page);
       const tPosts = await PostAggregator.transform(iPosts);

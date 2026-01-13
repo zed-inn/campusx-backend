@@ -16,6 +16,7 @@ import { UploadRouter } from "@modules/features/upload/upload.route";
 import { NotificationRouter } from "@modules/core/notifications";
 import { CompetitionRouter } from "@modules/features/competition";
 import { JobRouter } from "@modules/features/job";
+import { AdminAppRouter } from "./admin.router";
 
 const router = new DetailedRouter("CampusX Backend");
 
@@ -43,5 +44,8 @@ for (const key of Object.keys(routers)) {
   if (routers[key]) router.use(key, routers[key]);
 }
 
+const _AppRouter = router.router;
+_AppRouter.use("/", AdminAppRouter);
+
 export const RESTDocs = router.definitions;
-export const AppRouter = router.router;
+export const AppRouter = _AppRouter;

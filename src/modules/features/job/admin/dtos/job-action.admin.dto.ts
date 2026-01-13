@@ -8,6 +8,12 @@ export const JobCreateSchema = JobModel.dbFields.omit({
 
 export type JobCreateDto = z.infer<typeof JobCreateSchema>;
 
+export const JobCreateManySchema = z.object({
+  jobs: z.array(JobCreateSchema),
+});
+
+export type JobCreateManyDto = z.infer<typeof JobCreateManySchema>;
+
 export const JobUpdateSchema = JobModel.dbFields
   .omit({ id: true, slug: true })
   .partial()

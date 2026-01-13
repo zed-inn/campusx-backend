@@ -5,12 +5,13 @@ import { ReportService } from "./report.admin.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { ReportAggregator } from "./report.admin.aggregator";
 import { ReportSchema } from "./dtos/report-response.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class ReportController {
   static getReportsByFilters = catchAsync(
     async (req: Request<{}, {}, {}, ReportGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iReports = await ReportService.getByFilters(
         q.filters,

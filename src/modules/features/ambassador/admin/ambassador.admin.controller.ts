@@ -6,12 +6,13 @@ import { AmbassadorAggregator } from "./ambassador.admin.aggregator";
 import { AmbassadorSchema } from "./dtos/ambassador-response.admin.dto";
 import { ApiResponse } from "@shared/utils/api-response";
 import { AmbassadorDeleteDto } from "./dtos/ambassador-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class AmbassadorController {
   static getAmbassodorsByFilters = catchAsync(
     async (req: Request<{}, {}, {}, AmbassadorGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iAmbassadors = await AmbassadorService.getByFilters(
         q.filters,

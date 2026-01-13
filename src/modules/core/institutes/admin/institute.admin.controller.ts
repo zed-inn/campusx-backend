@@ -8,6 +8,7 @@ import {
 import { InstituteService } from "./institute.admin.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { InstituteGetFilterDto } from "./dtos/institute-get.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class InstituteController {
   static createInstitute = catchAsync(
@@ -21,7 +22,7 @@ export class InstituteController {
   static getInstitutesByFilter = catchAsync(
     async (req: Request<{}, {}, {}, InstituteGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const institutes = await InstituteService.getByFilter(
         q.filters,

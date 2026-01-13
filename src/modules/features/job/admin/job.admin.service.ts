@@ -2,7 +2,11 @@ import { JOBS_PER_PAGE } from "@config/constants/items-per-page";
 import { BaseService } from "@shared/services/base.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { Job, JobAttributes, JobInstance } from "../job.model";
-import { JobCreateDto, JobUpdateDto } from "./dtos/job-action.admin.dto";
+import {
+  JobCreateDto,
+  JobCreateManyDto,
+  JobUpdateDto,
+} from "./dtos/job-action.admin.dto";
 import { JobFiltersDto } from "./dtos/job-get.admin.dto";
 import { OrderItem } from "sequelize";
 import db from "@config/database";
@@ -18,6 +22,11 @@ class _JobService extends BaseService<JobInstance> {
 
   createNew = async (data: JobCreateDto) => {
     return await this.create(data);
+  };
+
+  createBulk = async (data: JobCreateDto[]) => {
+    const jobs = await Job.bulkCreate(data);
+    return jobs.map((j) => j.plain);
   };
 
   getByFilters = async (

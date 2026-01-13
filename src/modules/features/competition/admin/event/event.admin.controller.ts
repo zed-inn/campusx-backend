@@ -9,12 +9,13 @@ import {
   EventDeleteDto,
   EventUpdateDto,
 } from "./dtos/event-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class EventController {
   static getEventsByFilters = catchAsync(
     async (req: Request<{}, {}, {}, EventGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iEvents = await EventService.getByFilters(
         q.filters,

@@ -9,12 +9,13 @@ import {
   FeedbackDeleteDto,
   FeedbackUpdateDto,
 } from "./dtos/feedback-action.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class FeedbackController {
   static getFeedbacksByFilters = catchAsync(
     async (req: Request<{}, {}, {}, FeedbackGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const iFeedbacks = await FeedbackService.getByFilters(
         q.filters,

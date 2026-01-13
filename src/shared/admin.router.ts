@@ -24,7 +24,8 @@ const routers: Record<string, DetailedRouter> = {
 };
 
 for (const key of Object.keys(routers)) {
-  if (routers[key]) router.use(key, routers[key]);
+  if (routers[key]) router.use(`/admin${key}`, routers[key]);
 }
 
-export const AdminAppRouter = router;
+export const AdminRESTDocs = router.definitions;
+export const AdminAppRouter = router.router;

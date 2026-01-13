@@ -8,12 +8,13 @@ import {
 import { CategoryService } from "./category.admin.service";
 import { ApiResponse } from "@shared/utils/api-response";
 import { CategoryGetFilterDto } from "./dtos/category-get.admin.dto";
+import { converTOrder } from "@shared/utils/convert-to-order";
 
 export class CategoryController {
   static getCategoriesByFilters = catchAsync(
     async (req: Request<{}, {}, {}, CategoryGetFilterDto>, res: Response) => {
       const { page, order, ...filters } = req.query;
-      const q = { page, order, filters };
+      const q = { page, order: converTOrder(order), filters };
 
       const categories = await CategoryService.getByFilters(
         q.filters,
