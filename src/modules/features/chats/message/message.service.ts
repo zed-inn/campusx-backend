@@ -68,8 +68,8 @@ class _MessageService extends BaseService<MessageInstance> {
       where: {
         chatId: {
           [Op.in]: chatIds,
-          ...(timestamp ? { updateDate: { [Op.gt]: timestamp } } : {}),
         },
+        ...(timestamp ? { updateDate: { [Op.gt]: timestamp } } : {}),
       },
       limit: MESSAGES_PER_PAGE,
       order: [["updateDate", "desc"]],
