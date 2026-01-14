@@ -3466,7 +3466,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       source: {
         originalId: string | null;
         name: string | null;
-        url: string | null;
+        string: string | null;
         dateFetched: number | null;
       } | null;
       title: string;
@@ -3483,11 +3483,11 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
-        min?: number;
-        max?: number;
-        currency: string;
-        period: string;
-        negotiable: boolean;
+        min: number | null;
+        max: number | null;
+        currency: string | null;
+        period: string | null;
+        negotiable: boolean | null;
       } | null;
       role: string[] | null;
       subRole: string[] | null;
@@ -3497,12 +3497,12 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
         short: string | null;
       } | null;
       company: {
-        name: string;
+        name: string | null;
         logo: string | null;
         website: string | null;
         industry: string | null;
         foundedYear: string | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;
@@ -4901,7 +4901,7 @@ Get jobs by filter
   source?: {
     originalId: string | null;
     name: string | null;
-    url: string | null;
+    string: string | null;
     dateFetched: number | null;
   } | null;
   title?: string;
@@ -4918,11 +4918,11 @@ Get jobs by filter
   isRemote?: boolean | null;
   workMode?: string[] | null;
   salaryConfig?: {
-    min?: number;
-    max?: number;
-    currency: string;
-    period: string;
-    negotiable: boolean;
+    min: number | null;
+    max: number | null;
+    currency: string | null;
+    period: string | null;
+    negotiable: boolean | null;
   } | null;
   role?: string[] | null;
   subRole?: string[] | null;
@@ -4932,12 +4932,12 @@ Get jobs by filter
     short: string | null;
   } | null;
   company?: {
-    name: string;
+    name: string | null;
     logo: string | null;
     website: string | null;
     industry: string | null;
     foundedYear: string | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   applyLink?: string | null;
   status?: string | null;
@@ -4967,7 +4967,7 @@ Get jobs by filter
       source: {
         originalId: string | null;
         name: string | null;
-        url: string | null;
+        string: string | null;
         dateFetched: number | null;
       } | null;
       title: string;
@@ -4984,11 +4984,11 @@ Get jobs by filter
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
-        min?: number;
-        max?: number;
-        currency: string;
-        period: string;
-        negotiable: boolean;
+        min: number | null;
+        max: number | null;
+        currency: string | null;
+        period: string | null;
+        negotiable: boolean | null;
       } | null;
       role: string[] | null;
       subRole: string[] | null;
@@ -4998,12 +4998,12 @@ Get jobs by filter
         short: string | null;
       } | null;
       company: {
-        name: string;
+        name: string | null;
         logo: string | null;
         website: string | null;
         industry: string | null;
         foundedYear: string | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;
@@ -5035,7 +5035,7 @@ Create job
   source: {
     originalId: string | null;
     name: string | null;
-    url: string | null;
+    string: string | null;
     dateFetched: number | null;
   } | null;
   title: string;
@@ -5051,11 +5051,11 @@ Create job
   isRemote: boolean | null;
   workMode: string[] | null;
   salaryConfig?: {
-    min?: number;
-    max?: number;
-    currency: string;
-    period: string;
-    negotiable: boolean;
+    min: number | null;
+    max: number | null;
+    currency: string | null;
+    period: string | null;
+    negotiable: boolean | null;
   } | null;
   role: string[] | null;
   subRole: string[] | null;
@@ -5065,12 +5065,12 @@ Create job
     short: string | null;
   } | null;
   company: {
-    name: string;
+    name: string | null;
     logo: string | null;
     website: string | null;
     industry: string | null;
     foundedYear: string | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   applyLink: string | null;
   status: string | null;
@@ -5098,7 +5098,7 @@ Create job
       source: {
         originalId: string | null;
         name: string | null;
-        url: string | null;
+        string: string | null;
         dateFetched: number | null;
       } | null;
       title: string;
@@ -5115,11 +5115,11 @@ Create job
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
-        min?: number;
-        max?: number;
-        currency: string;
-        period: string;
-        negotiable: boolean;
+        min: number | null;
+        max: number | null;
+        currency: string | null;
+        period: string | null;
+        negotiable: boolean | null;
       } | null;
       role: string[] | null;
       subRole: string[] | null;
@@ -5129,12 +5129,12 @@ Create job
         short: string | null;
       } | null;
       company: {
-        name: string;
+        name: string | null;
         logo: string | null;
         website: string | null;
         industry: string | null;
         foundedYear: string | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;
@@ -5167,7 +5167,7 @@ Create jobs
     source: {
       originalId: string | null;
       name: string | null;
-      url: string | null;
+      string: string | null;
       dateFetched: number | null;
     } | null;
     title: string;
@@ -5183,11 +5183,11 @@ Create jobs
     isRemote: boolean | null;
     workMode: string[] | null;
     salaryConfig?: {
-      min?: number;
-      max?: number;
-      currency: string;
-      period: string;
-      negotiable: boolean;
+      min: number | null;
+      max: number | null;
+      currency: string | null;
+      period: string | null;
+      negotiable: boolean | null;
     } | null;
     role: string[] | null;
     subRole: string[] | null;
@@ -5197,12 +5197,12 @@ Create jobs
       short: string | null;
     } | null;
     company: {
-      name: string;
+      name: string | null;
       logo: string | null;
       website: string | null;
       industry: string | null;
       foundedYear: string | null;
-      meta?: any | null;
+      meta: any | null;
     } | null;
     applyLink: string | null;
     status: string | null;
@@ -5231,7 +5231,7 @@ Create jobs
       source: {
         originalId: string | null;
         name: string | null;
-        url: string | null;
+        string: string | null;
         dateFetched: number | null;
       } | null;
       title: string;
@@ -5248,11 +5248,11 @@ Create jobs
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
-        min?: number;
-        max?: number;
-        currency: string;
-        period: string;
-        negotiable: boolean;
+        min: number | null;
+        max: number | null;
+        currency: string | null;
+        period: string | null;
+        negotiable: boolean | null;
       } | null;
       role: string[] | null;
       subRole: string[] | null;
@@ -5262,12 +5262,12 @@ Create jobs
         short: string | null;
       } | null;
       company: {
-        name: string;
+        name: string | null;
         logo: string | null;
         website: string | null;
         industry: string | null;
         foundedYear: string | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;
@@ -5299,7 +5299,7 @@ Update job by Id
   source?: {
     originalId: string | null;
     name: string | null;
-    url: string | null;
+    string: string | null;
     dateFetched: number | null;
   } | null;
   title?: string;
@@ -5315,11 +5315,11 @@ Update job by Id
   isRemote?: boolean | null;
   workMode?: string[] | null;
   salaryConfig?: {
-    min?: number;
-    max?: number;
-    currency: string;
-    period: string;
-    negotiable: boolean;
+    min: number | null;
+    max: number | null;
+    currency: string | null;
+    period: string | null;
+    negotiable: boolean | null;
   } | null;
   role?: string[] | null;
   subRole?: string[] | null;
@@ -5329,12 +5329,12 @@ Update job by Id
     short: string | null;
   } | null;
   company?: {
-    name: string;
+    name: string | null;
     logo: string | null;
     website: string | null;
     industry: string | null;
     foundedYear: string | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   applyLink?: string | null;
   status?: string | null;
@@ -5363,7 +5363,7 @@ Update job by Id
       source: {
         originalId: string | null;
         name: string | null;
-        url: string | null;
+        string: string | null;
         dateFetched: number | null;
       } | null;
       title: string;
@@ -5380,11 +5380,11 @@ Update job by Id
       isRemote: boolean | null;
       workMode: string[] | null;
       salaryConfig?: {
-        min?: number;
-        max?: number;
-        currency: string;
-        period: string;
-        negotiable: boolean;
+        min: number | null;
+        max: number | null;
+        currency: string | null;
+        period: string | null;
+        negotiable: boolean | null;
       } | null;
       role: string[] | null;
       subRole: string[] | null;
@@ -5394,12 +5394,12 @@ Update job by Id
         short: string | null;
       } | null;
       company: {
-        name: string;
+        name: string | null;
         logo: string | null;
         website: string | null;
         industry: string | null;
         foundedYear: string | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       applyLink: string | null;
       status: string | null;

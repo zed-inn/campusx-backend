@@ -7,11 +7,11 @@ import { modelSchema } from "@shared/utils/model-schema";
 import { JOB } from "./job.constants";
 
 const SalaryConfigSchema = z.object({
-  min: z.number().optional(),
-  max: z.number().optional(),
-  currency: z.string().default("Ruppees"),
-  period: z.enum(JOB.SALARY.PERIODS._).default(JOB.SALARY.PERIODS.YEARLY),
-  negotiable: z.boolean().default(false),
+  min: z.number().nullable(),
+  max: z.number().nullable(),
+  currency: z.string().nullable(),
+  period: z.enum(JOB.SALARY.PERIODS._).nullable(),
+  negotiable: z.boolean().nullable(),
 });
 
 const JobMetaSchema = z.record(z.string(), z.any());
@@ -22,7 +22,7 @@ export const JobModel = modelSchema({
     .object({
       originalId: z.string().nullable(),
       name: z.string().nullable(),
-      url: z.string().nullable(),
+      string: z.string().nullable(),
       dateFetched: z.int().positive().nullable(),
     })
     .nullable(),
@@ -59,15 +59,15 @@ export const JobModel = modelSchema({
     .nullable(),
   company: z
     .object({
-      name: z.string("Invalid Company Name"),
-      logo: z.url("Invalid Logo URL").nullable(),
-      website: z.url("Invalid company website").nullable(),
-      industry: z.url("Invalid Company Industry").nullable(),
+      name: z.string("Invalid Company Name").nullable(),
+      logo: z.string("Invalid Logo URL").nullable(),
+      website: z.string("Invalid company website").nullable(),
+      industry: z.string("Invalid Company Industry").nullable(),
       foundedYear: z.string().nullable(),
-      meta: JobMetaSchema.optional().nullable(),
+      meta: JobMetaSchema.nullable(),
     })
     .nullable(),
-  applyLink: z.url("Invalid Apply Link").nullable(),
+  applyLink: z.string("Invalid Apply Link").nullable(),
   status: z.enum(JOB.STATUS._, { error: "Invalid Status" }).nullable(),
   expiresAt: z.int("Invalid Expiry Date").positive().nullable(),
   requirements: z
@@ -94,16 +94,16 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
   {
     id: { ...PRIMARY_ID },
     source: { type: DataTypes.JSONB, allowNull: true, defaultValue: null },
-    title: { type: DataTypes.STRING, allowNull: false },
-    slug: { type: DataTypes.STRING, allowNull: false, unique: true },
+    title: { type: DataTypes.STRING, allowNull: true },
+    slug: { type: DataTypes.STRING, allowNull: true, unique: true },
     type: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       values: JOB.TYPES._,
       defaultValue: JOB.TYPES.FULL_TIME,
     },
-    locations: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
-    isRemote: { type: DataTypes.BOOLEAN, defaultValue: false },
+    locations: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
+    isRemote: { type: DataTypes.BOOLEAN, defaultValue: true },
     salaryConfig: { type: DataTypes.JSONB, allowNull: true, defaultValue: {} },
     workMode: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -122,14 +122,13 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
     },
     description: { type: DataTypes.JSONB, allowNull: true, defaultValue: null },
     company: { type: DataTypes.JSONB, allowNull: true, defaultValue: null },
-    applyLink: { type: DataTypes.STRING, allowNull: false },
+    applyLink: { type: DataTypes.STRING, allowNull: true },
     meta: { type: DataTypes.JSONB, allowNull: true, defaultValue: {} },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
       values: JOB.STATUS._,
       defaultValue: JOB.STATUS.DRAFT,
-      validate: { isIn: [JOB.STATUS._] },
     },
     expiresAt: {
       type: DataTypes.BIGINT,
