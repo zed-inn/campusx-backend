@@ -171,8 +171,6 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
   }
 );
 
-Job.sync({ force: true });
-
 // Hooks
 Job.beforeValidate(async (job: any) => {
   if (!job.slug && job.title) {
