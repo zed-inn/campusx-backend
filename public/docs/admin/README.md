@@ -1379,7 +1379,7 @@ Get jobs by filter
     relevantDegrees: string[] | null;
     targetColleges: string[] | null;
     isCampusDrive: boolean | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   datePosted?: number | null;
   page: number;
@@ -1415,7 +1415,7 @@ Get jobs by filter
       }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
-      salaryConfig?: {
+      salaryConfig: {
         min: number | null;
         max: number | null;
         currency: string | null;
@@ -1424,7 +1424,7 @@ Get jobs by filter
       } | null;
       role: string[] | null;
       subRole: string[] | null;
-      meta?: any | null;
+      meta: any | null;
       description: {
         full: string | null;
         short: string | null;
@@ -1445,7 +1445,7 @@ Get jobs by filter
         relevantDegrees: string[] | null;
         targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       datePosted: number | null;
     }[];
@@ -1482,7 +1482,7 @@ Create job
   }[] | null;
   isRemote: boolean | null;
   workMode: string[] | null;
-  salaryConfig?: {
+  salaryConfig: {
     min: number | null;
     max: number | null;
     currency: string | null;
@@ -1491,7 +1491,7 @@ Create job
   } | null;
   role: string[] | null;
   subRole: string[] | null;
-  meta?: any | null;
+  meta: any | null;
   description: {
     full: string | null;
     short: string | null;
@@ -1512,7 +1512,7 @@ Create job
     relevantDegrees: string[] | null;
     targetColleges: string[] | null;
     isCampusDrive: boolean | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   datePosted: number | null;
 }
@@ -1546,7 +1546,7 @@ Create job
       }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
-      salaryConfig?: {
+      salaryConfig: {
         min: number | null;
         max: number | null;
         currency: string | null;
@@ -1555,7 +1555,7 @@ Create job
       } | null;
       role: string[] | null;
       subRole: string[] | null;
-      meta?: any | null;
+      meta: any | null;
       description: {
         full: string | null;
         short: string | null;
@@ -1576,7 +1576,7 @@ Create job
         relevantDegrees: string[] | null;
         targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       datePosted: number | null;
     };
@@ -1614,7 +1614,7 @@ Create jobs
     }[] | null;
     isRemote: boolean | null;
     workMode: string[] | null;
-    salaryConfig?: {
+    salaryConfig: {
       min: number | null;
       max: number | null;
       currency: string | null;
@@ -1623,7 +1623,7 @@ Create jobs
     } | null;
     role: string[] | null;
     subRole: string[] | null;
-    meta?: any | null;
+    meta: any | null;
     description: {
       full: string | null;
       short: string | null;
@@ -1644,7 +1644,7 @@ Create jobs
       relevantDegrees: string[] | null;
       targetColleges: string[] | null;
       isCampusDrive: boolean | null;
-      meta?: any | null;
+      meta: any | null;
     } | null;
     datePosted: number | null;
   }[];
@@ -1679,7 +1679,7 @@ Create jobs
       }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
-      salaryConfig?: {
+      salaryConfig: {
         min: number | null;
         max: number | null;
         currency: string | null;
@@ -1688,7 +1688,7 @@ Create jobs
       } | null;
       role: string[] | null;
       subRole: string[] | null;
-      meta?: any | null;
+      meta: any | null;
       description: {
         full: string | null;
         short: string | null;
@@ -1709,7 +1709,7 @@ Create jobs
         relevantDegrees: string[] | null;
         targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       datePosted: number | null;
     }[];
@@ -1776,7 +1776,7 @@ Update job by Id
     relevantDegrees: string[] | null;
     targetColleges: string[] | null;
     isCampusDrive: boolean | null;
-    meta?: any | null;
+    meta: any | null;
   } | null;
   datePosted?: number | null;
   id: string;
@@ -1811,7 +1811,7 @@ Update job by Id
       }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
-      salaryConfig?: {
+      salaryConfig: {
         min: number | null;
         max: number | null;
         currency: string | null;
@@ -1820,7 +1820,7 @@ Update job by Id
       } | null;
       role: string[] | null;
       subRole: string[] | null;
-      meta?: any | null;
+      meta: any | null;
       description: {
         full: string | null;
         short: string | null;
@@ -1841,7 +1841,7 @@ Update job by Id
         relevantDegrees: string[] | null;
         targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       datePosted: number | null;
     };

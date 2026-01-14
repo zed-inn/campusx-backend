@@ -25,12 +25,16 @@ export const JobModel = modelSchema({
       string: z.string().nullable().default(null),
       dateFetched: z.int().positive().nullable().default(null),
     })
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   title: z
     .string("Invalid Title")
     .min(JOB.TITLE.LENGTH.MIN, { error: "Title too short" }),
   slug: z.string("Invalid Slug").nullable().default(null),
-  type: z.enum(JOB.TYPES._, { error: "Invalid Job Type" }).nullable().default(null),
+  type: z
+    .enum(JOB.TYPES._, { error: "Invalid Job Type" })
+    .nullable()
+    .default(null),
   locations: z
     .array(
       z.object({
@@ -42,21 +46,27 @@ export const JobModel = modelSchema({
         lon: z.string().nullable().default(null),
       })
     )
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   isRemote: z.boolean("Invalid Remote Flag").nullable().default(null),
   workMode: z.array(z.string("Invalid Work Mode")).nullable().default(null),
   salaryConfig: SalaryConfigSchema.optional().nullable().default(null),
-  role: z.array(z.string("Invalid Role"), { error: "Invalid Role" }).nullable().default(null),
+  role: z
+    .array(z.string("Invalid Role"), { error: "Invalid Role" })
+    .nullable()
+    .default(null),
   subRole: z
     .array(z.string("Invalid Sub Role"), { error: "Invalid Sub Role" })
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   meta: JobMetaSchema.optional().nullable().default(null),
   description: z
     .object({
       full: z.string("Invalid full description").nullable().default(null),
       short: z.string("Invalid short description").nullable().default(null),
     })
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   company: z
     .object({
       name: z.string("Invalid Company Name").nullable().default(null),
@@ -66,9 +76,13 @@ export const JobModel = modelSchema({
       foundedYear: z.string().nullable().default(null),
       meta: JobMetaSchema.nullable().default(null),
     })
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   applyLink: z.string("Invalid Apply Link").nullable().default(null),
-  status: z.enum(JOB.STATUS._, { error: "Invalid Status" }).nullable().default(null),
+  status: z
+    .enum(JOB.STATUS._, { error: "Invalid Status" })
+    .nullable()
+    .default(null),
   expiresAt: z.int("Invalid Expiry Date").positive().nullable().default(null),
   requirements: z
     .object({
@@ -78,7 +92,8 @@ export const JobModel = modelSchema({
       isCampusDrive: z.boolean().nullable().default(null),
       meta: JobMetaSchema.optional().nullable().default(null),
     })
-    .nullable().default(null),
+    .nullable()
+    .default(null),
   datePosted: z.int().positive().nullable().default(null),
 });
 
@@ -155,6 +170,8 @@ export const Job = defineModel<JobAttributes, JobCreationAttributes>(
     },
   }
 );
+
+Job.sync({ force: true });
 
 // Hooks
 Job.beforeValidate(async (job: any) => {

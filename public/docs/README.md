@@ -3212,7 +3212,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       }[] | null;
       isRemote: boolean | null;
       workMode: string[] | null;
-      salaryConfig?: {
+      salaryConfig: {
         min: number | null;
         max: number | null;
         currency: string | null;
@@ -3221,7 +3221,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
       } | null;
       role: string[] | null;
       subRole: string[] | null;
-      meta?: any | null;
+      meta: any | null;
       description: {
         full: string | null;
         short: string | null;
@@ -3242,7 +3242,7 @@ Salary Periods: `HOURLY`, `MONTHLY`, `YEARLY`, `ONE_TIME`
         relevantDegrees: string[] | null;
         targetColleges: string[] | null;
         isCampusDrive: boolean | null;
-        meta?: any | null;
+        meta: any | null;
       } | null;
       datePosted: number | null;
     }[];
