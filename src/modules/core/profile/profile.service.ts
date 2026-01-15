@@ -31,7 +31,14 @@ class _ProfileService extends BaseService<ProfileInstance> {
   filterUsersByName = async ({ name, page }: ProfileGetUsersDto) => {
     const profile = await Profile.findAll({
       ...(name
-        ? { where: { [Op.or]: [{ username: name }, { fullName: name }] } }
+        ? {
+            where: {
+              [Op.or]: [
+                { username: { [Op.iLike]: `%${name}%` } },
+                { fullName: { [Op.iLike]: `%${name}%` } },
+              ],
+            },
+          }
         : {}),
       offset: this.OFFSET(page),
       limit: USERS_PER_PAGE,
