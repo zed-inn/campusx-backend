@@ -10,7 +10,9 @@ import { FollowActionDto } from "./dtos/follow-create.dto";
 export class FollowController {
   static getFollowers = catchAsync(
     async (req: Request<{}, {}, {}, FollowGetDto>, res: Response) => {
-      const iUsers = await FollowService.getFollowersById(req.query);
+      const q = req.query;
+
+      const iUsers = await FollowService.getFollowersById(q.userId, q.page);
       const tUsers = await ProfileAggregator.transform(iUsers, req.user?.id);
       const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
 
@@ -25,10 +27,7 @@ export class FollowController {
       const user = AuthPayloadSchema.parse(req.user);
       const q = req.query;
 
-      const iUsers = await FollowService.getFollowersById({
-        ...q,
-        userId: user.id,
-      });
+      const iUsers = await FollowService.getFollowersById(user.id, q.page);
       const tUsers = await ProfileAggregator.transform(iUsers, user.id);
       const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
 
@@ -38,7 +37,9 @@ export class FollowController {
 
   static getFollowing = catchAsync(
     async (req: Request<{}, {}, {}, FollowGetDto>, res: Response) => {
-      const iUsers = await FollowService.getFollowersById(req.query);
+      const q = req.query;
+
+      const iUsers = await FollowService.getFollowingsById(q.userId, q.page);
       const tUsers = await ProfileAggregator.transform(iUsers, req.user?.id);
       const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
 
@@ -53,10 +54,7 @@ export class FollowController {
       const user = AuthPayloadSchema.parse(req.user);
       const q = req.query;
 
-      const iUsers = await FollowService.getFollowersById({
-        ...q,
-        userId: user.id,
-      });
+      const iUsers = await FollowService.getFollowingsById(user.id, q.page);
       const tUsers = await ProfileAggregator.transform(iUsers, user.id);
       const pUsers = tUsers.map((u) => ShortUserSchema.parse(u));
 

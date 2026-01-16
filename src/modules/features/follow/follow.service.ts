@@ -5,7 +5,6 @@ import { USERS_PER_PAGE } from "@config/constants/items-per-page";
 import { Follow, FollowInstance } from "./follow.model";
 import { FollowErrors } from "./follow.errors";
 import { Op } from "sequelize";
-import { FollowGetDto } from "./dtos/follow-get.dto";
 import { ProfileService } from "@modules/core/profile";
 import { FollowStatService } from "./stat/stat.service";
 
@@ -34,9 +33,9 @@ class _FollowService extends BaseService<FollowInstance> {
     };
   };
 
-  getFollowersById = async ({ userId, page }: FollowGetDto) => {
+  getFollowersById = async (id: string, page: number) => {
     const follows = await Follow.findAll({
-      where: { followeeId: userId },
+      where: { followeeId: id },
       offset: this.OFFSET(page),
       limit: USERS_PER_PAGE,
     });
