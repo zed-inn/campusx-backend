@@ -1,3 +1,5 @@
+import { createEnum } from "@shared/utils/create-enum";
+
 export const OTP = {
   LENGTH: 4,
   VALIDITY: {
@@ -6,6 +8,7 @@ export const OTP = {
   POLICY: {
     REPLACEMENT: true,
   },
+  ACTIONS: createEnum(["REGISTER", "RECOVERY"] as const),
 };
 
 export const OTP_TOKEN = {

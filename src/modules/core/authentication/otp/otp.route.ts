@@ -7,7 +7,10 @@ import { z } from "zod";
 const router = new DetailedRouter("OTP");
 
 router
-  .describe("Get Otp", "Get auto generated otp on email")
+  .describe(
+    "Get Otp",
+    "Get auto generated otp on email when doing actions `REGISTER` or `RECOVERY`",
+  )
   .body(OtpGetSchema)
   .output("Otp sent.")
   .post("/get", OtpController.getOtp);

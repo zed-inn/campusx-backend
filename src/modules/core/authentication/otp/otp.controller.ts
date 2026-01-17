@@ -6,6 +6,7 @@ import { OtpGetDto } from "./dtos/otp-get.dto";
 import { OtpVerifyDto } from "./dtos/otp-verify.dto";
 import { UserService } from "@modules/core/user";
 import { DB_Errors } from "@shared/errors/db-errors";
+import { OTP } from "./otp.constants";
 
 export class OtpController {
   static getOtp = catchAsync(
@@ -14,7 +15,7 @@ export class OtpController {
 
       try {
         await UserService.getByEmail(q.email);
-        throw DB_Errors.notFound;
+        if (q.action === OTP.ACTIONS.REGISTER) throw DB_Errors.notFound;
       } catch {}
 
       OtpService.sendOtp(q.email);
