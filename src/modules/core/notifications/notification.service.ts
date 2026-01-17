@@ -5,9 +5,11 @@ import { NotificationCreateDto } from "./dtos/notification-action.dto";
 import { NotifyService } from "@shared/services/notify.service";
 import { createOffsetFn } from "@shared/utils/create-offset";
 import { NOTIFICATIONS_PER_PAGE } from "@config/constants/items-per-page";
+import { NOTIFICATION_TYPE } from "@config/constants/notification-types";
 
 class _NotificationService extends BaseService<NotificationInstance> {
   protected OFFSET = createOffsetFn(NOTIFICATIONS_PER_PAGE);
+  private volatileTypes = [NOTIFICATION_TYPE.MESSAGE];
 
   constructor() {
     super(Notification);
@@ -18,7 +20,8 @@ class _NotificationService extends BaseService<NotificationInstance> {
     const userData = user.plain;
     const fcmToken = userData.fcmToken;
 
-    await this.create({ ...data, userId });
+    if (!this.volatileTypes.includes(data.type as any))
+      await this.create({ ...data, userId });
     if (fcmToken) NotifyService.send(fcmToken, data.title, data.body);
   };
 
