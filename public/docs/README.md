@@ -8,12 +8,13 @@
 
 **POST** `/auth/otp/get`
 
-Get auto generated otp on email
+Get auto generated otp on email when doing actions `REGISTER` or `RECOVERY`
 
 **Body :**
 ```ts
 {
   email: string;
+  action: string;
 }
 ```
 
