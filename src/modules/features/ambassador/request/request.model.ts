@@ -50,6 +50,8 @@ export const Request = defineModel<
   },
 });
 
+Request.sync({ force: true });
+
 // Associations
 Profile.hasMany(Request, {
   foreignKey: "id",
