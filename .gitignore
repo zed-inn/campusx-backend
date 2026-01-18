@@ -76,7 +76,6 @@ web_modules/
 
 # Next.js build output
 .next
-out
 
 # Nuxt.js build / generate output
 .nuxt
@@ -158,3 +157,6 @@ describe*.md
 
 # Old Data
 /src/shared/migration/data.old
+
+# Output of getJsons
+src/shared/out/data.old/*.json
