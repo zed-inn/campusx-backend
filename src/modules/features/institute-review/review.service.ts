@@ -26,7 +26,7 @@ class _ReviewService extends BaseService<ReviewInstance> {
       const newRating = ReviewUtils.addInRating(
         rating,
         reviewsCount,
-        data.rating
+        data.rating,
       );
 
       await institute.update({
@@ -76,7 +76,7 @@ class _ReviewService extends BaseService<ReviewInstance> {
         const newRating = ReviewUtils.addInRating(
           ReviewUtils.subtractFromRating(rating, reviewsCount, prevRating),
           reviewsCount - 1,
-          rating
+          rating,
         );
 
         await institute.update({ rating: newRating });
@@ -101,7 +101,7 @@ class _ReviewService extends BaseService<ReviewInstance> {
       const newRating = ReviewUtils.subtractFromRating(
         rating,
         reviewsCount,
-        oldRating
+        oldRating,
       );
 
       await institute.update({
@@ -116,12 +116,12 @@ class _ReviewService extends BaseService<ReviewInstance> {
 
 class ReviewUtils {
   static normalizeIsNanRating = (rating: number) =>
-    isNaN(rating) ? 0 : rating;
+    isNaN(rating) ? 0 : rating === Infinity ? 0 : rating;
 
   static addInRating = (
     oldRating: number,
     oldRatingsCount: number,
-    ratingToAdd: number
+    ratingToAdd: number,
   ) => {
     const newRating =
       (oldRating * oldRatingsCount + ratingToAdd) / (oldRatingsCount + 1);
@@ -131,7 +131,7 @@ class ReviewUtils {
   static subtractFromRating = (
     oldRating: number,
     oldRatingsCount: number,
-    ratingToSubtract: number
+    ratingToSubtract: number,
   ) => {
     const newRating =
       (oldRating * oldRatingsCount - ratingToSubtract) / (oldRatingsCount - 1);
