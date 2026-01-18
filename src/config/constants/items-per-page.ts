@@ -29,3 +29,5 @@ export const REPORTS_PER_PAGE = 30;
 export const EVENTS_PER_PAGE = 45;
 
 export const FEEDBACKS_PER_PAGE = 45;
+
+export const LOGS_PER_PAGE = 30;
