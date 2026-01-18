@@ -5446,3 +5446,39 @@ Delete job by Id
 
 ---
 
+## Logs
+
+### Get logs
+
+**GET** `/admin/logs`  **( Login Required )**
+
+Get logs by page
+
+**Query Parameters :**
+```ts
+{
+  page: number;
+}
+```
+
+**Response (200 OK) :**
+```ts
+{
+  message: string;
+  data: {
+    logs: {
+      createDate: number;
+      updateDate: number;
+      id: string;
+      level: string;
+      message: string;
+      req: any | null;
+      err: any | null;
+      meta: any | null;
+    }[];
+  };
+}
+```
+
+---
+
