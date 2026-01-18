@@ -52,11 +52,11 @@ export const Request = defineModel<
 
 // Associations
 Profile.hasMany(Request, {
-  foreignKey: "id",
+  foreignKey: "userId",
   onDelete: "CASCADE",
   as: "ambassadorRequest",
 });
-Request.belongsTo(Profile, { foreignKey: "id", as: "requester" });
+Request.belongsTo(Profile, { foreignKey: "userId", as: "requester" });
 
 Institute.hasMany(Request, {
   foreignKey: "instituteId",
