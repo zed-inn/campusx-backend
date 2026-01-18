@@ -116,7 +116,7 @@ class _ReviewService extends BaseService<ReviewInstance> {
 
 class ReviewUtils {
   static normalizeIsNanRating = (rating: number) =>
-    isNaN(rating) ? 0 : rating === Infinity ? 0 : rating;
+    isNaN(rating) || rating < 0 ? 0 : rating === Infinity ? 0 : rating;
 
   static addInRating = (
     oldRating: number,
