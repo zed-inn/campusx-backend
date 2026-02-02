@@ -8,7 +8,6 @@ import {
   InstituteDeleteSchema,
   InstituteUpdateSchema,
 } from "./dtos/institute-action.admin.dto";
-import { InsightSchema } from "@shared/migration/mapping/data-old.dto";
 import { GlobalDeleteSchema } from "@shared/dtos/global.dto";
 
 const router = new DetailedRouter("Institute");
@@ -31,7 +30,7 @@ router
   .describe("Update institute", "Update institute by Id")
   .admin()
   .body(InstituteUpdateSchema)
-  .output("institute", InsightSchema, "Institute updated.")
+  .output("institute", InstituteSchema, "Institute updated.")
   .patch("/", InstituteController.updateInstitute);
 
 router
