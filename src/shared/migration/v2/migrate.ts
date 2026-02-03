@@ -49,11 +49,10 @@ const migrate = async () => {
       if (!value && !_inst[newKey]) continue;
       try {
         let val: unknown = value;
+        if (val === "null" || val === "NaN") throw new Error("null/nan error");
         if (newKey === "yearOfEstablishment") val = parseInt(val as any);
         else if (newKey === "website" || newKey === "imageUrl")
           val = Sanitize.sanitizeUrl(value);
-        if (val === "NaN" && newKey === "yearOfEstablishment")
-          throw new Error("nan value");
 
         oldPicksConvert[newKey] = InstituteSchema.shape[newKey].parse(val);
       } catch {}
