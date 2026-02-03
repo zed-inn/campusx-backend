@@ -54,6 +54,8 @@ const migrate = async () => {
         if (newKey === "yearOfEstablishment") val = parseInt(val as any);
         else if (newKey === "website" || newKey === "imageUrl")
           val = Sanitize.sanitizeUrl(value);
+        else if (newKey === "address" && (val as string).length > 255)
+          throw new Error("Bad value as address");
 
         if (newKey === "yearOfEstablishment" && isNaN(val as any))
           throw new Error("nan error");
