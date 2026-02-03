@@ -156,7 +156,7 @@ bundler.py
 describe*.md
 
 # Old Data
-/src/shared/migration/data.old
+/src/shared/migration/**/*/data.old
 
 # Output of getJsons
 src/shared/out/data.old/*.json

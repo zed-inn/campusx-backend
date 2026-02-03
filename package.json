@@ -9,8 +9,8 @@
     "build": "npm run clean && tsc && tsc-alias",
     "start": "node --max-old-space-size=450 ./dist/server.js",
     "test": "NODE_ENV=test jest",
-    "migrate": "NODE_ENV=production node ./dist/shared/migration/migrate.js",
-    "migrate-ts": "NODE_ENV=production npx tsx ./src/shared/migration/migrate.ts"
+    "migrate": "NODE_ENV=production node ./dist/shared/migration/v2/migrate.js",
+    "migrate-ts": "NODE_ENV=production npx tsx ./src/shared/migration/v2/migrate.ts"
   },
   "repository": {
     "type": "git",
