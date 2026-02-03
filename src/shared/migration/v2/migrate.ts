@@ -46,19 +46,12 @@ const migrate = async () => {
     for (let [key, value] of Object.entries(oldPicks)) {
       const _k = key as keyof typeof fieldsOldToNewMap;
       const newKey = fieldsOldToNewMap[_k];
-      if (!value || !_inst[newKey]) continue;
+      if (!value && !_inst[newKey]) continue;
       try {
         let val: unknown = value;
-        if (
-          newKey === "yearOfEstablishment" &&
-          value !== "NaN" &&
-          !isNaN(value as any)
-        )
-          val = parseInt(value);
+        if (newKey === "yearOfEstablishment") val = parseInt(val as any);
         else if (newKey === "website" || newKey === "imageUrl")
           val = Sanitize.sanitizeUrl(value);
-
-        if (isNaN(val as any)) throw new Error("Nan value");
 
         oldPicksConvert[newKey] = InstituteSchema.shape[newKey].parse(val);
       } catch {}
