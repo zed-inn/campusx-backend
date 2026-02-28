@@ -1,6 +1,7 @@
 import { ProfileHooks } from "@modules/core/profile";
 import { AmbassadorRequestHooks } from "@modules/features/ambassador";
 import { ChatsMessageHooks } from "@modules/features/chats";
+import { CompetitionEventsHook } from "@modules/features/competition";
 import { FollowHooks } from "@modules/features/follow";
 import {
   ForumCommentHooks,
@@ -14,4 +15,5 @@ export const defineHooks = () => {
   FollowHooks();
   ForumCommentHooks();
   ForumReactionHooks();
+  CompetitionEventsHook();
 };
